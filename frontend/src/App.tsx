@@ -1,10 +1,11 @@
 import './App.css'
+import Dashboard from './components/Dashboard'
 
 function App() {
 
   return (
     <>
-      <h1>Number nest front end</h1>
+      <Dashboard />
     </>
   )
 }
