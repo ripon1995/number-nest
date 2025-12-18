@@ -1,6 +1,7 @@
 import {useEffect} from 'react';
 import './Dashboard.css';
 import {useCourseStore} from '../store/useCourseStore';
+import Logo from './Logo';
 
 export default function Dashboard() {
     const {courses, loading, error, fetchCourses} = useCourseStore();
@@ -35,13 +36,7 @@ export default function Dashboard() {
     return (
         <div className="dashboard">
             <div className="page-header">
-                <div className="logo-title">
-                    <span className="logo-number">Number</span>
-                    <span className="logo-root-container">
-                        <span className="logo-radical">√</span>
-                        <span className="logo-nest">Nest</span>
-                    </span>
-                </div>
+                <Logo />
             </div>
             <h1>Available Courses</h1>
 

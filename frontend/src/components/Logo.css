@@ -1,0 +1,51 @@
+.logo-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'Georgia', serif;
+}
+
+.logo-number {
+  letter-spacing: 1px;
+}
+
+.logo-root-container {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-end;
+  margin-left: 0.2rem;
+}
+
+.logo-radical {
+  color: #4a90e2;
+  font-size: 3.5rem;
+  line-height: 1.5;
+  position: relative;
+  margin-right: -0.15rem;
+}
+
+.logo-nest {
+  position: relative;
+  border-top: 3px solid #4a90e2;
+  padding-top: 0.0rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+  .logo-title {
+    font-size: 2rem;
+  }
+
+  .logo-radical {
+    font-size: 2.3rem;
+  }
+
+  .logo-nest {
+    border-top: 2px solid #4a90e2;
+  }
+}

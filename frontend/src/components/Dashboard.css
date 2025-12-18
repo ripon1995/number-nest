@@ -17,44 +17,6 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.logo-title {
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-  font-size: 3rem;
-  font-weight: 700;
-  color: #ffffff;
-  font-family: 'Georgia', serif;
-}
-
-.logo-number {
-  letter-spacing: 1px;
-}
-
-.logo-root-container {
-  position: relative;
-  display: inline-flex;
-  align-items: flex-end;
-  margin-left: 0.2rem;
-}
-
-.logo-radical {
-  color: #4a90e2;
-  font-size: 3.5rem;
-  line-height: 1.5;
-  position: relative;
-  margin-right: -0.15rem;
-}
-
-.logo-nest {
-  position: relative;
-  border-top: 3px solid #4a90e2;
-  padding-top: 0.0rem;
-  padding-left: 0.3rem;
-  padding-right: 0.3rem;
-  letter-spacing: 1px;
-}
-
 .dashboard h1 {
   font-size: 2.5rem;
   color: #1a1a1a;
@@ -212,18 +174,6 @@ body {
 
   .page-header {
     padding: 1.5rem 0 1rem 0;
-  }
-
-  .logo-title {
-    font-size: 2rem;
-  }
-
-  .logo-radical {
-    font-size: 2.3rem;
-  }
-
-  .logo-nest {
-    border-top: 2px solid #4a90e2;
   }
 
   .dashboard h1 {
