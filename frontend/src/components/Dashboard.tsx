@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import './Dashboard.css';
 import {useCourseStore} from '../store/useCourseStore';
 import Logo from './Logo';
-import {IoCalendarOutline, IoTimeOutline} from 'react-icons/io5';
+import CourseCard from './CourseCard';
 
 export default function Dashboard() {
     const {courses, loading, error, fetchCourses} = useCourseStore();
@@ -46,41 +46,7 @@ export default function Dashboard() {
             ) : (
                 <div className="courses-grid">
                     {courses.map((course) => (
-                        <div key={course.id} className="course-card">
-                            <h2 className="course-title">{course.title}</h2>
-                            <p className="course-description">{course.description}</p>
-
-                            <div className="course-details">
-                                <div className="detail-item">
-                                    <span className="detail-label">Schedule:</span>
-                                    <span className="detail-value detail-with-icon">
-                                        <IoCalendarOutline className="detail-icon" />
-                                        {course.batch_days}
-                                    </span>
-                                </div>
-
-                                <div className="detail-item">
-                                    <span className="detail-label">Time:</span>
-                                    <span className="detail-value detail-with-icon">
-                                        <IoTimeOutline className="detail-icon" />
-                                        {new Date(course.batch_time).toLocaleTimeString('en-US', {
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })}
-                                    </span>
-                                </div>
-
-                                <div className="detail-item">
-                                    <span className="detail-label">Capacity:</span>
-                                    <span className="detail-value">{course.capacity} students</span>
-                                </div>
-
-                                <div className="detail-item">
-                                    <span className="detail-label">Fee:</span>
-                                    <span className="detail-value course-fee">${course.course_fee}</span>
-                                </div>
-                            </div>
-                        </div>
+                        <CourseCard key={course.id} course={course} />
                     ))}
                 </div>
             )}
