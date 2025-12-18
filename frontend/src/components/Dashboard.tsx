@@ -5,9 +5,15 @@ import {useCourseStore} from '../store/useCourseStore';
 export default function Dashboard() {
     const {courses, loading, error, fetchCourses} = useCourseStore();
 
-    useEffect((): void => {
-        fetchCourses().then(_r => {
+    useEffect(() => {
+        const abortController = new AbortController();
+
+        fetchCourses(abortController.signal).then(_r => {
         });
+
+        return () => {
+            abortController.abort();
+        };
     }, [fetchCourses]);
 
     if (loading) {
