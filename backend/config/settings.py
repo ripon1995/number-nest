@@ -17,8 +17,10 @@ ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
-    'django.contrib.staticfiles',
-    'rest_framework'
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'rest_framework',
+    'course',
 ]
 
 ROOT_URLCONF = 'config.urls'
