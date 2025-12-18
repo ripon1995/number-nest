@@ -160,6 +160,17 @@ body {
   font-weight: 600;
 }
 
+.detail-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detail-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
 .course-fee {
   font-weight: 700;
   color: #ffd700;
