@@ -22,8 +22,9 @@ export const useCourseStore = create<CourseState>((set) => ({
       const data = await response.json();
       set({ courses: data, loading: false });
     } catch (err) {
-      // Don't update state if the request was aborted
+      // If request was aborted, reset loading state
       if ((err as Error).name === 'AbortError') {
+        set({ loading: false });
         return;
       }
       set({ error: (err as Error).message, loading: false });
