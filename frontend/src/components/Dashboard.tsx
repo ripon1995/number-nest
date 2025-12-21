@@ -1,11 +1,13 @@
-import {useEffect} from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
-import {useCourseStore} from '../store/useCourseStore';
+import { useCourseStore } from '../store/useCourseStore';
 import Logo from './Logo';
 import CourseCard from './CourseCard';
 
 export default function Dashboard() {
-    const {courses, loading, error, fetchCourses} = useCourseStore();
+    const { courses, loading, error, fetchCourses } = useCourseStore();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -38,6 +40,12 @@ export default function Dashboard() {
         <div className="dashboard">
             <div className="page-header">
                 <Logo />
+                <button
+                    className="register-button"
+                    onClick={() => navigate('/register')}
+                >
+                    Register
+                </button>
             </div>
             <h1>Available Courses</h1>
 
