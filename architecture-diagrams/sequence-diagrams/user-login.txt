@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant U as User
+    participant C as Web Client
+    participant S as Auth Server
+    participant DB as Database
+
+    U->>+C: Enter Username & Password
+    C->>+S: POST /login (credentials)
+
+    S->>+DB: Query user by username
+    DB-->>-S: Return User Data & Hashed Password
+
+    Note over S: Verify password hash
+
+    alt Successful Login
+        S->>S: Generate JWT / Session Token
+        S-->>C: 200 OK (Token)
+        C-->>U: Redirect to Dashboard
+    else Failed Login
+        S-->>-C: 401 Unauthorized
+        C-->>-U: Show Error Message
+    end

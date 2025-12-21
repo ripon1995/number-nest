@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant U as User
+    participant C as Web Client
+    participant S as Auth Server
+    participant DB as Database
+    participant E as Email Service
+
+    U->>+C: Enter Registration Details (Email, Password, etc.)
+    C->>+S: POST /register (user data)
+
+    S->>+DB: Check if Email exists
+    DB-->>-S: Email not found
+
+    Note over S: Hash Password (e.g., Argon2 or BCrypt)
+
+    S->>+DB: Save New User Record
+    DB-->>-S: User Created Successfully
+
+    par Background Task
+        S->>+E: Send "Welcome / Verify Email"
+        E-->>-S: Email Sent
+    end
+
+    S-->>-C: 201 Created (Success)
+    C-->>-U: Display "Check your email to verify"
