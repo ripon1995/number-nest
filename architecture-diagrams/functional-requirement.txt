@@ -1,0 +1,37 @@
+NumberNest Functional requirements:
+- Two actors (admin and student). Will be differentiate by a field called is_admin
+
+# User functionality
+- Student can register by their own or can be created by admin
+- Student can login
+
+# Course Functionality
+- Student
+    - Courses will be visible to all
+    - Logged in student will see their own course
+    - Logged in user will
+- Admin
+    - CRUD course
+    - Enroll student to a course
+    - Remove student from a course
+
+# Attendance Functionality
+- Student
+    - Logged in student can see their attendance for a course in course detail
+- Admin
+    - CRUD attendance
+    - Send email monthly with attendance report
+
+# Payment Functionality
+- Student
+    - Logged in student can see their course payment details
+    - Can download the receipt monthly basis
+- Admin
+    - CRUD payment for a student of a specific course
+    - Monthly payment report for a course
+
+# Notice board
+- Student
+    - Will see the notice in the dashboard
+- Admin
+    - CRUD for the dashboard
