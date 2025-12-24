@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
-import type {FormEvent} from 'react'
+import type {FormEvent} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Registration.css';
 import { useUserStore } from '../store/useUserStore';
 import Logo from './Logo';
-import { IoPersonOutline, IoCallOutline, IoLockClosedOutline } from 'react-icons/io5';
+import { IoCallOutline, IoLockClosedOutline } from 'react-icons/io5';
 
-export default function Registration() {
+export default function Login() {
   const [formData, setFormData] = useState({
-    name: '',
     phone_number: '',
     password: '',
   });
 
-  const { loading, error, success, registerUser, resetState } = useUserStore();
+  const { loading, error, success, loginUser, resetState } = useUserStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,17 +26,14 @@ export default function Registration() {
 
   useEffect(() => {
     if (success) {
-      const timer = setTimeout(() => {
-        navigate('/');
-      }, 2000);
-      return () => clearTimeout(timer);
+      navigate('/home');
     }
   }, [success, navigate]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const abortController = new AbortController();
-    await registerUser(formData, abortController.signal);
+    await loginUser(formData, abortController.signal);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,8 +51,8 @@ export default function Registration() {
 
       <div className="registration-container">
         <div className="registration-card">
-          <h1>Create Account</h1>
-          <p className="registration-subtitle">Join Number Nest to start learning</p>
+          <h1>Welcome Back</h1>
+          <p className="registration-subtitle">Login to continue learning</p>
 
           {error && (
             <div className="error-message">
@@ -64,30 +60,7 @@ export default function Registration() {
             </div>
           )}
 
-          {success && (
-            <div className="success-message">
-              Registration successful! Redirecting to dashboard...
-            </div>
-          )}
-
           <form onSubmit={handleSubmit} className="registration-form">
-            <div className="form-group">
-              <label htmlFor="name">
-                <IoPersonOutline className="input-icon" />
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                placeholder="Enter your full name"
-                disabled={loading}
-              />
-            </div>
-
             <div className="form-group">
               <label htmlFor="phone_number">
                 <IoCallOutline className="input-icon" />
@@ -117,24 +90,24 @@ export default function Registration() {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                placeholder="Create a password"
+                placeholder="Enter your password"
                 disabled={loading}
               />
             </div>
 
             <button type="submit" className="submit-button" disabled={loading}>
-              {loading ? 'Creating Account...' : 'Register'}
+              {loading ? 'Logging in...' : 'Login'}
             </button>
 
             <div className="auth-switch">
-              <p>Already have an account?</p>
+              <p>Don't have an account?</p>
               <button
                 type="button"
                 className="link-button"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/register')}
                 disabled={loading}
               >
-                Login here
+                Register here
               </button>
             </div>
 

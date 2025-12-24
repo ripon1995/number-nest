@@ -42,9 +42,9 @@ export default function Dashboard() {
                 <Logo />
                 <button
                     className="register-button"
-                    onClick={() => navigate('/register')}
+                    onClick={() => navigate('/login')}
                 >
-                    Register
+                    Login
                 </button>
             </div>
             <h1>Available Courses</h1>
