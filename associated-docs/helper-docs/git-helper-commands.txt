@@ -4,7 +4,15 @@ command => pwd
 # all files
 command => ls -a
 
+# add file
+command => touch <file_name>
+
+# delete file
+command => rm <file_name>
+
+# delete a folder
+command => rm -rf <folder_name>
+
 # git current status
 command => git status
 
-#
