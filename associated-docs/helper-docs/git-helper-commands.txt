@@ -1,0 +1,10 @@
+# present working directory
+command => pwd
+
+# all files
+command => ls -a
+
+# git current status
+command => git status
+
+#
