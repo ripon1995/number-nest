@@ -21,7 +21,6 @@ class MongoJWTAuthentication(JWTAuthentication):
         Override to fetch user from MongoDB using mongoengine
         """
         try:
-            print(validated_token)
             user_id = validated_token.get('user_id')
             if user_id is None:
                 raise InvalidToken('Token contained no recognizable user identification')
