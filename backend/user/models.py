@@ -18,6 +18,13 @@ class User(Document):
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
 
+    @property
+    def is_authenticated(self):
+        return True
+
+    def get_username(self):
+        return self.phone_number
+
 
 class UserProfile(Document):
     user = ReferenceField(User)
