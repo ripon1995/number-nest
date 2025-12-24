@@ -2,6 +2,7 @@ from db.mongo import start_mongodb
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 
 # load the .env file
 load_dotenv()
@@ -20,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
     'course',
     'user'
@@ -30,6 +32,27 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'user.authentication.MongoJWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=10),
+    'ROTATE_REFRESH_TOKENS': True,  # important → issues new refresh on each refresh
+    'BLACKLIST_AFTER_ROTATION': True,  # revoke old refresh after rotation
+    'UPDATE_LAST_LOGIN': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
@@ -37,7 +60,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
