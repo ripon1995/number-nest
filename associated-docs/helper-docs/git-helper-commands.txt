@@ -25,8 +25,8 @@ command => git log --oneline
 # git hard reset (will remove everything before this commit)
 command => git reset --hard <commit_id>
 
-# git all branch
-command => git branch
+# git logs even after reset
+command => git reflog
 
-# git new branch create
-command => git branch <branch_name>
+# git last changes revert : here commit_id refers to which commit id should be reverted
+command => git revert <commit_id>
