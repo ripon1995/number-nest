@@ -24,3 +24,9 @@ command => git log --oneline
 
 # git hard reset (will remove everything before this commit)
 command => git reset --hard <commit_id>
+
+# git logs even after reset
+command => git reflog
+
+# git last changes revert : here commit_id refers to which commit id should be reverted
+command => git revert <commit_id>
