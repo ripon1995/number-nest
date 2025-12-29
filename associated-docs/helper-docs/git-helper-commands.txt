@@ -24,9 +24,3 @@ command => git log --oneline
 
 # git hard reset (will remove everything before this commit)
 command => git reset --hard <commit_id>
-
-# git all branch
-command => git branch
-
-# git new branch create
-command => git branch <branch_name>
