@@ -16,3 +16,9 @@ command => rm -rf <folder_name>
 # git current status
 command => git status
 
+# git last commit message change
+command => git commit --amend
+
+# git log in short
+command => git log --oneline
+
