@@ -22,3 +22,5 @@ command => git commit --amend
 # git log in short
 command => git log --oneline
 
+# git hard reset (will remove everything before this commit)
+command => git reset --hard <commit_id>
