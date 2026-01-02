@@ -30,3 +30,7 @@ command => git reflog
 
 # git last changes revert : here commit_id refers to which commit id should be reverted
 command => git revert <commit_id>
+
+
+# git pre-hooks:
+ to make executable : command => chmod 777 pre-commit
