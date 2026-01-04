@@ -1,0 +1,58 @@
+    1  clear
+    2  say "hello Insia"
+    3  clear
+    4  pwd
+    5  clear
+    6  pwd
+    7  ls
+    8  clear
+    9  sudo apt update: /etc/apt/sources.list
+   10  whoami
+   11  who
+   12  lsb_release -a
+   13  date
+   14  echo "ec2 instances working"
+   15  pwd
+   16  ls
+   17  clear
+   18  ls
+   19  touch hello.txt
+   20  mkdir myfolder
+   21  ls
+   22  git --version
+   23  ls -a
+   24  ls -l
+   25  touch log
+   26  ls -l
+   27  mv log log.txt
+   28  ls
+   29  vim log.txt
+   30  cat log.txt
+   31  echo "This is a new line" >> log.txt
+   32  cat log.txt
+   33  echo "This is another lone" >> log.txt
+   34  head -2 log.txt
+   35  head log.txt
+   36  echo "This will remove all and add this line" > log.txt
+   37  cat log.txt
+   38  vim file2.txt
+   39  cat file2.txt
+   40  history
+   41  clear
+   42  history
+   43  pwd
+   44  ls
+   45  cd myfolder/
+   46  pwd
+   47  cd ..
+   48  pwd
+   49  cd /
+   50  pwd
+   51  ls
+   52  man ls
+   53  df -h
+   54  grep  Mem /proc/meminfo
+   55  man df
+   56  clear
+   57  history
+
