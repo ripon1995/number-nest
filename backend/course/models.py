@@ -8,4 +8,4 @@ class Course(Document):
     batch_time = DateTimeField(required=True)
     capacity = IntField(required=True)
     course_fee = DecimalField(required=True)
-    speech = StringField(default="This is fun")
+    speech = StringField(default="Math is fun")
