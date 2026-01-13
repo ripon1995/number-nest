@@ -1,6 +1,7 @@
 from mongoengine import Document, StringField, DateTimeField, IntField, DecimalField
 
 
+# should set log
 class Course(Document):
     title = StringField(required=True)
     description = StringField(required=True)
