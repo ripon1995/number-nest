@@ -1,3 +1,6 @@
+import logging
+
+logger = logging.getLogger(__name__)
 from functools import wraps
 from mongoengine.errors import ValidationError as MongoValidationError
 from mongoengine.errors import DoesNotExist, NotUniqueError
@@ -21,6 +24,7 @@ def handle_exceptions(func):
                 # No need for try-catch blocks
                 return success_response(...)
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:
@@ -29,52 +33,59 @@ def handle_exceptions(func):
         except DRFValidationError as e:
             # Handle Django REST Framework validation errors
             # These are raised by serializer.is_valid(raise_exception=True)
+            logger.error(e, exc_info=True)
             return error_response(
                 message="Validation failed",
                 errors=e.detail,
-                status_code=status.HTTP_400_BAD_REQUEST
+                status_code=status.HTTP_400_BAD_REQUEST,
             )
 
         except NotUniqueError as e:
+            logger.error(e, exc_info=True)
             return error_response(
                 message="Duplicate entry",
                 errors={"detail": str(e)},
-                status_code=status.HTTP_409_CONFLICT
+                status_code=status.HTTP_409_CONFLICT,
             )
 
         except DoesNotExist as e:
+            logger.error(e, exc_info=True)
             return error_response(
                 message="Resource not found",
                 errors={"detail": str(e)},
-                status_code=status.HTTP_404_NOT_FOUND
+                status_code=status.HTTP_404_NOT_FOUND,
             )
 
         except MongoValidationError as e:
+            logger.error(e, exc_info=True)
             return error_response(
                 message="Validation error",
                 errors={"detail": str(e)},
-                status_code=status.HTTP_400_BAD_REQUEST
+                status_code=status.HTTP_400_BAD_REQUEST,
             )
 
         except ValueError as e:
+            logger.error(e, exc_info=True)
             return error_response(
                 message="Invalid value",
                 errors={"detail": str(e)},
-                status_code=status.HTTP_400_BAD_REQUEST
+                status_code=status.HTTP_400_BAD_REQUEST,
             )
 
         except PermissionError as e:
+            logger.error(e, exc_info=True)
             return error_response(
                 message="Permission denied",
                 errors={"detail": str(e)},
-                status_code=status.HTTP_403_FORBIDDEN
+                status_code=status.HTTP_403_FORBIDDEN,
             )
 
         except Exception as e:
+            logger.error(e, exc_info=True)
             return error_response(
                 message="Internal server error",
                 errors={"detail": str(e)},
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
     return wrapper
