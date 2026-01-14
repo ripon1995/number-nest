@@ -56,3 +56,40 @@
    56  clear
    57  history
 
+
+
+linux helper commands
+    1  clear
+    2  tree
+    3  sudo apt install tree
+    4  clear
+    5  sudo apt update
+    6  clear
+    7  sudo apt install tree
+    8  clear
+    9  tree
+   10  clear
+   11  history
+   12  clear
+   13  docker --version
+   14  sudo apt install docker.io
+   15  docker --version
+   16  git --version
+   17  systemctl
+   18  docker ps
+   19  clear
+   20  ls -a
+   21  systemctl status docker
+   22  systemctl status nginx
+   23  sudo apt install nginx
+   24  clear
+   25  systemctl status nginx
+   27  sudo journalctl -fu nginx.service
+   28  systemctl status nginx
+   29  clear
+   30  sudo systemctl stop docker
+   31  systemctl status docker
+   32  sudo systemctl restart docker
+   33  systemctl status docker
+   34  clear
+   35  history
