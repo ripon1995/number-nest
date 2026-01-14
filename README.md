@@ -1,3 +1,11 @@
+# Project Name : Number Nest
+- Monorepo project
+- Backend : Python, Django Rest Framework
+- Database : MongoDB
+- Frontend : React and Typescript
+- Version : 0.0.1
+
+# Project Tree Diagram
 ```text
 number-nest/
 ├── .gitignore
@@ -88,3 +96,6 @@ number-nest/
 │   ├── tsconfig.node.json
 │   └── vite.config.ts
 └── README.md
+```
+
+## Branching Strategy
