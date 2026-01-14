@@ -99,3 +99,9 @@ number-nest/
 ```
 
 ## Branching Strategy
+- Source of truth : **main branch**
+- Tasks are added as ISSUES in GitHub
+- Every task has a number : issue number (considered as task number)
+- Branch name rule : {issue-number}-{issue-title}
+- Example : 2-project-architecture
+- Example for sub-branch from a feature branch : 2.7-readme-update(2-project-architecture) 
