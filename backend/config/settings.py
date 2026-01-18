@@ -33,6 +33,7 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'custom-exceptions.custom_exception_handler.custom_exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'user.authentication.MongoJWTAuthentication',
     ),
