@@ -5,6 +5,7 @@ from functools import wraps
 from mongoengine.errors import ValidationError as MongoValidationError
 from mongoengine.errors import DoesNotExist, NotUniqueError
 from rest_framework.exceptions import ValidationError as DRFValidationError
+from rest_framework.exceptions import NotAuthenticated
 from rest_framework import status
 from .error_response import error_response
 
@@ -27,6 +28,7 @@ def handle_exceptions(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
+        print('inside wrapper function')
         try:
             return func(*args, **kwargs)
 
@@ -78,6 +80,13 @@ def handle_exceptions(func):
                 message="Permission denied",
                 errors={"detail": str(e)},
                 status_code=status.HTTP_403_FORBIDDEN,
+            )
+
+        except NotAuthenticated as e:
+            logger.error(e, exc_info=True)
+            return error_response(
+                message="Authentication failed",
+                errors={"detail": str(e)},
             )
 
         except Exception as e:
