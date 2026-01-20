@@ -6,7 +6,7 @@ from utils.error_response import error_response
 logger = logging.getLogger(__name__)
 
 
-def flatten_errors(error_dict):
+def __flatten_errors(error_dict):
     """
     Converts {'field': ['Error message']} into 'field: Error message'
     """
@@ -21,7 +21,7 @@ def flatten_errors(error_dict):
 
 
 def __handle_client_error(response):
-    errors = flatten_errors(response.data)
+    errors = response.data
     message = "Bad Request"
     match response.status_code:
         case status.HTTP_400_BAD_REQUEST:
@@ -29,25 +29,47 @@ def __handle_client_error(response):
         case status.HTTP_401_UNAUTHORIZED:
             message = "Unauthorized"
 
-    return message, errors
+    return message, errors, response.status_code
+
+
+def __handle_server_error(response, exc):
+    message = "Internal Server Error"
+    errors = exc.errors() if hasattr(exc, "errors") else None
+    status_code = response.status_code
+
+    return message, errors, status_code
+
+
+def __unhandled_server_error(exc):
+    message = "Internal Server Error"
+    errors = exc.errors() if hasattr(exc, "errors") else None
+    status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+    return message, errors, status_code
 
 
 def custom_exception_handler(exc, context):
     response = exception_handler(exc, context)
 
     message = "An unknown error occurred."
+    errors = None
+    status_code = None
 
-    if status.is_client_error(response.status_code):
-        message, errors = __handle_client_error(response)
-        return error_response(
-            message=message,
-            errors=response.data,
-            status_code=response.status_code,
-        )
+    if response is not None:
+        if status.is_client_error(response.status_code):
+            logger.critical(f"Client Exception: {exc}", exc_info=True)
+            message, errors, status_code = __handle_client_error(response)
 
-    logger.critical(f"Unhandled Exception: {exc}", exc_info=True)
+        elif status.is_server_error(response.status_code):
+            logger.warning(f"DRF Server error: {exc}", exc_info=True)
+            message, errors, status_code = __handle_server_error(response, exc)
+
+    else:
+        logger.critical(f"Server crash: {exc}", exc_info=True)
+        message, errors, status_code = __unhandled_server_error(exc)
+
     return error_response(
         message=message,
-        errors=exc.errors() if hasattr(exc, "errors") else None,
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        errors=errors,
+        status_code=status_code,
     )
