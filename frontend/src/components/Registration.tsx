@@ -138,15 +138,6 @@ export default function Registration() {
                                 Login here
                             </button>
                         </div>
-
-                        <button
-                            type="button"
-                            className="back-button"
-                            onClick={() => navigate(AppRoutes.LOGIN)}
-                            disabled={loading}
-                        >
-                            Back to Dashboard
-                        </button>
                     </form>
                 </div>
             </div>
