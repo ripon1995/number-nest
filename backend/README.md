@@ -47,3 +47,11 @@ Backend API for Number Nest, a course management and learning platform built wit
    ```
 
 The backend API will be available at `http://localhost:8000`
+
+
+## Shell Helper
+Instead of default shell of python developer can use ipython. Just install it using pip install ipython and then run the following command
+   ```bash
+   ipython
+   ```
+

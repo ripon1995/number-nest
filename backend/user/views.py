@@ -3,13 +3,12 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from .serializers import UserRegistrationSerializer, UserLoginSerializer
 from .authentication import MongoRefreshToken
-from utils import success_response, handle_exceptions
+from utils import success_response
 
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
-    @handle_exceptions
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -24,7 +23,6 @@ class RegisterView(APIView):
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
-    @handle_exceptions
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
