@@ -4,6 +4,7 @@ import './Dashboard.css';
 import {useCourseStore} from '../store/useCourseStore';
 import Logo from './Logo';
 import CourseCard from './CourseCard';
+import {AppRoutes} from "../constants/appRoutes.ts";
 
 export default function Dashboard() {
     const {courses, loading, error, fetchCourses} = useCourseStore();
@@ -42,9 +43,9 @@ export default function Dashboard() {
                 <Logo/>
                 <button
                     className="register-button"
-                    onClick={() => navigate('/login')}
+                    onClick={() => navigate(AppRoutes.LOGIN)}
                 >
-                    Login
+                    Logout!
                 </button>
             </div>
             <h1>Available Courses</h1>

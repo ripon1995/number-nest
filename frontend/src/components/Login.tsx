@@ -5,6 +5,7 @@ import './Registration.css';
 import {useUserStore} from '../store/useUserStore';
 import Logo from './Logo';
 import {IoCallOutline, IoLockClosedOutline} from 'react-icons/io5';
+import {AppRoutes} from "../constants/appRoutes.ts";
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ export default function Login() {
 
     useEffect(() => {
         if (success) {
-            navigate('/dashboard');
+            navigate(AppRoutes.DASHBOARD);
         }
     }, [success, navigate]);
 
@@ -104,7 +105,7 @@ export default function Login() {
                             <button
                                 type="button"
                                 className="link-button"
-                                onClick={() => navigate('/register')}
+                                onClick={() => navigate(AppRoutes.REGISTER)}
                                 disabled={loading}
                             >
                                 Register here
@@ -114,7 +115,7 @@ export default function Login() {
                         <button
                             type="button"
                             className="back-button"
-                            onClick={() => navigate('/')}
+                            onClick={() => navigate(AppRoutes.LOGIN)}
                             disabled={loading}
                         >
                             Back to Dashboard
