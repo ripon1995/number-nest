@@ -28,6 +28,8 @@ def __handle_client_error(response):
             message = "Bad Request"
         case status.HTTP_401_UNAUTHORIZED:
             message = "Unauthorized"
+        case status.HTTP_403_FORBIDDEN:
+            message = "Permission Denied"
 
     return message, errors, response.status_code
 
