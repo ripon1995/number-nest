@@ -57,7 +57,7 @@ def custom_exception_handler(exc, context):
 
     if response is not None:
         if status.is_client_error(response.status_code):
-            logger.critical(f"Client Exception: {exc}", exc_info=True)
+            logger.warning(f"Client Exception: {exc}", exc_info=True)
             message, errors, status_code = __handle_client_error(response)
 
         elif status.is_server_error(response.status_code):
