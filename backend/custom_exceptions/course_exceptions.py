@@ -3,7 +3,7 @@ from rest_framework import status
 
 
 class CourseCapacityFullException(APIException):
-    status_code = status.HTTP_400_BAD_REQUEST  # Or 409 Conflict if it fits better
+    status_code = status.HTTP_400_BAD_REQUEST
     default_detail = "The course has reached its maximum capacity."
     default_code = "course_capacity_full"
 
