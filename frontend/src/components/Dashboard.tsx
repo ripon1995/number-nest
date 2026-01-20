@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import './Dashboard.css';
-import { useCourseStore } from '../store/useCourseStore';
+import {useCourseStore} from '../store/useCourseStore';
 import Logo from './Logo';
 import CourseCard from './CourseCard';
 
 export default function Dashboard() {
-    const { courses, loading, error, fetchCourses } = useCourseStore();
+    const {courses, loading, error, fetchCourses} = useCourseStore();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -39,7 +39,7 @@ export default function Dashboard() {
     return (
         <div className="dashboard">
             <div className="page-header">
-                <Logo />
+                <Logo/>
                 <button
                     className="register-button"
                     onClick={() => navigate('/login')}
@@ -54,7 +54,7 @@ export default function Dashboard() {
             ) : (
                 <div className="courses-grid">
                     {courses.map((course) => (
-                        <CourseCard key={course.id} course={course} />
+                        <CourseCard key={course.id} course={course}/>
                     ))}
                 </div>
             )}
