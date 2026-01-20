@@ -34,7 +34,9 @@ MIDDLEWARE = [
 
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "custom_exceptions.custom_exception_handler.custom_exception_handler",
-    "DEFAULT_AUTHENTICATION_CLASSES": ("user.authentication.MongoJWTAuthentication",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "user.authentication.MongoJWTAuthentication",
+    ),  # placed the auth middleware
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
