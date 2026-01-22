@@ -10,8 +10,9 @@
 
 .register-button {
   position: absolute;
-  top: 2rem;
+  top: 50%;
   right: 2rem;
+  transform: translateY(-50%);
   padding: 0.75rem 1.5rem;
   background-color: #ffffff;
   color: #667eea;
@@ -26,6 +27,6 @@
 .register-button:hover {
   background-color: transparent;
   color: #ffffff;
-  transform: translateY(-2px);
+  transform: translateY(-50%) translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
