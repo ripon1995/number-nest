@@ -1,6 +1,6 @@
 import {useNavigate} from 'react-router-dom';
 import {useParams} from 'react-router-dom'
-import {QuickActionsSection} from "./Dashboard-components/QuickActionSection.tsx";
+import {QuickActionsSection} from "./Course-components/QuickActionSection.tsx";
 import {DashboardHeader} from "./Dashboard-components/DashboardHeader.tsx";
 import {AppRoutes} from "../constants/appRoutes.ts";
 
