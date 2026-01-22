@@ -2,7 +2,7 @@ import {useNavigate} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import './CourseDetail.css';
 import {QuickActionsSection} from "./Course-components/QuickActionSection.tsx";
-import {DashboardHeader} from "./Dashboard-components/DashboardHeader.tsx";
+import {AppHeader} from "./Common-component/AppHeader.tsx";
 
 export default function CourseDetail() {
     const {id} = useParams<{ id: string }>();
@@ -16,10 +16,10 @@ export default function CourseDetail() {
 
     return (
         <div className="dashboard">
-            <DashboardHeader
+            <AppHeader
                 buttonText='Back to Dashboard'
                 onAction={handleBackButton}
-            ></DashboardHeader>
+            ></AppHeader>
             <main>
                 <h1>Course Details</h1>
                 <p>Viewing details for Course ID: {id}</p>

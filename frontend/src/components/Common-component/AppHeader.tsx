@@ -1,11 +1,11 @@
 import Logo from '../Logo';
 
-interface DashboardHeaderProps {
+interface AppHeaderProps {
     buttonText: string;
     onAction: () => void;
 }
 
-export const DashboardHeader = ({buttonText, onAction}: DashboardHeaderProps) => (
+export const AppHeader = ({buttonText, onAction}: AppHeaderProps) => (
     <header className="page-header">
         <Logo/>
         <button className="register-button" onClick={onAction}>

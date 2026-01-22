@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import './Dashboard.css';
 import {useCourseStore} from '../store/useCourseStore';
 // import sub components
-import {DashboardHeader} from "./Dashboard-components/DashboardHeader.tsx";
+import {AppHeader} from "./Common-component/AppHeader.tsx";
 import {CourseSection} from "./Dashboard-components/CourseSection.tsx";
 import {AppRoutes} from "../constants/appRoutes.ts";
 
@@ -47,10 +47,10 @@ export default function Dashboard() {
 
     return (
         <div className="dashboard">
-            <DashboardHeader
+            <AppHeader
                 buttonText="Logout!"
                 onAction={handleLogout}
-            ></DashboardHeader>
+            ></AppHeader>
             <main className="dashboard-body">
                 <CourseSection courses={courses} onCourseClick={handleCourseClick}></CourseSection>
             </main>
