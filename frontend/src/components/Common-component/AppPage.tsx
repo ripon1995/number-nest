@@ -1,5 +1,5 @@
 import './AppPage.css';
-import {ReactNode} from 'react';
+import type {ReactNode} from 'react';
 import {AppHeader} from './AppHeader';
 
 interface AppPageProps {
@@ -23,6 +23,8 @@ export const AppPage = ({
             onAction={headerOnAction}
             title={headerTitle}
         />
-        {children}
+        <div className="app-page-content">
+            {children}
+        </div>
     </div>
 );

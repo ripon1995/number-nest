@@ -4,3 +4,18 @@
     padding: 0;
     background-color: #ffffff;
 }
+
+.app-page-content {
+    padding: 2rem;
+}
+
+/* Auth pages (login/registration) handle their own padding */
+.auth-page .app-page-content {
+    padding: 0;
+}
+
+@media (max-width: 768px) {
+    .app-page-content {
+        padding: 1.5rem 1rem;
+    }
+}

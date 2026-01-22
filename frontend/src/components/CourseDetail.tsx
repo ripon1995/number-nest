@@ -24,7 +24,7 @@ export default function CourseDetail() {
             headerOnAction={handleBackButton}
             headerTitle={course?.title || 'Course Details'}
         >
-            <main>
+            <main className='detail-content'>
                 <h1>Course Details</h1>
                 {course ? (
                     <>
