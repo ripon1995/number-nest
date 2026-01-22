@@ -3,7 +3,7 @@ import CourseCard from '../CourseCard';
 
 interface CourseSectionProps {
     courses: Course[];
-    onCourseClick: (courseId: string) => void; // 1. Add the prop definition
+    onCourseClick: (course: Course) => void;
 }
 
 export const CourseSection = ({courses, onCourseClick}: CourseSectionProps) => (
@@ -16,7 +16,7 @@ export const CourseSection = ({courses, onCourseClick}: CourseSectionProps) => (
                 {courses.map((course) => (
                     <div
                         key={course.id}
-                        onClick={() => onCourseClick(course.id)} // 2. Attach the click wrapper
+                        onClick={() => onCourseClick(course)}
                         style={{cursor: 'pointer'}}
                     >
                         <CourseCard course={course}/>

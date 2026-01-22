@@ -2,6 +2,7 @@ import {useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import './Dashboard.css';
 import {useCourseStore} from '../store/useCourseStore';
+import type {Course} from '../types/course';
 // import sub components
 import {AppHeader} from "./Common-component/AppHeader.tsx";
 import {CourseSection} from "./Dashboard-components/CourseSection.tsx";
@@ -14,8 +15,8 @@ export default function Dashboard() {
         navigate(AppRoutes.LOGIN);
     }
 
-    const handleCourseClick = (id: string) => {
-        navigate(AppRoutes.getCoursePath(id));
+    const handleCourseClick = (course: Course) => {
+        navigate(AppRoutes.getCoursePath(course.id), { state: { course } });
     };
 
     useEffect(() => {
