@@ -1,104 +1,72 @@
 body {
-  background-color: #ffffff;
-  margin: 0;
-  padding: 0;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
 }
 
 .dashboard {
-  width: 100%;
-  padding: 0;
-  background-color: #ffffff;
+    width: 100%;
+    padding: 0;
+    background-color: #ffffff;
 }
 
-.page-header {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  padding: 2rem 2rem 2rem 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
+.courses-grid {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem 2rem 2rem 2rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f7fafc;
 }
 
-.register-button {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #ffffff;
-  color: #667eea;
-  border: 2px solid #ffffff;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.courses-grid::-webkit-scrollbar {
+    height: 8px;
 }
 
-.register-button:hover {
-  background-color: transparent;
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.courses-grid::-webkit-scrollbar-track {
+    background: #f7fafc;
+    border-radius: 4px;
+}
+
+.courses-grid::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+
+.courses-grid::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
 }
 
 .dashboard h1 {
-  font-size: 2.5rem;
-  color: #1a1a1a;
-  margin: 2rem 0 1.5rem 2rem;
-  font-weight: 700;
+    font-size: 2.5rem;
+    color: #1a1a1a;
+    margin: 2rem 0 1.5rem 2rem;
+    font-weight: 700;
 }
 
 .loading,
 .error,
 .no-courses {
-  text-align: center;
-  padding: 3rem;
-  font-size: 1.2rem;
-  margin: 0 2rem;
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+    margin: 0 2rem;
 }
 
 .loading {
-  color: #666;
+    color: #666;
 }
 
 .error {
-  color: #d32f2f;
-  background-color: #ffebee;
-  border-radius: 8px;
-  padding: 1rem;
+    color: #d32f2f;
+    background-color: #ffebee;
+    border-radius: 8px;
+    padding: 1rem;
 }
 
 .no-courses {
-  color: #666;
-}
-
-.courses-grid {
-  display: flex;
-  gap: 1.5rem;
-  padding: 1rem 2rem 2rem 2rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e0 #f7fafc;
-}
-
-.courses-grid::-webkit-scrollbar {
-  height: 8px;
-}
-
-.courses-grid::-webkit-scrollbar-track {
-  background: #f7fafc;
-  border-radius: 4px;
-}
-
-.courses-grid::-webkit-scrollbar-thumb {
-  background: #cbd5e0;
-  border-radius: 4px;
-}
-
-.courses-grid::-webkit-scrollbar-thumb:hover {
-  background: #a0aec0;
+    color: #666;
 }
 
 .menu-grid {
@@ -115,28 +83,24 @@ body {
 }
 
 @media (max-width: 768px) {
-  .dashboard {
-    padding: 0;
-  }
+    .dashboard {
+        padding: 0;
+    }
 
-  .page-header {
-    padding: 1.5rem 1rem 1rem 1rem;
-  }
+    .register-button {
+        top: 1.5rem;
+        right: 1rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
 
-  .register-button {
-    top: 1.5rem;
-    right: 1rem;
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
-  }
+    .dashboard h1 {
+        font-size: 2rem;
+        margin-left: 1rem;
+        margin-top: 1.5rem;
+    }
 
-  .dashboard h1 {
-    font-size: 2rem;
-    margin-left: 1rem;
-    margin-top: 1.5rem;
-  }
-
-  .courses-grid {
-    padding: 1rem;
-  }
+    .courses-grid {
+        padding: 1rem;
+    }
 }
