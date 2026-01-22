@@ -27,21 +27,21 @@
 }
 
 /* Responsive adjustment */
-    @media (max-width: 992px) {
-        .detail-layout {
-            flex-direction: column; /* Stacks them on smaller screens */
-        }
-
-        .sidebar-actions {
-            width: 100%;
-        }
+@media (max-width: 992px) {
+    .detail-layout {
+        flex-direction: column; /* Stacks them on smaller screens */
     }
 
-    /* Adjust your existing grid to be vertical in the sidebar */
-
-    .menu-grid {
-        margin-top: 0 !important;
-        display: grid;
-        grid-template-columns: 1fr; /* Forces single column */
-        gap: 15px;
+    .sidebar-actions {
+        width: 100%;
     }
+}
+
+/* Adjust your existing grid to be vertical in the sidebar */
+
+.menu-grid {
+    margin-top: 0 !important;
+    display: grid;
+    grid-template-columns: 1fr; /* Forces single column */
+    gap: 15px;
+}
