@@ -2,7 +2,7 @@
 .detail-layout {
     display: flex;
     gap: 40px; /* Space between content and sidebar */
-    align-items: stretch; /* Keeps sidebar from stretching vertically */
+    align-items: flex-start; /* Keeps sidebar from stretching vertically */
 }
 
 /* Left Side (Main Info) */
