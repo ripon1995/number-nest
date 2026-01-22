@@ -2,7 +2,7 @@
 .detail-layout {
     display: flex;
     gap: 40px; /* Space between content and sidebar */
-    align-items: flex-start; /* Keeps sidebar from stretching vertically */
+    align-items: stretch; /* Keeps sidebar from stretching vertically */
 }
 
 /* Left Side (Main Info) */
@@ -20,23 +20,28 @@
 .sidebar-actions {
     width: 300px; /* Adjust based on your menu-grid width */
     flex-shrink: 0; /* Prevents sidebar from squishing */
+    /* Vertical Divider logic */
+    border-left: 1px solid #e5d4d4;
+    padding-left: 20px; /* Space after the divider */
+    min-height: 500px;
 }
 
 /* Responsive adjustment */
-@media (max-width: 992px) {
-    .detail-layout {
-        flex-direction: column; /* Stacks them on smaller screens */
+    @media (max-width: 992px) {
+        .detail-layout {
+            flex-direction: column; /* Stacks them on smaller screens */
+        }
+
+        .sidebar-actions {
+            width: 100%;
+        }
     }
 
-    .sidebar-actions {
-        width: 100%;
-    }
-}
+    /* Adjust your existing grid to be vertical in the sidebar */
 
-/* Adjust your existing grid to be vertical in the sidebar */
-.menu-grid {
-    margin-top: 0 !important;
-    display: grid;
-    grid-template-columns: 1fr; /* Forces single column */
-    gap: 15px;
-}
+    .menu-grid {
+        margin-top: 0 !important;
+        display: grid;
+        grid-template-columns: 1fr; /* Forces single column */
+        gap: 15px;
+    }
