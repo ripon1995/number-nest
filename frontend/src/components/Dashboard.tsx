@@ -9,6 +9,9 @@ import {AppRoutes} from "../constants/appRoutes.ts";
 export default function Dashboard() {
     const {courses, loading, error, fetchCourses} = useCourseStore();
     const navigate = useNavigate();
+    const handleLogout = () => {
+        navigate(AppRoutes.LOGIN);
+    }
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -43,7 +46,7 @@ export default function Dashboard() {
                 <Logo/>
                 <button
                     className="register-button"
-                    onClick={() => navigate(AppRoutes.LOGIN)}
+                    onClick={handleLogout}
                 >
                     Logout!
                 </button>
