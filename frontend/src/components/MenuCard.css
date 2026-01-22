@@ -1,0 +1,37 @@
+.menu-card {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    gap: 15px;
+}
+
+.menu-card:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.menu-icon {
+    font-size: 2rem;
+    color: #4a90e2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-content h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.menu-content p {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: #666;
+}

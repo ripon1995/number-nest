@@ -2,4 +2,33 @@ export const AppRoutes = {
     LOGIN: '/',
     REGISTER: '/register',
     DASHBOARD: '/dashboard',
+    COURSE_DETAILS: '/course/:id',
+    COURSE_PLAN: '/course/:id/course-plan',
+    COURSE_ROUTINE: '/course/:id/course-routine',
+    ENROLLED_STUDENTS: '/course/:id/enrolled-students',
+    COURSE_ATTENDANCE: '/course/:id/course-attendance',
+    EXAM_SCHEDULE: '/course/:id/exam-schedule',
+    COURSE_PAYMENT: '/course/:id/course-payment',
+    COURSE_NOTE: '/course/:id/course-docs',
+    PROFILE: '/profile',
+    // Helper to generate the course detail URL
+    getCoursePath: (id: string) => '/course/' + id,
+    getCoursePlanPath: (id: string) => `/course/${id}/course-plan`,
+    getCourseAttendancePath: (id: string) => `/course/${id}/course-attendance`,
+    getCourseDocsPath: (id: string) => `/course/${id}/course-docs`,
+    getCourseEnrolledStudentsPath: (id: string) => `/course/${id}/enrolled-students`,
+    getCourseExamSchedulePath: (id: string) => `/course/${id}/exam-schedule`,
+    getCoursePaymentPath: (id: string) => `/course/${id}/course-payment`,
+    getCourseRoutinePath: (id: string) => `/course/${id}/course-routine`,
 } as const;
+
+
+export const PathName = {
+    PATH_COURSE_PLAN: 'course-plan',
+    PATH_COURSE_ATTENDANCE: 'course-attendance',
+    PATH_COURSE_DOCS: 'course-docs',
+    PATH_ENROLLED_STUDENTS: 'enrolled-students',
+    PATH_EXAM_SCHEDULE: 'exam-schedule',
+    PATH_COURSE_PAYMENT: 'course-payment',
+    PATH_COURSE_ROUTINE: 'course-routine',
+}

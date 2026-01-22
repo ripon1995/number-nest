@@ -1,9 +1,9 @@
 import {useState, useEffect} from 'react';
 import type {FormEvent} from 'react'
 import {useNavigate} from 'react-router-dom';
-import './Registration.css';
+import './Auth.css';
 import {useUserStore} from '../store/useUserStore';
-import Logo from './Logo';
+import {AppPage} from "./Common-component/AppPage.tsx";
 import {IoPersonOutline, IoCallOutline, IoLockClosedOutline} from 'react-icons/io5';
 import {AppRoutes} from "../constants/appRoutes.ts";
 
@@ -49,11 +49,7 @@ export default function Registration() {
     };
 
     return (
-        <div className="registration">
-            <div className="page-header">
-                <Logo/>
-            </div>
-
+        <AppPage className="auth-page">
             <div className="registration-container">
                 <div className="registration-card">
                     <h1>Create Account</h1>
@@ -141,6 +137,6 @@ export default function Registration() {
                     </form>
                 </div>
             </div>
-        </div>
+        </AppPage>
     );
 }
