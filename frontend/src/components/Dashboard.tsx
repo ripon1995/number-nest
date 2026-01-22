@@ -2,8 +2,9 @@ import {useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import './Dashboard.css';
 import {useCourseStore} from '../store/useCourseStore';
-import Logo from './Logo';
-import CourseCard from './CourseCard';
+// import sub components
+import {DashboardHeader} from "./Dashboard-components/DashboardHeader.tsx";
+import {CourseSection} from "./Dashboard-components/CourseSection.tsx";
 import {AppRoutes} from "../constants/appRoutes.ts";
 
 export default function Dashboard() {
@@ -12,6 +13,10 @@ export default function Dashboard() {
     const handleLogout = () => {
         navigate(AppRoutes.LOGIN);
     }
+
+    const handleCourseClick = (id: string) => {
+        navigate(AppRoutes.getCoursePath(id));
+    };
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -42,26 +47,11 @@ export default function Dashboard() {
 
     return (
         <div className="dashboard">
-            <div className="page-header">
-                <Logo/>
-                <button
-                    className="register-button"
-                    onClick={handleLogout}
-                >
-                    Logout!
-                </button>
-            </div>
-            <h1>Available Courses</h1>
-
-            {courses.length === 0 ? (
-                <div className="no-courses">No courses available at the moment.</div>
-            ) : (
-                <div className="courses-grid">
-                    {courses.map((course) => (
-                        <CourseCard key={course.id} course={course}/>
-                    ))}
-                </div>
-            )}
+            <DashboardHeader onLogout={handleLogout}></DashboardHeader>
+            <main className="dashboard-body">
+                <CourseSection courses={courses} onCourseClick={handleCourseClick}></CourseSection>
+            </main>
         </div>
+
     );
 }

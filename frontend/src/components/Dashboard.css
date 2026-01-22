@@ -101,6 +101,19 @@ body {
   background: #a0aec0;
 }
 
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.section-divider {
+    margin: 40px 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
 @media (max-width: 768px) {
   .dashboard {
     padding: 0;
