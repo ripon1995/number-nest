@@ -4,7 +4,7 @@ import './Dashboard.css';
 import {useCourseStore} from '../store/useCourseStore';
 import type {Course} from '../types/course';
 // import sub components
-import {AppHeader} from "./Common-component/AppHeader.tsx";
+import {AppPage} from "./Common-component/AppPage.tsx";
 import {CourseSection} from "./Dashboard-components/CourseSection.tsx";
 import {AppRoutes} from "../constants/appRoutes.ts";
 
@@ -32,30 +32,29 @@ export default function Dashboard() {
 
     if (loading) {
         return (
-            <div className="dashboard">
+            <AppPage>
                 <div className="loading">Loading courses...</div>
-            </div>
+            </AppPage>
         );
     }
 
     if (error) {
         return (
-            <div className="dashboard">
+            <AppPage>
                 <div className="error">Error: {error}</div>
-            </div>
+            </AppPage>
         );
     }
 
     return (
-        <div className="dashboard">
-            <AppHeader
-                buttonText="Logout!"
-                onAction={handleLogout}
-            ></AppHeader>
+        <AppPage
+            headerButtonText="Logout!"
+            headerOnAction={handleLogout}
+        >
             <main className="dashboard-body">
                 <CourseSection courses={courses} onCourseClick={handleCourseClick}></CourseSection>
             </main>
-        </div>
+        </AppPage>
 
     );
 }

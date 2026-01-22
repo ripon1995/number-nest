@@ -2,7 +2,7 @@ import {useNavigate, useLocation} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import './CourseDetail.css';
 import {QuickActionsSection} from "./Course-components/QuickActionSection.tsx";
-import {AppHeader} from "./Common-component/AppHeader.tsx";
+import {AppPage} from "./Common-component/AppPage.tsx";
 import type {Course} from '../types/course';
 
 export default function CourseDetail() {
@@ -19,12 +19,11 @@ export default function CourseDetail() {
     }
 
     return (
-        <div className="dashboard">
-            <AppHeader
-                buttonText='Back to Dashboard'
-                onAction={handleBackButton}
-                title={course?.title || 'Course Details'}
-            ></AppHeader>
+        <AppPage
+            headerButtonText='Back to Dashboard'
+            headerOnAction={handleBackButton}
+            headerTitle={course?.title || 'Course Details'}
+        >
             <main>
                 <h1>Course Details</h1>
                 {course ? (
@@ -42,6 +41,6 @@ export default function CourseDetail() {
                 <QuickActionsSection onNavigate={handleMenuAction}></QuickActionsSection>
             </main>
 
-        </div>
+        </AppPage>
     );
 }
