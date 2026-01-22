@@ -26,37 +26,37 @@ export const QuickActionsSection = ({onNavigate, courseId}: QuickActionsSectionP
                 title="Course Routine"
                 description="Weekly class timetable."
                 icon={<RiCalendarScheduleLine/>}
-                onClick={() => onNavigate('/course-routine')}
+                onClick={() => courseId && onNavigate(AppRoutes.getCourseRoutinePath(courseId))}
             />
             <MenuCard
                 title="Enrolled Students"
                 description="Complete list of participants."
                 icon={<PiStudentBold/>}
-                onClick={() => onNavigate('/enrolled-students')}
+                onClick={() => courseId && onNavigate(AppRoutes.getCourseEnrolledStudentsPath(courseId))}
             />
             <MenuCard
                 title="Attendance"
                 description="Track daily presence."
                 icon={<BiTask/>}
-                onClick={() => onNavigate('/course-attendance')}
+                onClick={() => courseId && onNavigate(AppRoutes.getCourseAttendancePath(courseId))}
             />
             <MenuCard
                 title="Exam Schedule"
                 description="Upcoming test dates."
                 icon={<TfiWrite/>}
-                onClick={() => onNavigate('/exam-schedule')}
+                onClick={() => courseId && onNavigate(AppRoutes.getCourseExamSchedulePath(courseId))}
             />
             <MenuCard
                 title="Payment"
                 description="Collected payment."
                 icon={<RiMoneyDollarCircleLine/>}
-                onClick={() => onNavigate('/course-payment')}
+                onClick={() => courseId && onNavigate(AppRoutes.getCoursePaymentPath(courseId))}
             />
             <MenuCard
                 title="Books & Docs"
                 description="Important notes."
                 icon={<LiaBookSolid/>}
-                onClick={() => onNavigate('/course-notes')}
+                onClick={() => courseId && onNavigate(AppRoutes.getCourseDocsPath(courseId))}
             />
         </div>
     </section>

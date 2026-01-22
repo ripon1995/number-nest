@@ -8,6 +8,12 @@ import CourseDetail from "./components/CourseDetail.tsx";
 import Profile from "./components/Profile.tsx";
 import {CoursePlanView} from "./components/Course-components/CoursePlanView.tsx";
 import {CourseInfoView} from "./components/Course-components/CourseInfoView.tsx";
+import {CourseAttendanceView} from "./components/Course-components/CourseAttendanceView.tsx";
+import {CourseDocsView} from "./components/Course-components/CourseDocsView.tsx";
+import {CourseEnrolledStudentsView} from "./components/Course-components/CourseEnrolledStudentsView.tsx";
+import {CourseExamScheduleView} from "./components/Course-components/CourseExamScheduleView.tsx";
+import {CoursePaymentView} from "./components/Course-components/CoursePaymentView.tsx";
+import {CourseRoutineView} from "./components/Course-components/CourseRoutineView.tsx";
 
 function App() {
     return (
@@ -19,7 +25,12 @@ function App() {
                 <Route path={AppRoutes.COURSE_DETAILS} element={<CourseDetail/>}>
                     <Route index element={<CourseInfoView/>}/>
                     <Route path={PathName.PATH_COURSE_PLAN} element={<CoursePlanView/>}/>
-                    {/*<Route path="enrolled-students" element={<StudentsView/>}/>*/}
+                    <Route path={PathName.PATH_COURSE_ATTENDANCE} element={<CourseAttendanceView/>}/>
+                    <Route path={PathName.PATH_COURSE_DOCS} element={<CourseDocsView/>}/>
+                    <Route path={PathName.PATH_ENROLLED_STUDENTS} element={<CourseEnrolledStudentsView/>}/>
+                    <Route path={PathName.PATH_EXAM_SCHEDULE} element={<CourseExamScheduleView/>}/>
+                    <Route path={PathName.PATH_COURSE_PAYMENT} element={<CoursePaymentView/>}/>
+                    <Route path={PathName.PATH_COURSE_ROUTINE} element={<CourseRoutineView/>}/>
                 </Route>
                 <Route path={AppRoutes.PROFILE} element={<Profile/>}/>
             </Routes>
