@@ -47,7 +47,10 @@ export default function Dashboard() {
 
     return (
         <div className="dashboard">
-            <DashboardHeader onLogout={handleLogout}></DashboardHeader>
+            <DashboardHeader
+                buttonText="Logout!"
+                onAction={handleLogout}
+            ></DashboardHeader>
             <main className="dashboard-body">
                 <CourseSection courses={courses} onCourseClick={handleCourseClick}></CourseSection>
             </main>

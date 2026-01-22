@@ -1,14 +1,15 @@
 import Logo from '../Logo';
 
 interface DashboardHeaderProps {
-    onLogout: () => void;
+    buttonText: string;
+    onAction: () => void;
 }
 
-export const DashboardHeader = ({onLogout}: DashboardHeaderProps) => (
+export const DashboardHeader = ({buttonText, onAction}: DashboardHeaderProps) => (
     <header className="page-header">
         <Logo/>
-        <button className="register-button" onClick={onLogout}>
-            Logout!
+        <button className="register-button" onClick={onAction}>
+            {buttonText}
         </button>
     </header>
 );

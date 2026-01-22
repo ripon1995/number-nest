@@ -1,0 +1,44 @@
+.course-detail-page {
+  width: 100%;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Match the padding of your .page-header */
+.detail-header {
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.back-button {
+  padding: 0.5rem 1rem;
+  background: white;
+  border: none;
+  border-radius: 6px;
+  color: #667eea;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* This is the key part to match your Dashboard h1 and grids */
+.detail-content {
+  padding: 2rem; /* Matches the 2rem padding in your .courses-grid and .page-header */
+}
+
+.detail-content h1 {
+  font-size: 2.5rem;
+  color: #1a1a1a;
+  margin: 0 0 1.5rem 0; /* Note: We use 0 margin-left because the parent has 2rem padding */
+  font-weight: 700;
+}
+
+/* Responsive adjustments to match your media query */
+@media (max-width: 768px) {
+  .detail-header, .detail-content {
+    padding: 1.5rem 1rem;
+  }
+  
+  .detail-content h1 {
+    font-size: 2rem;
+  }
+}
