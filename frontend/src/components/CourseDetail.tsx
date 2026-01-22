@@ -1,5 +1,5 @@
-import {useNavigate, useLocation} from 'react-router-dom';
-import {useParams} from 'react-router-dom';
+import {useState} from 'react';
+import {useNavigate, useLocation, useParams} from 'react-router-dom';
 import './CourseDetail.css';
 import {QuickActionsSection} from "./Course-components/QuickActionSection.tsx";
 import {AppPage} from "./Common-component/AppPage.tsx";
@@ -10,13 +10,43 @@ export default function CourseDetail() {
     const navigate = useNavigate();
     const location = useLocation();
     const course = location.state?.course as Course | undefined;
+    const [activeView, setActiveView] = useState<'details' | string>('details');
 
-    const handleMenuAction = (route: string) => {
-        navigate(route);
+
+    const handleMenuAction = (view: string) => {
+        setActiveView(view);
     }
     const handleBackButton = () => {
         navigate(-1);
     }
+
+    const renderLeftContent = () => {
+        switch (activeView) {
+            case 'course-plan':
+                return <div><h2>Course Plan</h2>{/* Add Course Plan Component here */}</div>;
+            case 'enrolled-students':
+                return <div><h2>Enrolled Students</h2>{/* Add Students Table here */}</div>;
+            case 'details':
+            default:
+                return (
+                    <>
+                        <h1>Course Details</h1>
+                        {course ? (
+                            <div className="course-info">
+                                <p><strong>Title:</strong> {course.title}</p>
+                                <p><strong>Description:</strong> {course.description}</p>
+                                <p><strong>Batch Days:</strong> {course.batch_days}</p>
+                                <p><strong>Batch Time:</strong> {course.batch_time}</p>
+                                <p><strong>Capacity:</strong> {course.capacity}</p>
+                                <p><strong>Course Fee:</strong> {course.course_fee}</p>
+                            </div>
+                        ) : (
+                            <p>Viewing details for Course ID: {id}</p>
+                        )}
+                    </>
+                );
+        }
+    };
 
     return (
         <AppPage
@@ -25,26 +55,14 @@ export default function CourseDetail() {
             headerTitle={course?.title || 'Course Details'}
         >
             <main className='detail-content'>
-                {/* Wrap content in a layout container */}
+
                 <div className="detail-layout">
                     <section className="info-section">
-                        <h1>Course Details</h1>
-                        {course ? (
-                            <>
-                                <p><strong>Title:</strong> {course.title}</p>
-                                <p><strong>Description:</strong> {course.description}</p>
-                                <p><strong>Batch Days:</strong> {course.batch_days}</p>
-                                <p><strong>Batch Time:</strong> {course.batch_time}</p>
-                                <p><strong>Capacity:</strong> {course.capacity}</p>
-                                <p><strong>Course Fee:</strong> {course.course_fee}</p>
-                            </>
-                        ) : (
-                            <p>Viewing details for Course ID: {id}</p>
-                        )}
+                        {renderLeftContent()}
                     </section>
 
                     <aside className="sidebar-actions">
-                        <QuickActionsSection onNavigate={handleMenuAction}/>
+                        <QuickActionsSection onSelectView={handleMenuAction}/>
                     </aside>
                 </div>
             </main>
