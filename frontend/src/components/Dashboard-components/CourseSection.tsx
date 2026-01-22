@@ -16,8 +16,8 @@ export const CourseSection = ({courses, onCourseClick}: CourseSectionProps) => (
                 {courses.map((course) => (
                     <div
                         key={course.id}
+                        className="course-card-wrapper"
                         onClick={() => onCourseClick(course)}
-                        style={{cursor: 'pointer'}}
                     >
                         <CourseCard course={course}/>
                     </div>
