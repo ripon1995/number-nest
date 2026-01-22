@@ -1,5 +1,6 @@
 import {IoPersonOutline, IoSettingsOutline, IoHelpCircleOutline} from 'react-icons/io5';
 import MenuCard from '../MenuCard';
+import {AppRoutes} from '../../constants/appRoutes';
 
 interface QuickActionsSectionProps {
     onNavigate: (path: string) => void;
@@ -14,7 +15,7 @@ export const QuickActionsSection = ({onNavigate}: QuickActionsSectionProps) => (
                 title="My Profile"
                 description="View and edit your personal details"
                 icon={<IoPersonOutline/>}
-                onClick={() => onNavigate('/profile')}
+                onClick={() => onNavigate(AppRoutes.PROFILE)}
             />
             <MenuCard
                 title="Settings"

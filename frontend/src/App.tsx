@@ -5,6 +5,7 @@ import Registration from './components/Registration';
 import Login from './components/Login';
 import {AppRoutes} from "./constants/appRoutes.ts";
 import CourseDetail from "./components/CourseDetail.tsx";
+import Profile from "./components/Profile.tsx";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                 <Route path={AppRoutes.REGISTER} element={<Registration/>}/>
                 <Route path={AppRoutes.DASHBOARD} element={<Dashboard/>}/>
                 <Route path={AppRoutes.COURSE_DETAILS} element={<CourseDetail/>}/>
+                <Route path={AppRoutes.PROFILE} element={<Profile/>}/>
             </Routes>
         </BrowserRouter>
     );

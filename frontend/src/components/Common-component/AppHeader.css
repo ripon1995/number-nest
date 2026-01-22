@@ -8,6 +8,17 @@
   position: relative;
 }
 
+.header-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+}
+
 .register-button {
   position: absolute;
   top: 50%;
