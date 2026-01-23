@@ -22,3 +22,17 @@ class CourseRetrieveSerializer(serializers.DocumentSerializer):
         model = Course
         fields = "__all__"
         read_only_fields = ['id']
+
+
+class CourseUpdateSerializer(serializers.DocumentSerializer):
+    class Meta:
+        model = Course
+        fields = '__all__'
+        read_only_fields = ['id']
+
+    @staticmethod
+    def validate_capacity(capacity):
+        if capacity <= 0:
+            raise CourseCapacityFullException()
+
+        return capacity
