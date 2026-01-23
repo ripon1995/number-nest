@@ -1,9 +1,9 @@
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 from utils import success_response
 from utils.permissions import IsAdmin, IsAdminOrIsStudent
 from .models import Course
-from .serializers import CourseCreateSerializer
+from .serializers import CourseCreateSerializer, CourseRetrieveSerializer
 
 
 class CourseListCreateAPIView(ListCreateAPIView):
@@ -22,3 +22,19 @@ class CourseListCreateAPIView(ListCreateAPIView):
         return success_response(
             data=serializer.data, message="Course list fetched successfully"
         )
+
+
+class CourseRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    lookup_field = 'id'
+    queryset = Course.objects.all()
+    serializer_class = CourseRetrieveSerializer
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [IsAdminOrIsStudent()]
+        return [IsAdmin()]
+
+    def retrieve(self, request, *args, **kwargs):
+        course = self.get_object()
+        serializer = self.serializer_class(course)
+        return success_response(data=serializer.data, message="Course fetched successfully")
