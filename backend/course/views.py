@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 from utils import success_response
@@ -19,8 +20,16 @@ class CourseListCreateAPIView(ListCreateAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.queryset
         serializer = self.get_serializer(queryset, many=True)
+        return success_response(data=serializer.data, message="Course list fetched successfully")
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return success_response(
-            data=serializer.data, message="Course list fetched successfully"
+            data=serializer.data,
+            message="Course created successfully",
+            status_code=status.HTTP_201_CREATED
         )
 
 
