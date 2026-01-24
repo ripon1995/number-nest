@@ -16,7 +16,11 @@ export default function Dashboard() {
     }
 
     const handleCourseClick = (course: Course) => {
-        navigate(AppRoutes.getCoursePath(course.id), { state: { course } });
+        navigate(AppRoutes.getCoursePath(course.id), {state: {course}});
+    };
+
+    const handleoAddCourseClick = () => {
+        console.log("Working");
     };
 
     useEffect(() => {
@@ -52,7 +56,8 @@ export default function Dashboard() {
             headerOnAction={handleLogout}
         >
             <main className="dashboard-body">
-                <CourseSection courses={courses} onCourseClick={handleCourseClick}></CourseSection>
+                <CourseSection courses={courses} onCourseClick={handleCourseClick}
+                               onAddCourseClick={handleoAddCourseClick}></CourseSection>
             </main>
         </AppPage>
 

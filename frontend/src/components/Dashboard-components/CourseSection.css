@@ -1,0 +1,32 @@
+/* Container for h1 and button */
+.section-header {
+    display: flex;
+    justify-content: space-between; /* Pushes H1 to left, Button to right */
+    align-items: center;           /* Vertically centers them */
+    margin-bottom: 1.5rem;
+    padding: 10px 0;               /* Gives it some breathing room */
+}
+
+.section-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #333;
+    background-color: transparent;  /* Remove that red */
+    /* Ensure it doesn't push the button out */
+    flex-grow: 1;
+}
+
+.add-course-btn {
+    flex-shrink: 0;                /* Prevents the button from squishing */
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.add-course-btn:hover {
+    background-color: #0056b3;
+}
