@@ -11,9 +11,16 @@ import {
     MenuItem,
     FormControl,
     InputLabel,
-    Box
+    Box,
+    InputAdornment
 } from '@mui/material';
 import {textFieldStyles, primaryButtonStyles, secondaryButtonStyles} from '../../utils/formStyles';
+import {LiaBookSolid} from 'react-icons/lia';
+import {MdOutlineDescription} from 'react-icons/md';
+import {RiCalendarScheduleLine} from 'react-icons/ri';
+import {PiStudentBold} from 'react-icons/pi';
+import {RiMoneyDollarCircleLine} from 'react-icons/ri';
+import {IoTimeOutline} from 'react-icons/io5';
 
 interface AddCourseDialogProps {
     open: boolean;
@@ -77,6 +84,15 @@ export default function AddCourseDialog({open, onClose, onSave}: AddCourseDialog
                         required
                         fullWidth
                         sx={textFieldStyles}
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <LiaBookSolid/>
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
                     />
                     <TextField
                         label="Description"
@@ -87,6 +103,15 @@ export default function AddCourseDialog({open, onClose, onSave}: AddCourseDialog
                         rows={3}
                         fullWidth
                         sx={textFieldStyles}
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start" sx={{alignItems: 'flex-start', mt: 1.5}}>
+                                        <MdOutlineDescription/>
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
                     />
                     <FormControl fullWidth required sx={textFieldStyles}>
                         <InputLabel>Batch Days</InputLabel>
@@ -95,6 +120,11 @@ export default function AddCourseDialog({open, onClose, onSave}: AddCourseDialog
                             value={form.batch_days}
                             label="Batch Days"
                             onChange={(e) => handleChange(e as any)}
+                            startAdornment={
+                                <InputAdornment position="start">
+                                    <RiCalendarScheduleLine/>
+                                </InputAdornment>
+                            }
                         >
                             <MenuItem value="Mon-Wed-Fri">SAT-MON-WED</MenuItem>
                             <MenuItem value="Tue-Thu-Sat">SUN-TUE-THU</MenuItem>
@@ -112,7 +142,14 @@ export default function AddCourseDialog({open, onClose, onSave}: AddCourseDialog
                         required
                         sx={textFieldStyles}
                         slotProps={{
-                            inputLabel: {shrink: true}
+                            inputLabel: {shrink: true},
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <IoTimeOutline/>
+                                    </InputAdornment>
+                                ),
+                            },
                         }}
                     />
 
@@ -126,7 +163,14 @@ export default function AddCourseDialog({open, onClose, onSave}: AddCourseDialog
                         required
                         sx={textFieldStyles}
                         slotProps={{
-                            htmlInput: {min: 0, step: 1}
+                            htmlInput: {min: 0, step: 1},
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <PiStudentBold/>
+                                    </InputAdornment>
+                                ),
+                            },
                         }}
                     />
 
@@ -140,7 +184,14 @@ export default function AddCourseDialog({open, onClose, onSave}: AddCourseDialog
                         required
                         sx={textFieldStyles}
                         slotProps={{
-                            htmlInput: {min: 0, step: 1}
+                            htmlInput: {min: 0, step: 1},
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <RiMoneyDollarCircleLine/>
+                                    </InputAdornment>
+                                ),
+                            },
                         }}
                     />
                 </Box>
