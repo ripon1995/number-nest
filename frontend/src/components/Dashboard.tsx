@@ -16,9 +16,6 @@ export default function Dashboard() {
     const handleClose = () => setOpen(false);
     const {courses, loading, error, fetchCourses} = useCourseStore();
     const navigate = useNavigate();
-    const handleLogout = () => {
-        navigate(AppRoutes.LOGIN);
-    }
 
     const handleCourseClick = (course: Course) => {
         navigate(AppRoutes.getCoursePath(course.id), {state: {course}});
@@ -50,7 +47,7 @@ export default function Dashboard() {
 
     if (loading) {
         return (
-            <AppPage>
+            <AppPage showProfileAvatar>
                 <Box className="loading" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh'}}>
                     <CircularProgress />
                 </Box>
@@ -60,7 +57,7 @@ export default function Dashboard() {
 
     if (error) {
         return (
-            <AppPage>
+            <AppPage showProfileAvatar>
                 <Box className="error" sx={{p: 2}}>
                     <Alert severity="error">Error: {error}</Alert>
                 </Box>
@@ -69,10 +66,7 @@ export default function Dashboard() {
     }
 
     return (
-        <AppPage
-            headerButtonText="Logout!"
-            headerOnAction={handleLogout}
-        >
+        <AppPage showProfileAvatar>
             <main className="dashboard-body">
                 <CourseSection courses={courses} onCourseClick={handleCourseClick}
                                onAddCourseClick={handleOpen}></CourseSection>

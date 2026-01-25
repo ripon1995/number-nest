@@ -2,14 +2,16 @@ import './AppHeader.css';
 import Logo from '../Logo';
 import {AppBar, Toolbar, Button, Typography} from '@mui/material';
 import {colors} from '../../utils/colors';
+import {ProfileAvatar} from './ProfileAvatar';
 
 interface AppHeaderProps {
     buttonText?: string;
     onAction?: () => void;
     title?: string;
+    showProfileAvatar?: boolean;
 }
 
-export const AppHeader = ({buttonText, onAction, title}: AppHeaderProps) => (
+export const AppHeader = ({buttonText, onAction, title, showProfileAvatar}: AppHeaderProps) => (
     <AppBar
         position="static"
         className="app-header"
@@ -53,8 +55,10 @@ export const AppHeader = ({buttonText, onAction, title}: AppHeaderProps) => (
                 </Typography>
             )}
 
-            <div style={{minWidth: '150px', display: 'flex', justifyContent: 'flex-end'}}>
-                {buttonText && (
+            <div style={{minWidth: '150px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
+                {showProfileAvatar ? (
+                    <ProfileAvatar />
+                ) : buttonText ? (
                     <Button
                         variant="contained"
                         className="register-button"
@@ -78,7 +82,7 @@ export const AppHeader = ({buttonText, onAction, title}: AppHeaderProps) => (
                     >
                         {buttonText}
                     </Button>
-                )}
+                ) : null}
             </div>
         </Toolbar>
     </AppBar>

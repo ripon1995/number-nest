@@ -15,6 +15,15 @@ export interface User {
   is_admin: boolean;
 }
 
+export interface Profile {
+  name: string;
+  phone_number: string;
+  father_name: string | null;
+  college: string | null;
+  father_contact: string | null;
+  email: string | null;
+}
+
 export interface LoginResponse {
   access: string;
   refresh: string;

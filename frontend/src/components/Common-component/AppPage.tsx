@@ -8,6 +8,7 @@ interface AppPageProps {
     headerButtonText?: string;
     headerOnAction?: () => void;
     headerTitle?: string;
+    showProfileAvatar?: boolean;
 }
 
 export const AppPage = ({
@@ -15,13 +16,15 @@ export const AppPage = ({
     className = '',
     headerButtonText,
     headerOnAction,
-    headerTitle
+    headerTitle,
+    showProfileAvatar
 }: AppPageProps) => (
     <div className={`app-page ${className}`.trim()}>
         <AppHeader
             buttonText={headerButtonText}
             onAction={headerOnAction}
             title={headerTitle}
+            showProfileAvatar={showProfileAvatar}
         />
         <div className="app-page-content">
             {children}

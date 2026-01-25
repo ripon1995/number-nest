@@ -2,11 +2,12 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import axiosInstance from '../utils/axiosConfig';
-import type { RegistrationData, LoginData, User, LoginResponse, ApiResponse } from '../types/user';
-import { registrationApi, loginApi } from '../constants/endpoints';
+import type { RegistrationData, LoginData, User, Profile, LoginResponse, ApiResponse } from '../types/user';
+import { registrationApi, loginApi, profileApi } from '../constants/endpoints';
 
 interface UserState {
   user: User | null;
+  profile: Profile | null;
   accessToken: string | null;
   refreshToken: string | null;
   loading: boolean;
@@ -14,6 +15,7 @@ interface UserState {
   success: boolean;
   registerUser: (data: RegistrationData, signal?: AbortSignal) => Promise<void>;
   loginUser: (data: LoginData, signal?: AbortSignal) => Promise<void>;
+  fetchUserProfile: (signal?: AbortSignal) => Promise<void>;
   logout: () => void;
   resetState: () => void;
 }
@@ -32,6 +34,7 @@ const getUserFromStorage = (): User | null => {
 
 export const useUserStore = create<UserState>((set) => ({
   user: getUserFromStorage(),
+  profile: null,
   accessToken: localStorage.getItem('access_token'),
   refreshToken: localStorage.getItem('refresh_token'),
   loading: false,
@@ -145,12 +148,52 @@ export const useUserStore = create<UserState>((set) => ({
     }
   },
 
+  fetchUserProfile: async (signal?: AbortSignal) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await axiosInstance.get<ApiResponse<Profile>>(
+        profileApi,
+        {
+          signal,
+        }
+      );
+
+      const result = response.data;
+
+      if (!result.success) {
+        const errorMessage = result.message || 'Failed to fetch profile';
+        throw new Error(errorMessage);
+      }
+
+      if (result.data) {
+        set({
+          profile: result.data,
+          loading: false,
+        });
+      }
+    } catch (err) {
+      if (axios.isCancel(err)) {
+        set({ loading: false });
+        return;
+      }
+
+      if (axios.isAxiosError(err)) {
+        const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch profile';
+        set({ error: errorMessage, loading: false });
+        return;
+      }
+
+      set({ error: (err as Error).message, loading: false });
+    }
+  },
+
   logout: () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('user');
     set({
       user: null,
+      profile: null,
       accessToken: null,
       refreshToken: null,
       error: null,
