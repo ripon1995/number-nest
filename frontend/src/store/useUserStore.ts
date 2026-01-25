@@ -1,5 +1,6 @@
 // src/store/useUserStore.ts
 import { create } from 'zustand';
+import axios from 'axios';
 import type { RegistrationData, LoginData, User, LoginResponse, ApiResponse } from '../types/user';
 import { registrationApi, loginApi } from '../constants/endpoints';
 
@@ -39,18 +40,20 @@ export const useUserStore = create<UserState>((set) => ({
   registerUser: async (data: RegistrationData, signal?: AbortSignal) => {
     set({ loading: true, error: null, success: false });
     try {
-      const response = await fetch(registrationApi, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-        signal,
-      });
+      const response = await axios.post<ApiResponse>(
+        registrationApi,
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          signal,
+        }
+      );
 
-      const result: ApiResponse = await response.json();
+      const result = response.data;
 
-      if (!response.ok || !result.success) {
+      if (!result.success) {
         const errorMessage = result.message || 'Registration failed';
         const errors = result.errors;
 
@@ -68,10 +71,18 @@ export const useUserStore = create<UserState>((set) => ({
       set({ success: true, loading: false });
     } catch (err) {
       // If request was aborted, reset loading state
-      if ((err as Error).name === 'AbortError') {
+      if (axios.isCancel(err)) {
         set({ loading: false });
         return;
       }
+
+      // Handle axios errors
+      if (axios.isAxiosError(err)) {
+        const errorMessage = err.response?.data?.message || err.message || 'Registration failed';
+        set({ error: errorMessage, loading: false, success: false });
+        return;
+      }
+
       set({ error: (err as Error).message, loading: false, success: false });
     }
   },
@@ -79,18 +90,20 @@ export const useUserStore = create<UserState>((set) => ({
   loginUser: async (data: LoginData, signal?: AbortSignal) => {
     set({ loading: true, error: null, success: false });
     try {
-      const response = await fetch(loginApi, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-        signal,
-      });
+      const response = await axios.post<ApiResponse<LoginResponse>>(
+        loginApi,
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          signal,
+        }
+      );
 
-      const result: ApiResponse<LoginResponse> = await response.json();
+      const result = response.data;
 
-      if (!response.ok || !result.success) {
+      if (!result.success) {
         const errorMessage = result.message || 'Login failed';
         const errors = result.errors;
 
@@ -121,10 +134,18 @@ export const useUserStore = create<UserState>((set) => ({
       }
     } catch (err) {
       // If request was aborted, reset loading state
-      if ((err as Error).name === 'AbortError') {
+      if (axios.isCancel(err)) {
         set({ loading: false });
         return;
       }
+
+      // Handle axios errors
+      if (axios.isAxiosError(err)) {
+        const errorMessage = err.response?.data?.message || err.message || 'Login failed';
+        set({ error: errorMessage, loading: false, success: false });
+        return;
+      }
+
       set({ error: (err as Error).message, loading: false, success: false });
     }
   },

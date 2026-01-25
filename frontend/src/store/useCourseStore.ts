@@ -20,23 +20,28 @@ export const useCourseStore = create<CourseState>((set) => ({
         const token = useUserStore.getState().accessToken;
         set({loading: true, error: null});
         try {
-            const response = await fetch(courseListCreateApi, {
-                method: 'GET',
+            const response = await axios.get(courseListCreateApi, {
                 headers: {
                     'Content-Type': 'application/json',
-                    // 2. Add the Authorization header
                     ...(token && {'Authorization': `Bearer ${token}`}),
-                }, signal
+                },
+                signal
             });
-            if (!response.ok) throw new Error('Failed to fetch courses');
-            const result = await response.json();
-            set({courses: result.data, loading: false});
+            set({courses: response.data.data, loading: false});
         } catch (err) {
             // If request was aborted, reset loading state
-            if ((err as Error).name === 'AbortError') {
+            if (axios.isCancel(err)) {
                 set({loading: false});
                 return;
             }
+
+            // Handle axios errors
+            if (axios.isAxiosError(err)) {
+                const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch courses';
+                set({error: errorMessage, loading: false});
+                return;
+            }
+
             set({error: (err as Error).message, loading: false});
         }
     },
