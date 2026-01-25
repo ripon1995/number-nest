@@ -64,4 +64,6 @@ class StudentProfileRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.delete()
-        return success_response(message="Student Profile Deleted")
+        return success_response(
+            message="Student Profile Deleted", status_code=status.HTTP_204_NO_CONTENT
+        )
