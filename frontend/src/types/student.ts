@@ -5,4 +5,6 @@ export interface Student {
     father_contact: string;
     college: string;
     email: string;
+    course_id?: string;
+    course_name?: string;
 }

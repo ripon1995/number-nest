@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useNavigate, useParams, useLocation} from 'react-router-dom';
 import {useStudentStore} from '../store/useStudentStore';
+import {useCourseStore} from '../store/useCourseStore';
 import {AppPage} from './Common-component/AppPage';
 import {IoPersonOutline, IoCallOutline, IoSchoolOutline, IoMailOutline} from 'react-icons/io5';
 import {
@@ -12,7 +13,11 @@ import {
     InputAdornment,
     CircularProgress,
     Button,
-    Grid
+    Grid,
+    MenuItem,
+    Select,
+    FormControl,
+    InputLabel
 } from '@mui/material';
 import {textFieldStyles, primaryButtonStyles} from '../utils/formStyles';
 import {AppRoutes} from '../constants/appRoutes';
@@ -24,11 +29,14 @@ export default function StudentDetail() {
     const navigate = useNavigate();
     const students = useStudentStore((state) => state.students);
     const fetchStudents = useStudentStore((state) => state.fetchStudents);
+    const courses = useCourseStore((state) => state.courses);
+    const fetchCourses = useCourseStore((state) => state.fetchCourses);
 
     const [mode, setMode] = useState<'view' | 'edit'>(location.state?.mode || 'view');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [student, setStudent] = useState<Student | null>(null);
+    const [selectedCourseId, setSelectedCourseId] = useState<string>('');
     const [formData, setFormData] = useState<Student>({
         name: '',
         phone_number: '',
@@ -39,25 +47,40 @@ export default function StudentDetail() {
     });
 
     useEffect(() => {
-        const loadStudent = async () => {
-            if (students.length === 0) {
-                await fetchStudents();
-            }
+        const abortController = new AbortController();
 
-            const foundStudent = students.find(s => s.phone_number === id);
+        const loadData = async () => {
+            try {
+                // Always fetch courses to ensure we have latest data
+                await fetchCourses(abortController.signal);
 
-            if (foundStudent) {
-                setStudent(foundStudent);
-                setFormData(foundStudent);
-                setError(null);
-            } else {
-                setError('Student not found');
+                if (students.length === 0) {
+                    await fetchStudents();
+                }
+
+                const foundStudent = students.find(s => s.phone_number === id);
+
+                if (foundStudent) {
+                    setStudent(foundStudent);
+                    setFormData(foundStudent);
+                    setError(null);
+                } else {
+                    setError('Student not found');
+                }
+            } catch (err) {
+                // Handle errors
+                console.error('Error loading data:', err);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         };
 
-        loadStudent();
-    }, [id, students, fetchStudents]);
+        loadData();
+
+        return () => {
+            abortController.abort();
+        };
+    }, [id, fetchStudents, fetchCourses]);
 
     const handleBack = () => {
         navigate(AppRoutes.STUDENTS);
@@ -95,6 +118,27 @@ export default function StudentDetail() {
         }
     };
 
+    const handleEnrollStudent = () => {
+        // TODO: Implement enrollment API call
+        if (!selectedCourseId) {
+            alert('Please select a course');
+            return;
+        }
+
+        const selectedCourse = courses.find(c => c.id === selectedCourseId);
+        console.log('Enrolling student:', {
+            studentId: student?.phone_number,
+            courseId: selectedCourseId,
+            courseName: selectedCourse?.title
+        });
+
+        // TODO: Call enrollment API
+        // enrollStudentToCourse(student?.phone_number, selectedCourseId)
+
+        alert(`TODO: Enroll ${student?.name} to ${selectedCourse?.title}`);
+        setSelectedCourseId('');
+    };
+
     if (loading) {
         return (
             <AppPage
@@ -130,7 +174,7 @@ export default function StudentDetail() {
             headerOnAction={handleBack}
         >
             <Box className="registration-container">
-                <Paper className="registration-card" elevation={3} sx={{padding: 4, borderRadius: 2, maxWidth: 800, margin: '0 auto'}}>
+                <Paper className="registration-card" elevation={3} sx={{padding: 4, borderRadius: 2, maxWidth: 900, margin: '0 auto'}}>
                     <Typography variant="h4" component="h1" gutterBottom align="center">
                         {mode === 'view' ? 'Student Information' : 'Edit Student Information'}
                     </Typography>
@@ -313,6 +357,48 @@ export default function StudentDetail() {
                         )}
                     </Box>
                 </Paper>
+
+                {mode === 'edit' && (
+                    <Paper elevation={3} sx={{padding: 4, borderRadius: 2, maxWidth: 900, margin: '20px auto', minHeight: 400, display: 'flex', flexDirection: 'column'}}>
+                        <Typography variant="h5" component="h2" gutterBottom>
+                            Enroll this student?
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{mb: 3}}>
+                            Select a course to enroll the student
+                        </Typography>
+
+                        <Box sx={{flex: 1, display: 'flex', flexDirection: 'column'}}>
+                            <FormControl fullWidth sx={{...textFieldStyles, mb: 2}}>
+                                <InputLabel id="course-select-label">Select Course</InputLabel>
+                                <Select
+                                    labelId="course-select-label"
+                                    id="course-select"
+                                    value={selectedCourseId}
+                                    label="Select Course"
+                                    onChange={(e) => setSelectedCourseId(e.target.value)}
+                                >
+                                    {courses.map((course) => (
+                                        <MenuItem key={course.id} value={course.id}>
+                                            {course.title}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+
+                            <Box sx={{mt: 'auto', pt: 3}}>
+                                <Button
+                                    variant="contained"
+                                    fullWidth
+                                    onClick={handleEnrollStudent}
+                                    sx={primaryButtonStyles}
+                                    disabled={!selectedCourseId}
+                                >
+                                    Enroll
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Paper>
+                )}
             </Box>
         </AppPage>
     );

@@ -14,7 +14,9 @@ const DUMMY_STUDENTS: Student[] = [
         father_name: "Robert Johnson",
         father_contact: "+1-555-0201",
         college: "Engineering Tech",
-        email: "alex.j@example.com"
+        email: "alex.j@example.com",
+        course_id: "1",
+        course_name: "Mathematics Fundamentals"
     },
     {
         name: "Maria Garcia",
@@ -22,7 +24,9 @@ const DUMMY_STUDENTS: Student[] = [
         father_name: "Carlos Garcia",
         father_contact: "+1-555-0202",
         college: "Arts & Science University",
-        email: "m.garcia@testmail.org"
+        email: "m.garcia@testmail.org",
+        course_id: "2",
+        course_name: "Physics Advanced"
     },
     {
         name: "Liam Smith",
@@ -38,7 +42,9 @@ const DUMMY_STUDENTS: Student[] = [
         father_name: "Rajesh Sharma",
         father_contact: "+1-555-0204",
         college: "Global Institute of Design",
-        email: "priya.s@sharma-legal.com"
+        email: "priya.s@sharma-legal.com",
+        course_id: "1",
+        course_name: "Mathematics Fundamentals"
     },
     {
         name: "Chen Wei",
@@ -54,7 +60,9 @@ const DUMMY_STUDENTS: Student[] = [
         father_name: "Thomas Miller",
         father_contact: "+1-555-0206",
         college: "Central Valley College",
-        email: "sarah.m@webmail.com"
+        email: "sarah.m@webmail.com",
+        course_id: "3",
+        course_name: "Chemistry Basics"
     },
     {
         name: "Omar Haddad",
@@ -70,7 +78,9 @@ const DUMMY_STUDENTS: Student[] = [
         father_name: "Marco Rossi",
         father_contact: "+1-555-0208",
         college: "International Business School",
-        email: "e.rossi@business.it"
+        email: "e.rossi@business.it",
+        course_id: "2",
+        course_name: "Physics Advanced"
     },
     {
         name: "James Wilson",
@@ -86,7 +96,9 @@ const DUMMY_STUDENTS: Student[] = [
         father_name: "Zubair Khan",
         father_contact: "+1-555-0210",
         college: "City Medical College",
-        email: "aisha.khan@health.org"
+        email: "aisha.khan@health.org",
+        course_id: "1",
+        course_name: "Mathematics Fundamentals"
     }
 ];
 

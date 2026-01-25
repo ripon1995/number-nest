@@ -1,6 +1,6 @@
 import {
     Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, Paper, IconButton, Stack, Tooltip
+    TableHead, TableRow, Paper, IconButton, Stack, Tooltip, Chip
 } from '@mui/material';
 import {
     Delete as DeleteIcon
@@ -16,6 +16,34 @@ export default function StudentListComponent({students}: { students: Student[] }
         }
     };
 
+    const getCourseChip = (courseName?: string) => {
+        if (!courseName) {
+            return (
+                <Chip
+                    label="N/A"
+                    size="small"
+                    sx={{
+                        backgroundColor: '#ffebee',
+                        color: '#c62828',
+                        fontWeight: 500
+                    }}
+                />
+            );
+        }
+
+        return (
+            <Chip
+                label={courseName}
+                size="small"
+                sx={{
+                    backgroundColor: '#e8f5e9',
+                    color: '#2e7d32',
+                    fontWeight: 500
+                }}
+            />
+        );
+    };
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 650}} aria-label="simple table">
@@ -28,6 +56,7 @@ export default function StudentListComponent({students}: { students: Student[] }
                         <TableCell align="left">Father's Name</TableCell>
                         <TableCell align="left">Father's Contact</TableCell>
                         <TableCell align="left">Email</TableCell>
+                        <TableCell align="left">Course</TableCell>
                         <TableCell align="center">Actions</TableCell>
                     </TableRow>
                 </TableHead>
@@ -44,6 +73,7 @@ export default function StudentListComponent({students}: { students: Student[] }
                             <TableCell align="left">{row.father_name}</TableCell>
                             <TableCell align="left">{row.father_contact}</TableCell>
                             <TableCell align="left">{row.email}</TableCell>
+                            <TableCell align="left">{getCourseChip(row.course_name)}</TableCell>
                             <TableCell align="center">
                                 <Stack direction="row" spacing={1} justifyContent="center">
                                     <Tooltip title="Remove from course">
