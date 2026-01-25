@@ -1,12 +1,16 @@
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-
+from rest_framework.generics import (
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+    UpdateAPIView,
+)
 from student.models import StudentProfile
 from utils import success_response
 from utils.permissions import IsAdminOrIsStudent, IsAdmin
 from .serializers import (
     StudentProfileListCreateSerializer,
     StudentProfileRetrieveUpdateDestroySerializer,
+    CourseEnrollmentSerializer,
 )
 
 
@@ -67,3 +71,20 @@ class StudentProfileRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return success_response(
             message="Student Profile Deleted", status_code=status.HTTP_204_NO_CONTENT
         )
+
+
+class CourseEnrollmentView(UpdateAPIView):
+    permission_classes = [IsAdmin]
+    serializer_class = CourseEnrollmentSerializer
+
+    def put(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        profile = serializer.validated_data["student_profile_id"]
+        course = serializer.validated_data["course_id"]
+
+        profile.course = course
+        profile.save()
+
+        return success_response(message="Course Enrollment Updated")

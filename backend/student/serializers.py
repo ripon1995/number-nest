@@ -1,5 +1,7 @@
 from rest_framework_mongoengine import serializers
 import re
+from rest_framework import serializers as drf_serializers
+from course.models import Course
 from .models import StudentProfile
 from custom_exceptions import StudentProfileException
 
@@ -81,3 +83,37 @@ class StudentProfileRetrieveUpdateDestroySerializer(serializers.DocumentSerializ
         if StudentProfile.objects.filter(email=email).first():
             raise StudentProfileException("Email already exists")
         return email
+
+
+class CourseEnrollmentSerializer(drf_serializers.Serializer):
+    student_profile_id = drf_serializers.CharField(required=True, write_only=True)
+    course_id = drf_serializers.CharField(required=True, write_only=True)
+
+    def validate_student_profile_id(self, value):
+        profile = StudentProfile.objects.filter(id=value).first()
+        if not profile:
+            raise StudentProfileException("Student profile does not exist")
+        return profile
+
+    def validate_course_id(self, value):
+        course = Course.objects.filter(id=value).first()
+        if not course:
+            raise StudentProfileException("Invalid course ID format")
+
+        return course  # return instance
+
+    def validate(self, attrs):
+        profile = attrs["student_profile_id"]
+        course = attrs["course_id"]
+
+        # Business rules
+        if profile.course is not None:
+            raise StudentProfileException("Student is already enrolled in a course")
+
+        enrolled_count = StudentProfile.objects.filter(course=course).count()
+        if enrolled_count >= course.capacity:
+            raise StudentProfileException(
+                f"Course '{course.title}' is at full capacity ({course.capacity} / {course.capacity})"
+            )
+
+        return attrs
