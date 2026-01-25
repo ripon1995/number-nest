@@ -11,8 +11,8 @@ class User(Document):
     is_admin = BooleanField(default=False)
 
     meta = {
-        'collection': 'users',  # Name of the collection in MongoDB
-        'indexes': ['phone_number']
+        "collection": "users",  # Name of the collection in MongoDB
+        "indexes": ["phone_number"],
     }
 
     def set_password(self, raw_password):
@@ -24,15 +24,3 @@ class User(Document):
 
     def get_username(self):
         return self.phone_number
-
-
-class UserProfile(Document):
-    user = ReferenceField(User)
-    father_name = StringField(required=True, max_length=100)
-    college = StringField(required=True, max_length=100)
-    father_contact = StringField()
-    email = EmailField()
-
-    meta = {
-        'collection': 'user_profiles',
-    }

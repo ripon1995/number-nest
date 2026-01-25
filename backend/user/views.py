@@ -4,11 +4,11 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 
 from utils.permissions import IsAdminOrIsStudent
-from .models import UserProfile
+
+# from .models import UserProfile
 from .serializers import (
     UserRegistrationSerializer,
     UserLoginSerializer,
-    UserProfileSerializer,
 )
 from .authentication import MongoRefreshToken
 from utils import success_response
@@ -55,14 +55,14 @@ class LoginView(APIView):
         )
 
 
-class ProfileView(RetrieveAPIView):
-    permission_classes = [IsAdminOrIsStudent]
-    serializer_class = UserProfileSerializer
-
-    def retrieve(self, request, *args, **kwargs):
-        user = request.user
-        profile = UserProfile.objects.filter(user=user).first()
-        serializer = self.get_serializer(user, context={"profile": profile})
-        return success_response(
-            message="Profile retrieved successfully", data=serializer.data
-        )
+# class ProfileView(RetrieveAPIView):
+#     permission_classes = [IsAdminOrIsStudent]
+#     serializer_class = UserProfileSerializer
+#
+#     def retrieve(self, request, *args, **kwargs):
+#         user = request.user
+#         profile = UserProfile.objects.filter(user=user).first()
+#         serializer = self.get_serializer(user, context={"profile": profile})
+#         return success_response(
+#             message="Profile retrieved successfully", data=serializer.data
+#         )

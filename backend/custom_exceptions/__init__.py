@@ -1,1 +1,2 @@
 from .course_exceptions import InvalidBatchTimeException, CourseCapacityFullException
+from .student_profile_exceptions import StudentProfileException
