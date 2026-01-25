@@ -1,6 +1,12 @@
-from rest_framework.serializers import Serializer, ValidationError, CharField
+from rest_framework.serializers import (
+    Serializer,
+    ValidationError,
+    CharField,
+    SerializerMethodField,
+)
 from django.contrib.auth.hashers import check_password
-from .models import User
+from .models import User, UserProfile
+from rest_framework_mongoengine import serializers as mongo_serializers
 
 
 class UserRegistrationSerializer(Serializer):
@@ -37,3 +43,37 @@ class UserLoginSerializer(Serializer):
 
         data["user"] = user
         return data
+
+
+class UserProfileSerializer(mongo_serializers.DocumentSerializer):
+    father_name = SerializerMethodField(allow_null=True)
+    college = SerializerMethodField(allow_null=True)
+    father_contact = SerializerMethodField(allow_null=True)
+    email = SerializerMethodField(allow_null=True)
+
+    class Meta:
+        model = User
+        fields = [
+            "name",
+            "phone_number",
+            "father_name",
+            "college",
+            "father_contact",
+            "email",
+        ]
+
+    def get_father_name(self, obj):
+        profile = self.context.get("profile")
+        return profile.father_name if profile else None
+
+    def get_college(self, obj):
+        profile = self.context.get("profile")
+        return profile.college if profile else None
+
+    def get_father_contact(self, obj):
+        profile = self.context.get("profile")
+        return profile.father_contact if profile else None
+
+    def get_email(self, obj):
+        profile = self.context.get("profile")
+        return profile.email if profile else None
