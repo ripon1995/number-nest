@@ -1,8 +1,8 @@
 import axios from 'axios';
+import axiosInstance from '../utils/axiosConfig';
 import {create} from 'zustand';
 import type {Course} from '../types/course';
 import {courseListCreateApi} from '../constants/endpoints';
-import {useUserStore} from './useUserStore';
 
 interface CourseState {
     courses: Course[];
@@ -17,14 +17,9 @@ export const useCourseStore = create<CourseState>((set) => ({
     loading: false,
     error: null,
     fetchCourses: async (signal?: AbortSignal) => {
-        const token = useUserStore.getState().accessToken;
         set({loading: true, error: null});
         try {
-            const response = await axios.get(courseListCreateApi, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...(token && {'Authorization': `Bearer ${token}`}),
-                },
+            const response = await axiosInstance.get(courseListCreateApi, {
                 signal
             });
             set({courses: response.data.data, loading: false});
@@ -47,21 +42,13 @@ export const useCourseStore = create<CourseState>((set) => ({
     },
 
     addCourse: async (courseData: Omit<Course, 'id'>): Promise<Course | null> => {
-        const token = useUserStore.getState().accessToken;
-
         // Optional: set a creating flag if you want UI feedback
         set({loading: true, error: null});
 
         try {
-            const response = await axios.post(
+            const response = await axiosInstance.post(
                 courseListCreateApi,
-                courseData,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...(token && {Authorization: `Bearer ${token}`}),
-                    },
-                }
+                courseData
             );
 
             const newCourse = response.data; // assuming backend returns the created object

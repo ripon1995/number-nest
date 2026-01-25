@@ -1,6 +1,7 @@
 // src/store/useUserStore.ts
 import { create } from 'zustand';
 import axios from 'axios';
+import axiosInstance from '../utils/axiosConfig';
 import type { RegistrationData, LoginData, User, LoginResponse, ApiResponse } from '../types/user';
 import { registrationApi, loginApi } from '../constants/endpoints';
 
@@ -40,13 +41,10 @@ export const useUserStore = create<UserState>((set) => ({
   registerUser: async (data: RegistrationData, signal?: AbortSignal) => {
     set({ loading: true, error: null, success: false });
     try {
-      const response = await axios.post<ApiResponse>(
+      const response = await axiosInstance.post<ApiResponse>(
         registrationApi,
         data,
         {
-          headers: {
-            'Content-Type': 'application/json',
-          },
           signal,
         }
       );
@@ -90,13 +88,10 @@ export const useUserStore = create<UserState>((set) => ({
   loginUser: async (data: LoginData, signal?: AbortSignal) => {
     set({ loading: true, error: null, success: false });
     try {
-      const response = await axios.post<ApiResponse<LoginResponse>>(
+      const response = await axiosInstance.post<ApiResponse<LoginResponse>>(
         loginApi,
         data,
         {
-          headers: {
-            'Content-Type': 'application/json',
-          },
           signal,
         }
       );
