@@ -50,19 +50,7 @@ class LoginView(APIView):
                     "name": user.name,
                     "phone_number": user.phone_number,
                     "is_admin": user.is_admin,
+                    "profile_created": user.profile_created,
                 },
             },
         )
-
-
-# class ProfileView(RetrieveAPIView):
-#     permission_classes = [IsAdminOrIsStudent]
-#     serializer_class = UserProfileSerializer
-#
-#     def retrieve(self, request, *args, **kwargs):
-#         user = request.user
-#         profile = UserProfile.objects.filter(user=user).first()
-#         serializer = self.get_serializer(user, context={"profile": profile})
-#         return success_response(
-#             message="Profile retrieved successfully", data=serializer.data
-#         )

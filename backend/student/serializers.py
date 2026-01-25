@@ -6,12 +6,19 @@ from .models import StudentProfile
 from custom_exceptions import StudentProfileException
 
 
-class StudentProfileListCreateSerializer(serializers.DocumentSerializer):
+class StudentProfileListSerializer(serializers.DocumentSerializer):
+    class Meta:
+        model = StudentProfile
+        fields = '__all__'
+        read_only_fields = ['user', 'course']
+        depth = 1
+
+
+class StudentProfileCreateSerializer(serializers.DocumentSerializer):
     class Meta:
         model = StudentProfile
         fields = "__all__"
         read_only_fields = ["user", "course"]
-        depth = 1
 
     @staticmethod
     def validate_father_name(father_name):

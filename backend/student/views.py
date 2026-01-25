@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import (
+from rest_framework_mongoengine.generics import (
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
     UpdateAPIView,
@@ -8,7 +8,8 @@ from student.models import StudentProfile
 from utils import success_response
 from utils.permissions import IsAdminOrIsStudent, IsAdmin
 from .serializers import (
-    StudentProfileListCreateSerializer,
+    StudentProfileListSerializer,
+    StudentProfileCreateSerializer,
     StudentProfileRetrieveUpdateDestroySerializer,
     CourseEnrollmentSerializer,
 )
@@ -17,17 +18,20 @@ from .serializers import (
 class StudentListCreateAPIView(ListCreateAPIView):
     permission_classes = [IsAdminOrIsStudent]
     queryset = StudentProfile.objects.all()
-    serializer_class = StudentProfileListCreateSerializer
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = StudentProfileListSerializer(queryset, many=True)
         return success_response(data=serializer.data, message="Student Profile List")
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = StudentProfileCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(user=request.user)
+        user = self.request.user
+        if not user.profile_created:
+            user.profile_created = True
+            user.save(update_fields=['profile_created'])
         return success_response(
             data=serializer.data,
             message="Student Profile Created",
@@ -41,9 +45,9 @@ class StudentProfileRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     def get_permissions(self):
         if (
-            self.request.method == "PUT"
-            or self.request.method == "GET"
-            or self.request.method == "PATCH"
+                self.request.method == "PUT"
+                or self.request.method == "GET"
+                or self.request.method == "PATCH"
         ):
             return [IsAdminOrIsStudent()]
 
@@ -51,7 +55,7 @@ class StudentProfileRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = StudentProfileListCreateSerializer(instance)
+        serializer = StudentProfileListSerializer(instance)
         return success_response(
             data=serializer.data, message="Student Profile Retrieved"
         )

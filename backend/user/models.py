@@ -9,6 +9,7 @@ class User(Document):
     phone_number = StringField(required=True, unique=True)
     password = StringField(required=True)
     is_admin = BooleanField(default=False)
+    profile_created = BooleanField(default=False)
 
     meta = {
         "collection": "users",  # Name of the collection in MongoDB
