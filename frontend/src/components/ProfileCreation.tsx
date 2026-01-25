@@ -1,47 +1,54 @@
 import {useState, useEffect} from 'react';
-import type {FormEvent} from 'react'
+import type {FormEvent} from 'react';
 import {useNavigate} from 'react-router-dom';
 import './Auth.css';
 import {useUserStore} from '../store/useUserStore';
 import {AppPage} from "./Common-component/AppPage.tsx";
-import {IoPersonOutline, IoCallOutline, IoLockClosedOutline} from 'react-icons/io5';
+import {IoPersonOutline, IoCallOutline, IoSchoolOutline, IoMailOutline} from 'react-icons/io5';
 import {AppRoutes} from "../constants/appRoutes.ts";
 import {TextField, Button, Alert, Box, Typography, Paper, InputAdornment} from '@mui/material';
 import {textFieldStyles, primaryButtonStyles} from '../utils/formStyles';
 
-export default function Registration() {
+export default function ProfileCreation() {
     const [formData, setFormData] = useState({
-        name: '',
-        phone_number: '',
-        password: '',
+        father_name: '',
+        father_contact: '',
+        college: '',
+        email: '',
     });
 
-    const {loading, error, success, registerUser, resetState} = useUserStore();
+    const {loading, error, createStudentProfile, resetState, user} = useUserStore();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const abortController = new AbortController();
+        // Redirect if user is admin or already has profile
+        if (user?.is_admin) {
+            navigate(AppRoutes.DASHBOARD);
+        }
 
         return () => {
-            abortController.abort();
             resetState();
         };
-    }, [resetState]);
-
-    useEffect(() => {
-        if (success) {
-            const timer = setTimeout(() => {
-                // After registration, always redirect to login
-                navigate(AppRoutes.LOGIN);
-            }, 2000);
-            return () => clearTimeout(timer);
-        }
-    }, [success, navigate]);
+    }, [user, navigate, resetState]);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         const abortController = new AbortController();
-        await registerUser(formData, abortController.signal);
+        const success = await createStudentProfile(formData, abortController.signal);
+
+        if (success) {
+            // Update user's profile_created flag in localStorage
+            const currentUser = useUserStore.getState().user;
+            if (currentUser) {
+                const updatedUser = {...currentUser, profile_created: true};
+                localStorage.setItem('user', JSON.stringify(updatedUser));
+                useUserStore.setState({user: updatedUser});
+            }
+
+            setTimeout(() => {
+                navigate(AppRoutes.DASHBOARD);
+            }, 1500);
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,12 +61,12 @@ export default function Registration() {
     return (
         <AppPage className="auth-page">
             <Box className="registration-container">
-                <Paper className="registration-card" elevation={3} sx={{padding: 4, borderRadius: 2}}>
+                <Paper className="registration-card" elevation={3} sx={{padding: 4, borderRadius: 2, maxWidth: 600, margin: '0 auto'}}>
                     <Typography variant="h4" component="h1" gutterBottom align="center">
-                        Create Account
+                        Complete Your Profile
                     </Typography>
                     <Typography variant="body1" className="registration-subtitle" align="center" color="text.secondary" sx={{mb: 3}}>
-                        Join Number Nest to start learning
+                        Please provide additional information to continue
                     </Typography>
 
                     {error && (
@@ -68,23 +75,17 @@ export default function Registration() {
                         </Alert>
                     )}
 
-                    {success && (
-                        <Alert severity="success" sx={{mb: 2}}>
-                            Registration successful! Redirecting to login...
-                        </Alert>
-                    )}
-
                     <Box component="form" onSubmit={handleSubmit} className="registration-form">
                         <TextField
                             fullWidth
                             type="text"
-                            id="name"
-                            name="name"
-                            label="Full Name"
-                            value={formData.name}
+                            id="father_name"
+                            name="father_name"
+                            label="Father's Name"
+                            value={formData.father_name}
                             onChange={handleChange}
                             required
-                            placeholder="Enter your full name"
+                            placeholder="Enter father's name"
                             disabled={loading}
                             margin="normal"
                             sx={textFieldStyles}
@@ -102,13 +103,13 @@ export default function Registration() {
                         <TextField
                             fullWidth
                             type="tel"
-                            id="phone_number"
-                            name="phone_number"
-                            label="Phone Number"
-                            value={formData.phone_number}
+                            id="father_contact"
+                            name="father_contact"
+                            label="Father's Contact"
+                            value={formData.father_contact}
                             onChange={handleChange}
                             required
-                            placeholder="Enter your phone number"
+                            placeholder="Enter father's contact number"
                             disabled={loading}
                             margin="normal"
                             sx={textFieldStyles}
@@ -125,14 +126,14 @@ export default function Registration() {
 
                         <TextField
                             fullWidth
-                            type="password"
-                            id="password"
-                            name="password"
-                            label="Password"
-                            value={formData.password}
+                            type="text"
+                            id="college"
+                            name="college"
+                            label="College"
+                            value={formData.college}
                             onChange={handleChange}
                             required
-                            placeholder="Create a password"
+                            placeholder="Enter your college name"
                             disabled={loading}
                             margin="normal"
                             sx={textFieldStyles}
@@ -140,7 +141,31 @@ export default function Registration() {
                                 input: {
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            <IoLockClosedOutline />
+                                            <IoSchoolOutline />
+                                        </InputAdornment>
+                                    ),
+                                },
+                            }}
+                        />
+
+                        <TextField
+                            fullWidth
+                            type="email"
+                            id="email"
+                            name="email"
+                            label="Email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            placeholder="Enter your email address"
+                            disabled={loading}
+                            margin="normal"
+                            sx={textFieldStyles}
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <IoMailOutline />
                                         </InputAdornment>
                                     ),
                                 },
@@ -154,22 +179,8 @@ export default function Registration() {
                             disabled={loading}
                             sx={{...primaryButtonStyles, mt: 3, mb: 2}}
                         >
-                            {loading ? 'Creating Account...' : 'Register'}
+                            {loading ? 'Creating Profile...' : 'Complete Profile'}
                         </Button>
-
-                        <Box className="auth-switch" sx={{textAlign: 'center', mt: 2}}>
-                            <Typography variant="body2" component="span">
-                                Already have an account?
-                            </Typography>
-                            <Button
-                                variant="text"
-                                onClick={() => navigate(AppRoutes.LOGIN)}
-                                disabled={loading}
-                                sx={{ml: 1}}
-                            >
-                                Login here
-                            </Button>
-                        </Box>
                     </Box>
                 </Paper>
             </Box>

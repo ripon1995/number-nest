@@ -6,6 +6,7 @@ import Login from './components/Login';
 import {AppRoutes, PathName} from "./constants/appRoutes.ts";
 import CourseDetail from "./components/CourseDetail.tsx";
 import Profile from "./components/Profile.tsx";
+import ProfileCreation from "./components/ProfileCreation.tsx";
 import Students from "./components/Students.tsx";
 import StudentDetail from "./components/StudentDetail.tsx";
 import About from "./components/About.tsx";
@@ -37,6 +38,7 @@ function App() {
                     <Route path={PathName.PATH_COURSE_ROUTINE} element={<CourseRoutineView/>}/>
                 </Route>
                 <Route path={AppRoutes.PROFILE} element={<Profile/>}/>
+                <Route path={AppRoutes.PROFILE_CREATE} element={<ProfileCreation/>}/>
                 <Route path={AppRoutes.STUDENTS} element={<Students/>}/>
                 <Route path={AppRoutes.STUDENT_DETAIL} element={<StudentDetail/>}/>
                 <Route path={AppRoutes.ABOUT} element={<About/>}/>

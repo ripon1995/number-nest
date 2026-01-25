@@ -10,9 +10,31 @@ export interface LoginData {
 }
 
 export interface User {
+  id?: string;
   name: string;
   phone_number: string;
   is_admin: boolean;
+  profile_created?: boolean;
+  password?: string;
+}
+
+export interface StudentProfile {
+  id: string;
+  father_name: string;
+  father_contact: string;
+  college: string;
+  email: string;
+  user: User;
+  course?: {
+    id: string;
+    title: string;
+    description: string;
+    batch_days: string;
+    batch_time: string;
+    capacity: number;
+    course_fee: string;
+    speech: string;
+  };
 }
 
 export interface Profile {
@@ -22,6 +44,13 @@ export interface Profile {
   college: string | null;
   father_contact: string | null;
   email: string | null;
+}
+
+export interface StudentProfileCreateData {
+  father_name: string;
+  father_contact: string;
+  college: string;
+  email: string;
 }
 
 export interface LoginResponse {

@@ -1,27 +1,48 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useUserStore} from '../store/useUserStore';
 import {AppPage} from './Common-component/AppPage';
 import {IoPersonOutline, IoCallOutline, IoSchoolOutline, IoMailOutline} from 'react-icons/io5';
-import {TextField, Alert, Box, Typography, Paper, InputAdornment, CircularProgress, Button, Grid} from '@mui/material';
+import {TextField, Alert, Box, Typography, Paper, InputAdornment, CircularProgress, Button, Grid, Chip} from '@mui/material';
 import {textFieldStyles, primaryButtonStyles} from '../utils/formStyles';
 import {AppRoutes} from '../constants/appRoutes';
 
 export default function Profile() {
-    const {profile, loading, error, fetchUserProfile, logout} = useUserStore();
+    const {studentProfile, loading, error, fetchStudentProfile, updateStudentProfile, logout, user} = useUserStore();
     const navigate = useNavigate();
+    const [editMode, setEditMode] = useState(false);
+    const [formData, setFormData] = useState({
+        father_name: '',
+        father_contact: '',
+        college: '',
+        email: '',
+    });
 
     useEffect(() => {
         const abortController = new AbortController();
 
-        fetchUserProfile(abortController.signal).catch(() => {
-            // Error is handled in the store
-        });
+        // Fetch profile using user's id
+        if (user?.id) {
+            fetchStudentProfile(user.id, abortController.signal).catch(() => {
+                // Error is handled in the store
+            });
+        }
 
         return () => {
             abortController.abort();
         };
-    }, [fetchUserProfile]);
+    }, [fetchStudentProfile, user?.id]);
+
+    useEffect(() => {
+        if (studentProfile) {
+            setFormData({
+                father_name: studentProfile.father_name,
+                father_contact: studentProfile.father_contact,
+                college: studentProfile.college,
+                email: studentProfile.email,
+            });
+        }
+    }, [studentProfile]);
 
     const handleBackToDashboard = () => {
         navigate(AppRoutes.DASHBOARD);
@@ -30,6 +51,40 @@ export default function Profile() {
     const handleLogout = () => {
         logout();
         navigate(AppRoutes.LOGIN);
+    };
+
+    const handleEdit = () => {
+        setEditMode(true);
+    };
+
+    const handleCancel = () => {
+        setEditMode(false);
+        if (studentProfile) {
+            setFormData({
+                father_name: studentProfile.father_name,
+                father_contact: studentProfile.father_contact,
+                college: studentProfile.college,
+                email: studentProfile.email,
+            });
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleSave = async () => {
+        if (studentProfile?.id) {
+            const success = await updateStudentProfile(studentProfile.id, formData);
+            if (success) {
+                setEditMode(false);
+                alert('Profile updated successfully!');
+            }
+        }
     };
 
     if (loading) {
@@ -75,7 +130,7 @@ export default function Profile() {
                                     id="name"
                                     name="name"
                                     label="Name"
-                                    value={profile?.name || ''}
+                                    value={studentProfile?.user?.name || user?.name || ''}
                                     disabled
                                     margin="normal"
                                     sx={textFieldStyles}
@@ -97,7 +152,7 @@ export default function Profile() {
                                     id="phone_number"
                                     name="phone_number"
                                     label="Phone Number"
-                                    value={profile?.phone_number || ''}
+                                    value={studentProfile?.user?.phone_number || user?.phone_number || ''}
                                     disabled
                                     margin="normal"
                                     sx={textFieldStyles}
@@ -119,8 +174,9 @@ export default function Profile() {
                                     id="father_name"
                                     name="father_name"
                                     label="Father's Name"
-                                    value={profile?.father_name || 'Not provided'}
-                                    disabled
+                                    value={formData.father_name}
+                                    onChange={handleChange}
+                                    disabled={!editMode}
                                     margin="normal"
                                     sx={textFieldStyles}
                                     slotProps={{
@@ -141,8 +197,9 @@ export default function Profile() {
                                     id="father_contact"
                                     name="father_contact"
                                     label="Father's Contact"
-                                    value={profile?.father_contact || 'Not provided'}
-                                    disabled
+                                    value={formData.father_contact}
+                                    onChange={handleChange}
+                                    disabled={!editMode}
                                     margin="normal"
                                     sx={textFieldStyles}
                                     slotProps={{
@@ -163,8 +220,9 @@ export default function Profile() {
                                     id="email"
                                     name="email"
                                     label="Email"
-                                    value={profile?.email || 'Not provided'}
-                                    disabled
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    disabled={!editMode}
                                     margin="normal"
                                     sx={textFieldStyles}
                                     slotProps={{
@@ -185,8 +243,9 @@ export default function Profile() {
                                     id="college"
                                     name="college"
                                     label="College"
-                                    value={profile?.college || 'Not provided'}
-                                    disabled
+                                    value={formData.college}
+                                    onChange={handleChange}
+                                    disabled={!editMode}
                                     margin="normal"
                                     sx={textFieldStyles}
                                     slotProps={{
@@ -201,16 +260,64 @@ export default function Profile() {
                                 />
                             </Grid>
 
+                            {studentProfile?.course && (
+                                <Grid item xs={12}>
+                                    <Box sx={{mt: 2}}>
+                                        <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                                            Enrolled Course
+                                        </Typography>
+                                        <Chip
+                                            label={studentProfile.course.title}
+                                            color="primary"
+                                            sx={{fontSize: '1rem', py: 2.5}}
+                                        />
+                                    </Box>
+                                </Grid>
+                            )}
+
                         </Grid>
 
-                        <Button
-                            variant="contained"
-                            fullWidth
-                            onClick={handleLogout}
-                            sx={{...primaryButtonStyles, mt: 4}}
-                        >
-                            Logout
-                        </Button>
+                        {!editMode ? (
+                            <>
+                                <Button
+                                    variant="contained"
+                                    fullWidth
+                                    onClick={handleEdit}
+                                    sx={{...primaryButtonStyles, mt: 4, mb: 2}}
+                                >
+                                    Edit Profile
+                                </Button>
+                                <Button
+                                    variant="outlined"
+                                    fullWidth
+                                    onClick={handleLogout}
+                                >
+                                    Logout
+                                </Button>
+                            </>
+                        ) : (
+                            <Grid container spacing={2} sx={{mt: 2}}>
+                                <Grid item xs={12} sm={6}>
+                                    <Button
+                                        variant="outlined"
+                                        fullWidth
+                                        onClick={handleCancel}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <Button
+                                        variant="contained"
+                                        fullWidth
+                                        onClick={handleSave}
+                                        sx={primaryButtonStyles}
+                                    >
+                                        Save Changes
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        )}
                     </Box>
                 </Paper>
             </Box>

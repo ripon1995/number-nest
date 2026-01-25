@@ -29,7 +29,14 @@ export default function Login() {
 
     useEffect(() => {
         if (success) {
-            navigate(AppRoutes.DASHBOARD);
+            const {user} = useUserStore.getState();
+
+            // If user is not admin and profile is not created, redirect to profile creation
+            if (user && !user.is_admin && user.profile_created === false) {
+                navigate(AppRoutes.PROFILE_CREATE);
+            } else {
+                navigate(AppRoutes.DASHBOARD);
+            }
         }
     }, [success, navigate]);
 

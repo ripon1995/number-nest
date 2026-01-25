@@ -9,10 +9,12 @@ import {CourseSection} from "./Dashboard-components/CourseSection.tsx";
 import {NavigationCards} from "./Dashboard-components/NavigationCards.tsx";
 import {AppRoutes} from "../constants/appRoutes.ts";
 import AddCourseDialog from "./Dashboard-components/DashboardAddCourseDialogue.tsx";
-import {CircularProgress, Alert, Box} from '@mui/material';
+import {CircularProgress, Alert, Box, Snackbar} from '@mui/material';
 
 export default function Dashboard() {
     const [open, setOpen] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const {courses, loading, error, fetchCourses} = useCourseStore();
@@ -27,11 +29,27 @@ export default function Dashboard() {
 
         if (created) {
             console.log('Course created:', created);
-            // Optional: show success toast, close dialog automatically, etc.
+            handleClose();
+            // Refresh the course list
+            await fetchCourses();
         } else {
-            // Error already handled in store → you can show toast here if you want
-            alert('Failed to create course. Please try again.');
+            // Get the error message from the store
+            const errorMsg = useCourseStore.getState().error || 'Failed to create course. Please try again.';
+
+            // Close the dialog
+            handleClose();
+
+            // Show error in snackbar
+            setSnackbarMessage(errorMsg);
+            setSnackbarOpen(true);
+
+            // Refresh the dashboard
+            await fetchCourses();
         }
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
     };
 
     useEffect(() => {
@@ -79,6 +97,17 @@ export default function Dashboard() {
                     onClose={handleClose}
                     onSave={handleSaveCourse}
                 />
+
+                <Snackbar
+                    open={snackbarOpen}
+                    autoHideDuration={3000}
+                    onClose={handleSnackbarClose}
+                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                >
+                    <Alert onClose={handleSnackbarClose} severity="error" sx={{width: '100%'}}>
+                        {snackbarMessage}
+                    </Alert>
+                </Snackbar>
             </main>
         </AppPage>
 

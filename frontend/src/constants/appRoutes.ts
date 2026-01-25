@@ -11,6 +11,7 @@ export const AppRoutes = {
     COURSE_PAYMENT: '/course/:id/course-payment',
     COURSE_NOTE: '/course/:id/course-docs',
     PROFILE: '/profile',
+    PROFILE_CREATE: '/profile/create',
     STUDENTS: '/students',
     STUDENT_DETAIL: '/students/:id',
     ABOUT: '/about',
