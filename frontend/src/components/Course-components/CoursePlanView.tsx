@@ -1,10 +1,16 @@
 // CoursePlanView.tsx
+import {Paper, Typography} from '@mui/material';
+
 export const CoursePlanView = () => {
     return (
-        <div className="view-container">
-            <h1>Course Plan</h1>
-            <p>This content is loaded dynamically via the Route!</p>
+        <Paper className="view-container" elevation={2} sx={{p: 3}}>
+            <Typography variant="h4" component="h1" gutterBottom>
+                Course Plan
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+                This content is loaded dynamically via the Route!
+            </Typography>
             {/* Your plan logic, tables, or lists go here */}
-        </div>
+        </Paper>
     );
 };

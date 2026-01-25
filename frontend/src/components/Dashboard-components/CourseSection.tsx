@@ -3,6 +3,7 @@ import CourseCard from '../CourseCard';
 import './CourseSection.css';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
+import {colors} from '../../utils/colors';
 
 interface CourseSectionProps {
     courses: Course[];
@@ -14,7 +15,20 @@ export const CourseSection = ({courses, onCourseClick, onAddCourseClick}: Course
     <section>
         <div className="section-header">
             <h1>Available Courses</h1>
-            <Button variant="outlined" startIcon={<AddIcon/>} onClick={onAddCourseClick}>
+            <Button
+                variant="contained"
+                startIcon={<AddIcon/>}
+                onClick={onAddCourseClick}
+                sx={{
+                    background: colors.primary.gradient,
+                    color: colors.neutral.white,
+                    fontWeight: 600,
+                    '&:hover': {
+                        background: colors.primary.gradient,
+                        opacity: 0.9,
+                    },
+                }}
+            >
                 Add Course
             </Button>
 

@@ -6,6 +6,8 @@ import {useUserStore} from '../store/useUserStore';
 import {AppPage} from "./Common-component/AppPage.tsx";
 import {IoCallOutline, IoLockClosedOutline} from 'react-icons/io5';
 import {AppRoutes} from "../constants/appRoutes.ts";
+import {TextField, Button, Alert, Box, Typography, Paper, InputAdornment} from '@mui/material';
+import {textFieldStyles, primaryButtonStyles} from '../utils/formStyles';
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -46,70 +48,96 @@ export default function Login() {
 
     return (
         <AppPage className="auth-page">
-            <div className="registration-container">
-                <div className="registration-card">
-                    <h1>Welcome Back</h1>
-                    <p className="registration-subtitle">Login to continue learning</p>
+            <Box className="registration-container">
+                <Paper className="registration-card" elevation={3} sx={{padding: 4, borderRadius: 2}}>
+                    <Typography variant="h4" component="h1" gutterBottom align="center">
+                        Welcome Back
+                    </Typography>
+                    <Typography variant="body1" className="registration-subtitle" align="center" color="text.secondary" sx={{mb: 3}}>
+                        Login to continue learning
+                    </Typography>
 
                     {error && (
-                        <div className="error-message">
+                        <Alert severity="error" sx={{mb: 2}}>
                             {error}
-                        </div>
+                        </Alert>
                     )}
 
-                    <form onSubmit={handleSubmit} className="registration-form">
-                        <div className="form-group">
-                            <label htmlFor="phone_number">
-                                <IoCallOutline className="input-icon"/>
-                                Phone Number
-                            </label>
-                            <input
-                                type="tel"
-                                id="phone_number"
-                                name="phone_number"
-                                value={formData.phone_number}
-                                onChange={handleChange}
-                                required
-                                placeholder="Enter your phone number"
-                                disabled={loading}
-                            />
-                        </div>
+                    <Box component="form" onSubmit={handleSubmit} className="registration-form">
+                        <TextField
+                            fullWidth
+                            type="tel"
+                            id="phone_number"
+                            name="phone_number"
+                            label="Phone Number"
+                            value={formData.phone_number}
+                            onChange={handleChange}
+                            required
+                            placeholder="Enter your phone number"
+                            disabled={loading}
+                            margin="normal"
+                            sx={textFieldStyles}
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <IoCallOutline />
+                                        </InputAdornment>
+                                    ),
+                                },
+                            }}
+                        />
 
-                        <div className="form-group">
-                            <label htmlFor="password">
-                                <IoLockClosedOutline className="input-icon"/>
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                                placeholder="Enter your password"
-                                disabled={loading}
-                            />
-                        </div>
+                        <TextField
+                            fullWidth
+                            type="password"
+                            id="password"
+                            name="password"
+                            label="Password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                            placeholder="Enter your password"
+                            disabled={loading}
+                            margin="normal"
+                            sx={textFieldStyles}
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <IoLockClosedOutline />
+                                        </InputAdornment>
+                                    ),
+                                },
+                            }}
+                        />
 
-                        <button type="submit" className="submit-button" disabled={loading}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            fullWidth
+                            disabled={loading}
+                            sx={{...primaryButtonStyles, mt: 3, mb: 2}}
+                        >
                             {loading ? 'Logging in...' : 'Login'}
-                        </button>
+                        </Button>
 
-                        <div className="auth-switch">
-                            <p>Don't have an account?</p>
-                            <button
-                                type="button"
-                                className="link-button"
+                        <Box className="auth-switch" sx={{textAlign: 'center', mt: 2}}>
+                            <Typography variant="body2" component="span">
+                                Don't have an account?
+                            </Typography>
+                            <Button
+                                variant="text"
                                 onClick={() => navigate(AppRoutes.REGISTER)}
                                 disabled={loading}
+                                sx={{ml: 1}}
                             >
                                 Register here
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                            </Button>
+                        </Box>
+                    </Box>
+                </Paper>
+            </Box>
         </AppPage>
     );
 }

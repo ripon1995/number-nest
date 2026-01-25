@@ -8,6 +8,7 @@ import {AppPage} from "./Common-component/AppPage.tsx";
 import {CourseSection} from "./Dashboard-components/CourseSection.tsx";
 import {AppRoutes} from "../constants/appRoutes.ts";
 import AddCourseDialog from "./Dashboard-components/DashboardAddCourseDialogue.tsx";
+import {CircularProgress, Alert, Box} from '@mui/material';
 
 export default function Dashboard() {
     const [open, setOpen] = useState(false);
@@ -50,7 +51,9 @@ export default function Dashboard() {
     if (loading) {
         return (
             <AppPage>
-                <div className="loading">Loading courses...</div>
+                <Box className="loading" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh'}}>
+                    <CircularProgress />
+                </Box>
             </AppPage>
         );
     }
@@ -58,7 +61,9 @@ export default function Dashboard() {
     if (error) {
         return (
             <AppPage>
-                <div className="error">Error: {error}</div>
+                <Box className="error" sx={{p: 2}}>
+                    <Alert severity="error">Error: {error}</Alert>
+                </Box>
             </AppPage>
         );
     }

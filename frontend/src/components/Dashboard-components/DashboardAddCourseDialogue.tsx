@@ -13,6 +13,7 @@ import {
     InputLabel,
     Box
 } from '@mui/material';
+import {textFieldStyles, primaryButtonStyles, secondaryButtonStyles} from '../../utils/formStyles';
 
 interface AddCourseDialogProps {
     open: boolean;
@@ -67,7 +68,7 @@ export default function AddCourseDialog({open, onClose, onSave}: AddCourseDialog
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
             <DialogTitle>Add New Course</DialogTitle>
             <DialogContent>
-                <Box sx={{display: 'flex', flexDirection: 'column', gap: 2, mt: 1}}>
+                <Box sx={{display: 'flex', flexDirection: 'column', gap: 2, mt: 2}}>
                     <TextField
                         label="Title"
                         name="title"
@@ -75,7 +76,7 @@ export default function AddCourseDialog({open, onClose, onSave}: AddCourseDialog
                         onChange={handleChange}
                         required
                         fullWidth
-                        variant="standard"
+                        sx={textFieldStyles}
                     />
                     <TextField
                         label="Description"
@@ -85,11 +86,16 @@ export default function AddCourseDialog({open, onClose, onSave}: AddCourseDialog
                         multiline
                         rows={3}
                         fullWidth
-                        variant="standard"
+                        sx={textFieldStyles}
                     />
-                    <FormControl fullWidth variant="standard" required>
+                    <FormControl fullWidth required sx={textFieldStyles}>
                         <InputLabel>Batch Days</InputLabel>
-                        <Select name="batch_days" value={form.batch_days} label="Batch Days" onChange={handleChange}>
+                        <Select
+                            name="batch_days"
+                            value={form.batch_days}
+                            label="Batch Days"
+                            onChange={(e) => handleChange(e as any)}
+                        >
                             <MenuItem value="Mon-Wed-Fri">SAT-MON-WED</MenuItem>
                             <MenuItem value="Tue-Thu-Sat">SUN-TUE-THU</MenuItem>
                             <MenuItem value="Weekend">Weekend</MenuItem>
@@ -99,14 +105,15 @@ export default function AddCourseDialog({open, onClose, onSave}: AddCourseDialog
                     <TextField
                         label="Batch Start Date & Time"
                         name="batch_time"
-                        type="datetime-local"          // ← changed from "time"
+                        type="datetime-local"
                         value={form.batch_time || ''}
                         onChange={handleChange}
                         fullWidth
-                        variant="standard"
                         required
-                        // InputLabelProps={{shrink: true}}  // keeps label above when focused/filled
-                        // No need for slotProps here unless you want min/max dates
+                        sx={textFieldStyles}
+                        slotProps={{
+                            inputLabel: {shrink: true}
+                        }}
                     />
 
                     <TextField
@@ -116,10 +123,10 @@ export default function AddCourseDialog({open, onClose, onSave}: AddCourseDialog
                         value={form.capacity ?? ''}
                         onChange={handleChange}
                         fullWidth
-                        variant="standard"
                         required
+                        sx={textFieldStyles}
                         slotProps={{
-                            htmlInput: {min: 0, step: 1}   // ← or step: "0.01" if you allow decimals
+                            htmlInput: {min: 0, step: 1}
                         }}
                     />
 
@@ -130,17 +137,27 @@ export default function AddCourseDialog({open, onClose, onSave}: AddCourseDialog
                         value={form.course_fee ?? 0}
                         onChange={handleChange}
                         fullWidth
-                        variant="standard"
                         required
+                        sx={textFieldStyles}
                         slotProps={{
-                            htmlInput: {min: 0, step: 1}   // ← or step: "0.01" if you allow decimals
+                            htmlInput: {min: 0, step: 1}
                         }}
                     />
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button variant="outlined" onClick={onClose}>Cancel</Button>
-                <Button variant="outlined" onClick={handleSubmit}>
+                <Button
+                    variant="outlined"
+                    onClick={onClose}
+                    sx={secondaryButtonStyles}
+                >
+                    Cancel
+                </Button>
+                <Button
+                    variant="contained"
+                    onClick={handleSubmit}
+                    sx={primaryButtonStyles}
+                >
                     Save
                 </Button>
             </DialogActions>

@@ -1,43 +1,12 @@
+/* AppBar styles are now handled by MUI sx props */
 .app-header {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  padding: 2rem 2rem 2rem 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
+  /* Keep for potential overrides */
 }
 
 .header-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #ffffff;
-  text-align: center;
+  /* Styles handled by MUI sx props */
 }
 
 .register-button {
-  position: absolute;
-  top: 50%;
-  right: 2rem;
-  transform: translateY(-50%);
-  padding: 0.75rem 1.5rem;
-  background-color: #ffffff;
-  color: #667eea;
-  border: 2px solid #ffffff;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.register-button:hover {
-  background-color: transparent;
-  color: #ffffff;
-  transform: translateY(-50%) translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  /* Styles handled by MUI sx props */
 }
