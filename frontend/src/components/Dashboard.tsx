@@ -6,6 +6,7 @@ import type {Course} from '../types/course';
 // import sub components
 import {AppPage} from "./Common-component/AppPage.tsx";
 import {CourseSection} from "./Dashboard-components/CourseSection.tsx";
+import {NavigationCards} from "./Dashboard-components/NavigationCards.tsx";
 import {AppRoutes} from "../constants/appRoutes.ts";
 import AddCourseDialog from "./Dashboard-components/DashboardAddCourseDialogue.tsx";
 import {CircularProgress, Alert, Box} from '@mui/material';
@@ -70,6 +71,8 @@ export default function Dashboard() {
             <main className="dashboard-body">
                 <CourseSection courses={courses} onCourseClick={handleCourseClick}
                                onAddCourseClick={handleOpen}></CourseSection>
+
+                <NavigationCards />
 
                 <AddCourseDialog
                     open={open}

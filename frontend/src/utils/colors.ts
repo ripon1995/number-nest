@@ -5,11 +5,19 @@ export const colors = {
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     start: '#667eea',
     end: '#764ba2',
+    main: '#667eea',
+  },
+
+  // Secondary colors
+  secondary: {
+    main: '#764ba2',
   },
 
   // Accent colors
   accent: {
     blue: '#4a90e2',
+    teal: '#26a69a',
+    orange: '#ff9800',
   },
 
   // Neutral colors

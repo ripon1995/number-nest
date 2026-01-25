@@ -12,6 +12,7 @@ const DUMMY_STUDENTS: Student[] = [
         name: "Alex Johnson",
         phone_number: "+1-555-0101",
         father_name: "Robert Johnson",
+        father_contact: "+1-555-0201",
         college: "Engineering Tech",
         email: "alex.j@example.com"
     },
@@ -19,6 +20,7 @@ const DUMMY_STUDENTS: Student[] = [
         name: "Maria Garcia",
         phone_number: "+1-555-0102",
         father_name: "Carlos Garcia",
+        father_contact: "+1-555-0202",
         college: "Arts & Science University",
         email: "m.garcia@testmail.org"
     },
@@ -26,6 +28,7 @@ const DUMMY_STUDENTS: Student[] = [
         name: "Liam Smith",
         phone_number: "+1-555-0103",
         father_name: "William Smith",
+        father_contact: "+1-555-0203",
         college: "Northwest Polytechnic",
         email: "liam.smith@edu.com"
     },
@@ -33,6 +36,7 @@ const DUMMY_STUDENTS: Student[] = [
         name: "Priya Sharma",
         phone_number: "+1-555-0104",
         father_name: "Rajesh Sharma",
+        father_contact: "+1-555-0204",
         college: "Global Institute of Design",
         email: "priya.s@sharma-legal.com"
     },
@@ -40,6 +44,7 @@ const DUMMY_STUDENTS: Student[] = [
         name: "Chen Wei",
         phone_number: "+1-555-0105",
         father_name: "Chen Hao",
+        father_contact: "+1-555-0205",
         college: "Eastern Science Academy",
         email: "wei.chen@academic.net"
     },
@@ -47,6 +52,7 @@ const DUMMY_STUDENTS: Student[] = [
         name: "Sarah Miller",
         phone_number: "+1-555-0106",
         father_name: "Thomas Miller",
+        father_contact: "+1-555-0206",
         college: "Central Valley College",
         email: "sarah.m@webmail.com"
     },
@@ -54,6 +60,7 @@ const DUMMY_STUDENTS: Student[] = [
         name: "Omar Haddad",
         phone_number: "+1-555-0107",
         father_name: "Amir Haddad",
+        father_contact: "+1-555-0207",
         college: "Metropolitan University",
         email: "omar.h@haddad.me"
     },
@@ -61,6 +68,7 @@ const DUMMY_STUDENTS: Student[] = [
         name: "Elena Rossi",
         phone_number: "+1-555-0108",
         father_name: "Marco Rossi",
+        father_contact: "+1-555-0208",
         college: "International Business School",
         email: "e.rossi@business.it"
     },
@@ -68,6 +76,7 @@ const DUMMY_STUDENTS: Student[] = [
         name: "James Wilson",
         phone_number: "+1-555-0109",
         father_name: "David Wilson",
+        father_contact: "+1-555-0209",
         college: "Coastal Institute",
         email: "j.wilson@coastal.edu"
     },
@@ -75,6 +84,7 @@ const DUMMY_STUDENTS: Student[] = [
         name: "Aisha Khan",
         phone_number: "+1-555-0110",
         father_name: "Zubair Khan",
+        father_contact: "+1-555-0210",
         college: "City Medical College",
         email: "aisha.khan@health.org"
     }

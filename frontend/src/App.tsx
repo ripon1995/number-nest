@@ -6,6 +6,10 @@ import Login from './components/Login';
 import {AppRoutes, PathName} from "./constants/appRoutes.ts";
 import CourseDetail from "./components/CourseDetail.tsx";
 import Profile from "./components/Profile.tsx";
+import Students from "./components/Students.tsx";
+import StudentDetail from "./components/StudentDetail.tsx";
+import About from "./components/About.tsx";
+import Contact from "./components/Contact.tsx";
 import {CoursePlanView} from "./components/Course-components/CoursePlanView.tsx";
 import {CourseInfoView} from "./components/Course-components/CourseInfoView.tsx";
 import {CourseAttendanceView} from "./components/Course-components/CourseAttendanceView.tsx";
@@ -33,6 +37,10 @@ function App() {
                     <Route path={PathName.PATH_COURSE_ROUTINE} element={<CourseRoutineView/>}/>
                 </Route>
                 <Route path={AppRoutes.PROFILE} element={<Profile/>}/>
+                <Route path={AppRoutes.STUDENTS} element={<Students/>}/>
+                <Route path={AppRoutes.STUDENT_DETAIL} element={<StudentDetail/>}/>
+                <Route path={AppRoutes.ABOUT} element={<About/>}/>
+                <Route path={AppRoutes.CONTACT} element={<Contact/>}/>
             </Routes>
         </BrowserRouter>
     );
