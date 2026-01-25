@@ -30,8 +30,7 @@ export default function Dashboard() {
         if (created) {
             console.log('Course created:', created);
             handleClose();
-            // Refresh the course list
-            await fetchCourses();
+            // No need to refetch - the store already updated with the new course
         } else {
             // Get the error message from the store
             const errorMsg = useCourseStore.getState().error || 'Failed to create course. Please try again.';
@@ -42,9 +41,6 @@ export default function Dashboard() {
             // Show error in snackbar
             setSnackbarMessage(errorMsg);
             setSnackbarOpen(true);
-
-            // Refresh the dashboard
-            await fetchCourses();
         }
     };
 

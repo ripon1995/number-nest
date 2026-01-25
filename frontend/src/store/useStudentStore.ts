@@ -1,10 +1,14 @@
 import type {Student} from "../types/student.ts";
 import {create} from 'zustand';
+import axios from 'axios';
+import axiosInstance from '../utils/axiosConfig';
+import {studentProfileCreateApi} from '../constants/endpoints';
 
 interface StudentState {
     students: Student[];
-    isLoading: boolean;
-    fetchStudents: () => Promise<void>;
+    loading: boolean;
+    error: string | null;
+    fetchStudents: (signal?: AbortSignal) => Promise<void>;
 }
 
 const DUMMY_STUDENTS: Student[] = [
@@ -105,12 +109,31 @@ const DUMMY_STUDENTS: Student[] = [
 
 export const useStudentStore = create<StudentState>((set) => ({
     students: [],
-    isLoading: false,
-    fetchStudents: async () => {
-        set({isLoading: true});
-        await new Promise(resolve => setTimeout(resolve, 500));
-        set({students: DUMMY_STUDENTS});
+    loading: false,
+    error: null,
+    fetchStudents: async (signal?: AbortSignal) => {
+        set({loading: true, error: null});
+        try {
+            const response = await axiosInstance.get(studentProfileCreateApi, {
+                signal
+            });
+            set({students: response.data.data, loading: false});
+        } catch (err) {
+            // If request was aborted, reset loading state
+            if (axios.isCancel(err)) {
+                set({loading: false});
+                return;
+            }
 
+            // Handle axios errors
+            if (axios.isAxiosError(err)) {
+                const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch students';
+                set({error: errorMessage, loading: false});
+                return;
+            }
+
+            set({error: (err as Error).message, loading: false});
+        }
     },
 }));
 

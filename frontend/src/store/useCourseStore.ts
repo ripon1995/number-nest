@@ -51,7 +51,8 @@ export const useCourseStore = create<CourseState>((set) => ({
                 courseData
             );
 
-            const newCourse = response.data; // assuming backend returns the created object
+            // Backend returns {success: true, message: "...", data: course}
+            const newCourse = response.data.data;
 
             // Optimistic + real update
             set((state) => ({
@@ -66,6 +67,7 @@ export const useCourseStore = create<CourseState>((set) => ({
 
             if (axios.isAxiosError(err)) {
                 errorMsg =
+                    err.response?.data?.message ||
                     err.response?.data?.detail ||
                     err.response?.data?.non_field_errors?.[0] ||
                     err.message ||
