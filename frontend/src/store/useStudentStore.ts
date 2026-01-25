@@ -9,6 +9,7 @@ interface StudentState {
     loading: boolean;
     error: string | null;
     fetchStudents: (signal?: AbortSignal) => Promise<void>;
+    fetchEnrolledStudents: (signal?: AbortSignal) => Promise<void>;
 }
 
 const DUMMY_STUDENTS: Student[] = [
@@ -135,5 +136,20 @@ export const useStudentStore = create<StudentState>((set) => ({
             set({error: (err as Error).message, loading: false});
         }
     },
+    fetchEnrolledStudents: async (signal?: AbortSignal) => {
+        set({loading: true, error: null});
+        try {
+            // For now, using dummy data
+            // TODO: Replace with actual API call when backend endpoint is ready
+            await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
+            set({students: DUMMY_STUDENTS, loading: false});
+        } catch (err) {
+            if (axios.isCancel(err)) {
+                set({loading: false});
+                return;
+            }
+            set({error: (err as Error).message, loading: false});
+        }
+    }
 }));
 

@@ -7,11 +7,11 @@ import {useEffect} from "react";
 export const CourseEnrolledStudentsView = () => {
 
     const students = useStudentStore((state) => state.students);
-    const fetchStudents = useStudentStore((state) => state.fetchStudents);
+    const fetchEnrolledStudents = useStudentStore((state) => state.fetchEnrolledStudents);
 
     useEffect(() => {
-        fetchStudents();
-    }, [fetchStudents]);
+        fetchEnrolledStudents();
+    }, [fetchEnrolledStudents]);
 
     return (
         <Paper className="view-container" elevation={2} sx={{p: 3}}>

@@ -22,6 +22,9 @@ export const useCourseStore = create<CourseState>((set) => ({
             const response = await axiosInstance.get(courseListCreateApi, {
                 signal
             });
+            console.log('API Response:', response);
+            console.log('Response data:', response.data);
+            console.log('Courses array:', response.data.data);
             set({courses: response.data.data, loading: false});
         } catch (err) {
             // If request was aborted, reset loading state
@@ -32,11 +35,14 @@ export const useCourseStore = create<CourseState>((set) => ({
 
             // Handle axios errors
             if (axios.isAxiosError(err)) {
+                console.error('Axios error:', err);
+                console.error('Error response:', err.response);
                 const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch courses';
                 set({error: errorMessage, loading: false});
                 return;
             }
 
+            console.error('Unknown error:', err);
             set({error: (err as Error).message, loading: false});
         }
     },
