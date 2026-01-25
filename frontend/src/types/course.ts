@@ -5,5 +5,6 @@ export interface Course {
   batch_days: string;
   batch_time: string;
   capacity: number;
-  course_fee: string;
+  course_fee: number;
+  speech?: string;
 }

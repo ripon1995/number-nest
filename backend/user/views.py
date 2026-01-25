@@ -1,7 +1,15 @@
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-from .serializers import UserRegistrationSerializer, UserLoginSerializer
+
+from utils.permissions import IsAdminOrIsStudent
+
+# from .models import UserProfile
+from .serializers import (
+    UserRegistrationSerializer,
+    UserLoginSerializer,
+)
 from .authentication import MongoRefreshToken
 from utils import success_response
 
@@ -16,7 +24,7 @@ class RegisterView(APIView):
         return success_response(
             message="User created successfully",
             status_code=status.HTTP_201_CREATED,
-            data=serializer.data
+            data=serializer.data,
         )
 
 
@@ -27,7 +35,7 @@ class LoginView(APIView):
         serializer = UserLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        user = serializer.validated_data['user']
+        user = serializer.validated_data["user"]
 
         # Generate JWT tokens
         refresh = MongoRefreshToken.for_user(user)
@@ -36,13 +44,13 @@ class LoginView(APIView):
             message="Login successful",
             status_code=status.HTTP_200_OK,
             data={
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-                'user': {
-                    'name': user.name,
-                    'phone_number': user.phone_number,
-                    'is_admin': user.is_admin
-                }
-            }
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+                "user": {
+                    "name": user.name,
+                    "phone_number": user.phone_number,
+                    "is_admin": user.is_admin,
+                    "profile_created": user.profile_created,
+                },
+            },
         )
-

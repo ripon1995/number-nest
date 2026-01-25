@@ -30,13 +30,6 @@
     background: #a0aec0;
 }
 
-.course-section h1 {
-    font-size: 2.5rem;
-    color: #1a1a1a;
-    margin: 0 0 1.5rem 0;
-    font-weight: 700;
-}
-
 .loading,
 .error,
 .no-courses {
@@ -58,10 +51,4 @@
 
 .no-courses {
     color: #666;
-}
-
-@media (max-width: 768px) {
-    .course-section h1 {
-        font-size: 2rem;
-    }
 }

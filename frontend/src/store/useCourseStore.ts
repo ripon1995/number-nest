@@ -1,14 +1,15 @@
-// src/store/useCourseStore.ts
+import axios from 'axios';
+import axiosInstance from '../utils/axiosConfig';
 import {create} from 'zustand';
 import type {Course} from '../types/course';
-import {courseListApi} from '../constants/endpoints';
-import {useUserStore} from './useUserStore';
+import {courseListCreateApi} from '../constants/endpoints';
 
 interface CourseState {
     courses: Course[];
     loading: boolean;
     error: string | null;
     fetchCourses: (signal?: AbortSignal) => Promise<void>;
+    addCourse: (courseData: Omit<Course, 'id'>) => Promise<Course | null>;
 }
 
 export const useCourseStore = create<CourseState>((set) => ({
@@ -16,27 +17,73 @@ export const useCourseStore = create<CourseState>((set) => ({
     loading: false,
     error: null,
     fetchCourses: async (signal?: AbortSignal) => {
-        const token = useUserStore.getState().accessToken;
         set({loading: true, error: null});
         try {
-            const response = await fetch(courseListApi, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // 2. Add the Authorization header
-                    ...(token && {'Authorization': `Bearer ${token}`}),
-                }, signal
+            const response = await axiosInstance.get(courseListCreateApi, {
+                signal
             });
-            if (!response.ok) throw new Error('Failed to fetch courses');
-            const result = await response.json();
-            set({courses: result.data, loading: false});
+            console.log('API Response:', response);
+            console.log('Response data:', response.data);
+            console.log('Courses array:', response.data.data);
+            set({courses: response.data.data, loading: false});
         } catch (err) {
             // If request was aborted, reset loading state
-            if ((err as Error).name === 'AbortError') {
+            if (axios.isCancel(err)) {
                 set({loading: false});
                 return;
             }
+
+            // Handle axios errors
+            if (axios.isAxiosError(err)) {
+                console.error('Axios error:', err);
+                console.error('Error response:', err.response);
+                const errorMessage = err.response?.data?.message || err.message || 'Failed to fetch courses';
+                set({error: errorMessage, loading: false});
+                return;
+            }
+
+            console.error('Unknown error:', err);
             set({error: (err as Error).message, loading: false});
         }
     },
+
+    addCourse: async (courseData: Omit<Course, 'id'>): Promise<Course | null> => {
+        // Optional: set a creating flag if you want UI feedback
+        set({loading: true, error: null});
+
+        try {
+            const response = await axiosInstance.post(
+                courseListCreateApi,
+                courseData
+            );
+
+            // Backend returns {success: true, message: "...", data: course}
+            const newCourse = response.data.data;
+
+            // Optimistic + real update
+            set((state) => ({
+                courses: [...state.courses, newCourse],
+                loading: false,
+            }));
+
+            return newCourse;
+
+        } catch (err) {
+            let errorMsg = 'Failed to create course';
+
+            if (axios.isAxiosError(err)) {
+                errorMsg =
+                    err.response?.data?.message ||
+                    err.response?.data?.detail ||
+                    err.response?.data?.non_field_errors?.[0] ||
+                    err.message ||
+                    errorMsg;
+            }
+
+            set({error: errorMsg, loading: false});
+            console.error('Add course error:', err);
+            return null;
+        }
+    },
+
 }));

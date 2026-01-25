@@ -3,6 +3,7 @@ import './CourseDetail.css';
 import {QuickActionsSection} from "./Course-components/QuickActionSection.tsx";
 import {AppPage} from "./Common-component/AppPage.tsx";
 import type {Course} from '../types/course';
+import {Container, Box} from '@mui/material';
 
 export default function CourseDetail() {
     const {id} = useParams<{ id: string }>();
@@ -21,21 +22,20 @@ export default function CourseDetail() {
             headerOnAction={handleBackButton}
             headerTitle={course?.title || 'Course Details'}
         >
-            <main className='detail-content'>
-
-                <div className="detail-layout">
-                    <section className="info-section">
+            <Container maxWidth="xl" className='detail-content' sx={{mt: 3}}>
+                <Box className="detail-layout" sx={{display: 'flex', gap: 2, alignItems: 'flex-start', justifyContent: 'space-between'}}>
+                    <Box className="info-section" sx={{flex: 1, minWidth: 0, maxWidth: 'calc(100% - 300px)'}}>
                         <Outlet context={{course}}/>
-                    </section>
+                    </Box>
 
-                    <aside className="sidebar-actions">
+                    <Box className="sidebar-actions" sx={{width: '280px', flexShrink: 0}}>
                         <QuickActionsSection
                            onNavigate={(path) => navigate(path)}
                            courseId={id}
                         />
-                    </aside>
-                </div>
-            </main>
+                    </Box>
+                </Box>
+            </Container>
 
         </AppPage>
     );

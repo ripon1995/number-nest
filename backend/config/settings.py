@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "course",
     "user",
+    "student",
 ]
 
 MIDDLEWARE = [
@@ -46,8 +47,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=50),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=100),
     "ROTATE_REFRESH_TOKENS": True,  # important → issues new refresh on each refresh
     "BLACKLIST_AFTER_ROTATION": True,  # revoke old refresh after rotation
     "UPDATE_LAST_LOGIN": True,

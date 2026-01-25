@@ -11,6 +11,11 @@ export const AppRoutes = {
     COURSE_PAYMENT: '/course/:id/course-payment',
     COURSE_NOTE: '/course/:id/course-docs',
     PROFILE: '/profile',
+    PROFILE_CREATE: '/profile/create',
+    STUDENTS: '/students',
+    STUDENT_DETAIL: '/students/:id',
+    ABOUT: '/about',
+    CONTACT: '/contact',
     // Helper to generate the course detail URL
     getCoursePath: (id: string) => '/course/' + id,
     getCoursePlanPath: (id: string) => `/course/${id}/course-plan`,
@@ -20,6 +25,7 @@ export const AppRoutes = {
     getCourseExamSchedulePath: (id: string) => `/course/${id}/exam-schedule`,
     getCoursePaymentPath: (id: string) => `/course/${id}/course-payment`,
     getCourseRoutinePath: (id: string) => `/course/${id}/course-routine`,
+    getStudentDetailPath: (id: string) => `/students/${id}`,
 } as const;
 
 
