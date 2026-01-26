@@ -3,7 +3,18 @@ import {useNavigate} from 'react-router-dom';
 import {useUserStore} from '../store/useUserStore';
 import {AppPage} from './Common-component/AppPage';
 import {IoPersonOutline, IoCallOutline, IoSchoolOutline, IoMailOutline} from 'react-icons/io5';
-import {TextField, Alert, Box, Typography, Paper, InputAdornment, CircularProgress, Button, Grid, Chip} from '@mui/material';
+import {
+    TextField,
+    Alert,
+    Box,
+    Typography,
+    Paper,
+    InputAdornment,
+    CircularProgress,
+    Button,
+    Grid,
+    Chip
+} from '@mui/material';
 import {textFieldStyles, primaryButtonStyles} from '../utils/formStyles';
 import {AppRoutes} from '../constants/appRoutes';
 
@@ -95,7 +106,7 @@ export default function Profile() {
                 headerOnAction={handleBackToDashboard}
             >
                 <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh'}}>
-                    <CircularProgress />
+                    <CircularProgress/>
                 </Box>
             </AppPage>
         );
@@ -108,11 +119,13 @@ export default function Profile() {
             headerOnAction={handleBackToDashboard}
         >
             <Box className="registration-container">
-                <Paper className="registration-card" elevation={3} sx={{padding: 4, borderRadius: 2, maxWidth: 800, margin: '0 auto'}}>
+                <Paper className="registration-card" elevation={3}
+                       sx={{padding: 4, borderRadius: 2, maxWidth: 800, margin: '0 auto'}}>
                     <Typography variant="h4" component="h1" gutterBottom align="center">
                         Profile Information
                     </Typography>
-                    <Typography variant="body1" className="registration-subtitle" align="center" color="text.secondary" sx={{mb: 3}}>
+                    <Typography variant="body1" className="registration-subtitle" align="center" color="text.secondary"
+                                sx={{mb: 3}}>
                         View your account details
                     </Typography>
 
@@ -124,7 +137,7 @@ export default function Profile() {
 
                     <Box sx={{mt: 3}}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                                 <TextField
                                     fullWidth
                                     id="name"
@@ -138,7 +151,7 @@ export default function Profile() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoPersonOutline />
+                                                    <IoPersonOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -146,7 +159,7 @@ export default function Profile() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, sm: 6, md: 6}}>
                                 <TextField
                                     fullWidth
                                     id="phone_number"
@@ -160,7 +173,7 @@ export default function Profile() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoCallOutline />
+                                                    <IoCallOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -168,7 +181,7 @@ export default function Profile() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, sm: 6, md: 6}}>
                                 <TextField
                                     fullWidth
                                     id="father_name"
@@ -183,7 +196,7 @@ export default function Profile() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoPersonOutline />
+                                                    <IoPersonOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -191,7 +204,7 @@ export default function Profile() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, sm: 6, md: 6}}>
                                 <TextField
                                     fullWidth
                                     id="father_contact"
@@ -206,7 +219,7 @@ export default function Profile() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoCallOutline />
+                                                    <IoCallOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -214,7 +227,7 @@ export default function Profile() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, sm: 6, md: 6}}>
                                 <TextField
                                     fullWidth
                                     id="email"
@@ -229,7 +242,7 @@ export default function Profile() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoMailOutline />
+                                                    <IoMailOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -237,7 +250,7 @@ export default function Profile() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, sm: 6, md: 6}}>
                                 <TextField
                                     fullWidth
                                     id="college"
@@ -252,7 +265,7 @@ export default function Profile() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoSchoolOutline />
+                                                    <IoSchoolOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -261,7 +274,7 @@ export default function Profile() {
                             </Grid>
 
                             {studentProfile?.course && (
-                                <Grid item xs={12}>
+                                <Grid size={{xs: 12, sm: 6, md: 3}}>
                                     <Box sx={{mt: 2}}>
                                         <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                                             Enrolled Course
@@ -297,7 +310,7 @@ export default function Profile() {
                             </>
                         ) : (
                             <Grid container spacing={2} sx={{mt: 2}}>
-                                <Grid item xs={12} sm={6}>
+                                <Grid size={{xs: 12, sm: 6, md: 3}}>
                                     <Button
                                         variant="outlined"
                                         fullWidth
@@ -306,7 +319,7 @@ export default function Profile() {
                                         Cancel
                                     </Button>
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid size={{xs: 12, sm: 6, md: 3}}>
                                     <Button
                                         variant="contained"
                                         fullWidth

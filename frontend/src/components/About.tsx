@@ -1,5 +1,6 @@
 import {useNavigate} from 'react-router-dom';
-import {Paper, Typography, Box, Grid, Card, CardContent} from '@mui/material';
+import {Paper, Typography, Box, Card, CardContent} from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {AppPage} from './Common-component/AppPage';
 import {AppRoutes} from '../constants/appRoutes';
 import {School, Group, EmojiEvents, TrendingUp} from '@mui/icons-material';
@@ -74,7 +75,7 @@ export default function About() {
                     {features.map((feature, index) => {
                         const IconComponent = feature.icon;
                         return (
-                            <Grid item xs={12} sm={6} md={3} key={index}>
+                            <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
                                 <Card
                                     sx={{
                                         height: '100%',

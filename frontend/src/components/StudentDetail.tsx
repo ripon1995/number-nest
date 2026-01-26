@@ -24,7 +24,7 @@ import {AppRoutes} from '../constants/appRoutes';
 import type {Student} from '../types/student';
 
 export default function StudentDetail() {
-    const {id} = useParams<{id: string}>();
+    const {id} = useParams<{ id: string }>();
     const location = useLocation();
     const navigate = useNavigate();
     const students = useStudentStore((state) => state.students);
@@ -147,7 +147,7 @@ export default function StudentDetail() {
                 headerOnAction={handleBack}
             >
                 <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh'}}>
-                    <CircularProgress />
+                    <CircularProgress/>
                 </Box>
             </AppPage>
         );
@@ -174,17 +174,19 @@ export default function StudentDetail() {
             headerOnAction={handleBack}
         >
             <Box className="registration-container">
-                <Paper className="registration-card" elevation={3} sx={{padding: 4, borderRadius: 2, maxWidth: 900, margin: '0 auto'}}>
+                <Paper className="registration-card" elevation={3}
+                       sx={{padding: 4, borderRadius: 2, maxWidth: 900, margin: '0 auto'}}>
                     <Typography variant="h4" component="h1" gutterBottom align="center">
                         {mode === 'view' ? 'Student Information' : 'Edit Student Information'}
                     </Typography>
-                    <Typography variant="body1" className="registration-subtitle" align="center" color="text.secondary" sx={{mb: 3}}>
+                    <Typography variant="body1" className="registration-subtitle" align="center" color="text.secondary"
+                                sx={{mb: 3}}>
                         {mode === 'view' ? 'View student details' : 'Update student details'}
                     </Typography>
 
                     <Box sx={{mt: 3}}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, sm: 6, md: 6}}>
                                 <TextField
                                     fullWidth
                                     id="name"
@@ -199,7 +201,7 @@ export default function StudentDetail() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoPersonOutline />
+                                                    <IoPersonOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -207,7 +209,7 @@ export default function StudentDetail() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} md={6} {...({item: true} as any)}>
                                 <TextField
                                     fullWidth
                                     id="phone_number"
@@ -222,7 +224,7 @@ export default function StudentDetail() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoCallOutline />
+                                                    <IoCallOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -230,7 +232,7 @@ export default function StudentDetail() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} md={6} {...({item: true} as any)}>
                                 <TextField
                                     fullWidth
                                     id="father_name"
@@ -245,7 +247,7 @@ export default function StudentDetail() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoPersonOutline />
+                                                    <IoPersonOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -253,7 +255,7 @@ export default function StudentDetail() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} md={6} {...({item: true} as any)}>
                                 <TextField
                                     fullWidth
                                     id="father_contact"
@@ -268,7 +270,7 @@ export default function StudentDetail() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoCallOutline />
+                                                    <IoCallOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -276,7 +278,7 @@ export default function StudentDetail() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} md={6} {...({item: true} as any)}>
                                 <TextField
                                     fullWidth
                                     id="email"
@@ -291,7 +293,7 @@ export default function StudentDetail() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoMailOutline />
+                                                    <IoMailOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -299,7 +301,7 @@ export default function StudentDetail() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} md={6} {...({item: true} as any)}>
                                 <TextField
                                     fullWidth
                                     id="college"
@@ -314,7 +316,7 @@ export default function StudentDetail() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoSchoolOutline />
+                                                    <IoSchoolOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -334,7 +336,7 @@ export default function StudentDetail() {
                             </Button>
                         ) : (
                             <Grid container spacing={2} sx={{mt: 2}}>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6} {...({item: true} as any)}>
                                     <Button
                                         variant="outlined"
                                         fullWidth
@@ -343,7 +345,7 @@ export default function StudentDetail() {
                                         Cancel
                                     </Button>
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6} {...({item: true} as any)}>
                                     <Button
                                         variant="contained"
                                         fullWidth
@@ -359,7 +361,15 @@ export default function StudentDetail() {
                 </Paper>
 
                 {mode === 'edit' && (
-                    <Paper elevation={3} sx={{padding: 4, borderRadius: 2, maxWidth: 900, margin: '20px auto', minHeight: 400, display: 'flex', flexDirection: 'column'}}>
+                    <Paper elevation={3} sx={{
+                        padding: 4,
+                        borderRadius: 2,
+                        maxWidth: 900,
+                        margin: '20px auto',
+                        minHeight: 400,
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
                         <Typography variant="h5" component="h2" gutterBottom>
                             Enroll this student?
                         </Typography>

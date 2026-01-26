@@ -81,7 +81,7 @@ export default function Contact() {
                         {contactInfo.map((info, index) => {
                             const IconComponent = info.icon;
                             return (
-                                <Grid item xs={12} md={4} key={index}>
+                                <Grid size={{xs: 12, sm: 6, md: 4}} key={index}>
                                     <Box
                                         sx={{
                                             display: 'flex',
@@ -103,7 +103,7 @@ export default function Contact() {
                                                 mb: 2,
                                             }}
                                         >
-                                            <IconComponent sx={{fontSize: 28, color: info.color}} />
+                                            <IconComponent sx={{fontSize: 28, color: info.color}}/>
                                         </Box>
                                         <Typography variant="h6" gutterBottom>
                                             {info.title}
@@ -125,7 +125,7 @@ export default function Contact() {
 
                     <Box component="form" onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, sm: 6, md: 6}}>
                                 <TextField
                                     fullWidth
                                     required
@@ -138,7 +138,7 @@ export default function Contact() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, sm: 6, md: 6}}>
                                 <TextField
                                     fullWidth
                                     required
@@ -152,7 +152,7 @@ export default function Contact() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid size={{xs: 12, sm: 6, md: 3}}>
                                 <TextField
                                     fullWidth
                                     required
@@ -165,7 +165,7 @@ export default function Contact() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid size={{xs: 12, sm: 6, md: 3}}>
                                 <TextField
                                     fullWidth
                                     required
@@ -180,7 +180,7 @@ export default function Contact() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid size={{xs: 12, sm: 6, md: 3}}>
                                 <Button
                                     type="submit"
                                     variant="contained"
