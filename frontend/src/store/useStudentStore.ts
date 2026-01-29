@@ -2,7 +2,14 @@ import type {Student} from "../types/student.ts";
 import {create} from 'zustand';
 import axios from 'axios';
 import axiosInstance from '../utils/axiosConfig';
-import {studentProfileCreateApi} from '../constants/endpoints';
+import {studentProfileCreateApi, courseEnrollmentApi} from '../constants/endpoints';
+
+
+export interface StudentCourseEnrollmentRequestBody {
+    student_profile_id: string;
+    course_id: string;
+}
+
 
 interface StudentState {
     students: Student[];
@@ -10,6 +17,7 @@ interface StudentState {
     error: string | null;
     fetchStudents: (signal?: AbortSignal) => Promise<void>;
     fetchEnrolledStudents: (signal?: AbortSignal) => Promise<void>;
+    courseEnrollment: (requestBody: StudentCourseEnrollmentRequestBody) => Promise<void>;
 }
 
 const DUMMY_STUDENTS: Student[] = [
@@ -122,8 +130,8 @@ function parse_student_from_response(response) {
 
             // Optional fields: using the nullish coalescing operator (??)
             // to handle missing data gracefully
-            course_id: item.course_id ?? "N/A",
-            course_name: item.course_name ?? "Not Assigned"
+            course_id: item.course.id ?? "N/A",
+            course_name: item.course.title ?? "Not Assigned"
 
         }
         students.push(student);
@@ -158,6 +166,28 @@ export const useStudentStore = create<StudentState>((set) => ({
             }
 
             set({error: (err as Error).message, loading: false});
+        }
+    },
+    courseEnrollment: async (requestBody: StudentCourseEnrollmentRequestBody) => {
+        set({loading: true, error: null});
+        try {
+            await axiosInstance.put(courseEnrollmentApi, requestBody);
+            set({loading: false});
+        } catch (e) {
+            // If request was aborted, reset loading state
+            if (axios.isCancel(e)) {
+                set({loading: false});
+                return;
+            }
+
+            // Handle axios errors
+            if (axios.isAxiosError(e)) {
+                const errorMessage = e.response?.data?.message || e.message || 'Failed to enroll student';
+                set({error: errorMessage, loading: false});
+                return;
+            }
+
+            set({error: (e as Error).message, loading: false});
         }
     },
     fetchEnrolledStudents: async (signal?: AbortSignal) => {

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useNavigate, useParams, useLocation} from 'react-router-dom';
-import {useStudentStore} from '../store/useStudentStore';
+import {useStudentStore, type StudentCourseEnrollmentRequestBody} from '../store/useStudentStore';
 import {useCourseStore} from '../store/useCourseStore';
 import {AppPage} from './Common-component/AppPage';
 import {IoPersonOutline, IoCallOutline, IoSchoolOutline, IoMailOutline} from 'react-icons/io5';
@@ -31,6 +31,7 @@ export default function StudentDetail() {
     const fetchStudents = useStudentStore((state) => state.fetchStudents);
     const courses = useCourseStore((state) => state.courses);
     const fetchCourses = useCourseStore((state) => state.fetchCourses);
+    const courseEnrollment = useStudentStore((state) => state.courseEnrollment);
 
     const [mode, setMode] = useState<'view' | 'edit'>(location.state?.mode || 'view');
     const [loading, setLoading] = useState(true);
@@ -119,21 +120,37 @@ export default function StudentDetail() {
         }
     };
 
-    const handleEnrollStudent = () => {
-        // TODO: Implement enrollment API call
-        if (!selectedCourseId) {
+    const handleEnrollStudent = async () => {
+        if (!selectedCourseId || student?.id === null) {
             alert('Please select a course');
             return;
         }
 
         const selectedCourse = courses.find(c => c.id === selectedCourseId);
         console.log('Enrolling student:', {
-            studentId: student?.phone_number,
+            studentId: student?.id,
             courseId: selectedCourseId,
             courseName: selectedCourse?.title
         });
 
-        // TODO: Call enrollment API
+        const requestBody: StudentCourseEnrollmentRequestBody = {
+            student_profile_id: student.id!,
+            course_id: selectedCourseId
+        }
+
+        try {
+            // 2. Call the API through the store
+            await courseEnrollment(requestBody);
+
+            const selectedCourse = courses.find(c => c.id === selectedCourseId);
+            alert(`Successfully enrolled ${student.name} in ${selectedCourse?.title}`);
+
+            setSelectedCourseId(''); // Reset dropdown
+        } catch (err) {
+            // Error is handled by the store, but you can add local feedback here
+            alert('Enrollment failed. Please try again.');
+        }
+
         // enrollStudentToCourse(student?.phone_number, selectedCourseId)
 
         alert(`TODO: Enroll ${student?.name} to ${selectedCourse?.title}`);

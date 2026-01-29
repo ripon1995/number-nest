@@ -113,9 +113,9 @@ class CourseEnrollmentSerializer(drf_serializers.Serializer):
         profile = attrs["student_profile_id"]
         course = attrs["course_id"]
 
-        # Business rules
-        if profile.course is not None:
-            raise StudentProfileException("Student is already enrolled in a course")
+        # # Business rules
+        # if profile.course is not None:
+        #     raise StudentProfileException("Student is already enrolled in a course")
 
         enrolled_count = StudentProfile.objects.filter(course=course).count()
         if enrolled_count >= course.capacity:
