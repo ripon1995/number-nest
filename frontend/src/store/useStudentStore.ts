@@ -108,6 +108,31 @@ const DUMMY_STUDENTS: Student[] = [
 ];
 
 
+function parse_student_from_response(response) {
+    console.log(response);
+    let students: [Student] = [];
+    for (const item of response) {
+        const student: Student = {
+            id: item.id,
+            college: item.college,
+            email: item.email,
+            father_name: item.father_name,
+            father_contact: item.father_contact,
+            name: item.user.name,
+            phone_number: item.user.phone_number,
+
+            // Optional fields: using the nullish coalescing operator (??)
+            // to handle missing data gracefully
+            course_id: item.course_id ?? "N/A",
+            course_name: item.course_name ?? "Not Assigned"
+
+        }
+        students.push(student);
+    }
+    return students;
+}
+
+
 export const useStudentStore = create<StudentState>((set) => ({
     students: [],
     loading: false,
@@ -118,7 +143,7 @@ export const useStudentStore = create<StudentState>((set) => ({
             const response = await axiosInstance.get(studentProfileCreateApi, {
                 signal
             });
-            set({students: response.data.data, loading: false});
+            set({students: parse_student_from_response(response.data.data), loading: false});
         } catch (err) {
             // If request was aborted, reset loading state
             if (axios.isCancel(err)) {
