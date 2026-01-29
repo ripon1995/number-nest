@@ -24,7 +24,7 @@ import {AppRoutes} from '../constants/appRoutes';
 import type {Student} from '../types/student';
 
 export default function StudentDetail() {
-    const {id} = useParams<{id: string}>();
+    const {id} = useParams<{ id: string }>();
     const location = useLocation();
     const navigate = useNavigate();
     const students = useStudentStore((state) => state.students);
@@ -58,7 +58,7 @@ export default function StudentDetail() {
                     await fetchStudents();
                 }
 
-                const foundStudent = students.find(s => s.phone_number === id);
+                const foundStudent = students.find(s => s.id === id);
 
                 if (foundStudent) {
                     setStudent(foundStudent);
@@ -114,6 +114,7 @@ export default function StudentDetail() {
             setMode('view');
             alert('Student updated successfully!');
         } catch (err) {
+            console.log(err);
             setError('Failed to update student');
         }
     };
@@ -147,7 +148,7 @@ export default function StudentDetail() {
                 headerOnAction={handleBack}
             >
                 <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh'}}>
-                    <CircularProgress />
+                    <CircularProgress/>
                 </Box>
             </AppPage>
         );
@@ -174,11 +175,13 @@ export default function StudentDetail() {
             headerOnAction={handleBack}
         >
             <Box className="registration-container">
-                <Paper className="registration-card" elevation={3} sx={{padding: 4, borderRadius: 2, maxWidth: 900, margin: '0 auto'}}>
+                <Paper className="registration-card" elevation={3}
+                       sx={{padding: 4, borderRadius: 2, maxWidth: 900, margin: '0 auto'}}>
                     <Typography variant="h4" component="h1" gutterBottom align="center">
                         {mode === 'view' ? 'Student Information' : 'Edit Student Information'}
                     </Typography>
-                    <Typography variant="body1" className="registration-subtitle" align="center" color="text.secondary" sx={{mb: 3}}>
+                    <Typography variant="body1" className="registration-subtitle" align="center" color="text.secondary"
+                                sx={{mb: 3}}>
                         {mode === 'view' ? 'View student details' : 'Update student details'}
                     </Typography>
 
@@ -199,7 +202,7 @@ export default function StudentDetail() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoPersonOutline />
+                                                    <IoPersonOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -222,7 +225,7 @@ export default function StudentDetail() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoCallOutline />
+                                                    <IoCallOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -245,7 +248,7 @@ export default function StudentDetail() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoPersonOutline />
+                                                    <IoPersonOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -268,7 +271,7 @@ export default function StudentDetail() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoCallOutline />
+                                                    <IoCallOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -291,7 +294,7 @@ export default function StudentDetail() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoMailOutline />
+                                                    <IoMailOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -314,7 +317,7 @@ export default function StudentDetail() {
                                         input: {
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <IoSchoolOutline />
+                                                    <IoSchoolOutline/>
                                                 </InputAdornment>
                                             ),
                                         },
@@ -359,7 +362,15 @@ export default function StudentDetail() {
                 </Paper>
 
                 {mode === 'edit' && (
-                    <Paper elevation={3} sx={{padding: 4, borderRadius: 2, maxWidth: 900, margin: '20px auto', minHeight: 400, display: 'flex', flexDirection: 'column'}}>
+                    <Paper elevation={3} sx={{
+                        padding: 4,
+                        borderRadius: 2,
+                        maxWidth: 900,
+                        margin: '20px auto',
+                        minHeight: 400,
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
                         <Typography variant="h5" component="h2" gutterBottom>
                             Enroll this student?
                         </Typography>

@@ -109,8 +109,7 @@ const DUMMY_STUDENTS: Student[] = [
 
 
 function parse_student_from_response(response) {
-    console.log(response);
-    let students: [Student] = [];
+    const students: Student[] = [];
     for (const item of response) {
         const student: Student = {
             id: item.id,

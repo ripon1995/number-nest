@@ -46,18 +46,18 @@ export function StudentListWithActions({students}: StudentListWithActionsProps) 
         );
     };
 
-    const handleView = (phoneNumber: string) => {
-        navigate(AppRoutes.getStudentDetailPath(phoneNumber), {state: {mode: 'view'}});
+    const handleView = (id: string) => {
+        navigate(AppRoutes.getStudentDetailPath(id), {state: {mode: 'view'}});
     };
 
-    const handleEdit = (phoneNumber: string) => {
-        navigate(AppRoutes.getStudentDetailPath(phoneNumber), {state: {mode: 'edit'}});
+    const handleEdit = (id: string) => {
+        navigate(AppRoutes.getStudentDetailPath(id), {state: {mode: 'edit'}});
     };
 
-    const handleDelete = (phoneNumber: string) => {
+    const handleDelete = (id: string) => {
         // TODO: Implement delete functionality
         if (window.confirm('Are you sure you want to delete this student?')) {
-            console.log('Delete student:', phoneNumber);
+            console.log('Delete student:', id);
             // Call delete API here
         }
     };
@@ -81,7 +81,7 @@ export function StudentListWithActions({students}: StudentListWithActionsProps) 
                 <TableBody>
                     {students.map((student, index) => (
                         <TableRow
-                            key={student.phone_number}
+                            key={student.id!}
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
                             <TableCell align="left">{index + 1}</TableCell>
@@ -95,17 +95,17 @@ export function StudentListWithActions({students}: StudentListWithActionsProps) 
                             <TableCell align="center">
                                 <Stack direction="row" spacing={1} justifyContent="center">
                                     <Tooltip title="View">
-                                        <IconButton color="primary" onClick={() => handleView(student.phone_number)}>
+                                        <IconButton color="primary" onClick={() => handleView(student.id!)}>
                                             <ViewIcon fontSize="small"/>
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Edit">
-                                        <IconButton color="secondary" onClick={() => handleEdit(student.phone_number)}>
+                                        <IconButton color="secondary" onClick={() => handleEdit(student.id!)}>
                                             <EditIcon fontSize="small"/>
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Delete">
-                                        <IconButton color="error" onClick={() => handleDelete(student.phone_number)}>
+                                        <IconButton color="error" onClick={() => handleDelete(student.id!)}>
                                             <DeleteIcon fontSize="small"/>
                                         </IconButton>
                                     </Tooltip>
