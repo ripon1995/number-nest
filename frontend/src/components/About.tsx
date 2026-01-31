@@ -54,13 +54,13 @@ export default function About() {
                         Empowering students through quality education and innovative learning solutions
                     </Typography>
 
-                    <Typography variant="body1" paragraph sx={{fontSize: '1.1rem', lineHeight: 1.8}}>
+                    <Typography variant="body1" sx={{fontSize: '1.1rem', lineHeight: 1.8, mb: 2}}>
                         Number Nest is a comprehensive educational platform dedicated to providing students with the
                         tools and resources they need to succeed. Our mission is to make quality education accessible
                         to all students, regardless of their background or location.
                     </Typography>
 
-                    <Typography variant="body1" paragraph sx={{fontSize: '1.1rem', lineHeight: 1.8}}>
+                    <Typography variant="body1" sx={{fontSize: '1.1rem', lineHeight: 1.8, mb: 2}}>
                         We believe in a holistic approach to education that focuses not just on academic excellence,
                         but also on developing critical thinking skills, creativity, and a lifelong love of learning.
                     </Typography>
@@ -74,7 +74,7 @@ export default function About() {
                     {features.map((feature, index) => {
                         const IconComponent = feature.icon;
                         return (
-                            <Grid item xs={12} sm={6} md={3} key={index}>
+                            <Grid size={{xs: 12, sm: 6, md: 3}} key={index}>
                                 <Card
                                     sx={{
                                         height: '100%',
@@ -97,7 +97,7 @@ export default function About() {
                                                 margin: '0 auto 16px',
                                             }}
                                         >
-                                            <IconComponent sx={{fontSize: 32, color: feature.color}} />
+                                            <IconComponent sx={{fontSize: 32, color: feature.color}}/>
                                         </Box>
                                         <Typography variant="h6" component="h3" gutterBottom>
                                             {feature.title}
@@ -112,7 +112,11 @@ export default function About() {
                     })}
                 </Grid>
 
-                <Paper elevation={2} sx={{p: 4, mt: 4, background: `linear-gradient(135deg, ${colors.primary.main}15 0%, ${colors.secondary.main}15 100%)`}}>
+                <Paper elevation={2} sx={{
+                    p: 4,
+                    mt: 4,
+                    background: `linear-gradient(135deg, ${colors.primary.main}15 0%, ${colors.secondary.main}15 100%)`
+                }}>
                     <Typography variant="h5" component="h2" gutterBottom align="center">
                         Our Vision
                     </Typography>
