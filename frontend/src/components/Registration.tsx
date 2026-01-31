@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import type {FormEvent} from 'react'
 import {useNavigate} from 'react-router-dom';
 import './Auth.css';
@@ -31,7 +31,7 @@ export default function Registration() {
     useEffect(() => {
         if (success) {
             const timer = setTimeout(() => {
-                // After registration, always redirect to login
+                // After registration, always redirect to log in
                 navigate(AppRoutes.LOGIN);
             }, 2000);
             return () => clearTimeout(timer);
