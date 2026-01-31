@@ -190,7 +190,7 @@ export const useStudentStore = create<StudentState>((set) => ({
             set({error: (e as Error).message, loading: false});
         }
     },
-    fetchEnrolledStudents: async (signal?: AbortSignal) => {
+    fetchEnrolledStudents: async () => {
         set({loading: true, error: null});
         try {
             // For now, using dummy data

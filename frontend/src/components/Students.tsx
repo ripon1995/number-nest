@@ -14,7 +14,7 @@ export default function Students() {
     const fetchStudents = useStudentStore((state) => state.fetchStudents);
 
     useEffect(() => {
-        fetchStudents();
+        fetchStudents().catch(console.error);
     }, [fetchStudents]);
 
     const handleBackToDashboard = () => {
@@ -29,7 +29,7 @@ export default function Students() {
                 headerOnAction={handleBackToDashboard}
             >
                 <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh'}}>
-                    <CircularProgress />
+                    <CircularProgress/>
                 </Box>
             </AppPage>
         );
@@ -52,7 +52,7 @@ export default function Students() {
                     </Alert>
                 )}
 
-                <StudentListWithActions students={students} />
+                <StudentListWithActions students={students}/>
             </Paper>
         </AppPage>
     );

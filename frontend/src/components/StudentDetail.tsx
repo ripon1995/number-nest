@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams, useLocation} from 'react-router-dom';
 import {useStudentStore, type StudentCourseEnrollmentRequestBody} from '../store/useStudentStore';
 import {useCourseStore} from '../store/useCourseStore';
@@ -52,7 +52,7 @@ export default function StudentDetail() {
 
         const loadData = async () => {
             try {
-                // Always fetch courses to ensure we have latest data
+                // Always fetch courses to ensure we have the latest data
                 await fetchCourses(abortController.signal);
 
                 if (students.length === 0) {
@@ -76,12 +76,12 @@ export default function StudentDetail() {
             }
         };
 
-        loadData();
+        loadData().catch(console.error);
 
         return () => {
             abortController.abort();
         };
-    }, [id, fetchStudents, fetchCourses]);
+    }, [id, fetchStudents, fetchCourses, students]);
 
     const handleBack = () => {
         navigate(AppRoutes.STUDENTS);
@@ -121,7 +121,7 @@ export default function StudentDetail() {
     };
 
     const handleEnrollStudent = async () => {
-        if (!selectedCourseId || student?.id === null) {
+        if (!selectedCourseId || !student || !student.id) {
             alert('Please select a course');
             return;
         }
@@ -134,7 +134,7 @@ export default function StudentDetail() {
         });
 
         const requestBody: StudentCourseEnrollmentRequestBody = {
-            student_profile_id: student.id!,
+            student_profile_id: student.id,
             course_id: selectedCourseId
         }
 
@@ -148,6 +148,7 @@ export default function StudentDetail() {
             setSelectedCourseId(''); // Reset dropdown
         } catch (err) {
             // Error is handled by the store, but you can add local feedback here
+            console.log(err);
             alert('Enrollment failed. Please try again.');
         }
 
@@ -204,7 +205,7 @@ export default function StudentDetail() {
 
                     <Box sx={{mt: 3}}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, md: 6}}>
                                 <TextField
                                     fullWidth
                                     id="name"
@@ -227,7 +228,7 @@ export default function StudentDetail() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, md: 6}}>
                                 <TextField
                                     fullWidth
                                     id="phone_number"
@@ -250,7 +251,7 @@ export default function StudentDetail() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, md: 6}}>
                                 <TextField
                                     fullWidth
                                     id="father_name"
@@ -273,7 +274,7 @@ export default function StudentDetail() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, md: 6}}>
                                 <TextField
                                     fullWidth
                                     id="father_contact"
@@ -296,7 +297,7 @@ export default function StudentDetail() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, md: 6}}>
                                 <TextField
                                     fullWidth
                                     id="email"
@@ -319,7 +320,7 @@ export default function StudentDetail() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{xs: 12, md: 6}}>
                                 <TextField
                                     fullWidth
                                     id="college"
@@ -354,7 +355,7 @@ export default function StudentDetail() {
                             </Button>
                         ) : (
                             <Grid container spacing={2} sx={{mt: 2}}>
-                                <Grid item xs={12} sm={6}>
+                                <Grid size={{xs: 12, sm: 6}}>
                                     <Button
                                         variant="outlined"
                                         fullWidth
@@ -363,7 +364,7 @@ export default function StudentDetail() {
                                         Cancel
                                     </Button>
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid size={{xs: 12, sm: 6}}>
                                     <Button
                                         variant="contained"
                                         fullWidth
