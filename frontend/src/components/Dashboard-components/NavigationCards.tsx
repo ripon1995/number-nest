@@ -1,4 +1,4 @@
-import {Card, CardContent, Typography, Grid, Box} from '@mui/material';
+import {Card, CardContent, Typography, Box} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import {School, Info, ContactMail} from '@mui/icons-material';
 import {colors} from '../../utils/colors';

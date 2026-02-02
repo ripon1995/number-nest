@@ -53,6 +53,13 @@ export interface StudentProfileCreateData {
   email: string;
 }
 
+export interface CreateStudentData extends RegistrationData {
+  father_name: string;
+  father_contact: string;
+  college: string;
+  email: string;
+}
+
 export interface LoginResponse {
   access: string;
   refresh: string;
