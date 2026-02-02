@@ -22,7 +22,7 @@ class CourseListCreateAPIView(ListCreateAPIView):
         pass
         if self.request.method == "POST":
             return [IsAdmin()]
-        return [IsPublic]
+        return [IsPublic()]
 
     def list(self, request, *args, **kwargs):
         queryset = self.queryset
