@@ -20,3 +20,8 @@ class IsStudent(BasePermission):
 class IsAdminOrIsStudent(BasePermission):
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_authenticated)
+
+
+class IsPublic(BasePermission):
+    def has_permission(self, request, view):
+        return True

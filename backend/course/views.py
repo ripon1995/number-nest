@@ -5,7 +5,7 @@ from rest_framework_mongoengine.generics import (
 )
 
 from utils import success_response
-from utils.permissions import IsAdmin, IsAdminOrIsStudent
+from utils.permissions import IsAdmin, IsAdminOrIsStudent, IsPublic
 from .models import Course
 from .serializers import (
     CourseCreateSerializer,
@@ -22,7 +22,7 @@ class CourseListCreateAPIView(ListCreateAPIView):
         pass
         if self.request.method == "POST":
             return [IsAdmin()]
-        return [IsAdminOrIsStudent()]
+        return [IsPublic]
 
     def list(self, request, *args, **kwargs):
         queryset = self.queryset
