@@ -1,3 +1,4 @@
+from bson import ObjectId
 from rest_framework import status
 from rest_framework_mongoengine.generics import (
     ListCreateAPIView,
@@ -18,6 +19,14 @@ from .serializers import (
 class StudentListCreateAPIView(ListCreateAPIView):
     permission_classes = [IsAdminOrIsStudent]
     queryset = StudentProfile.objects.all()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        course_id = self.request.query_params.get("course_id")
+        if course_id:
+            course_obj_id = ObjectId(course_id)
+            queryset = queryset.filter(course=course_obj_id)
+        return queryset
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()

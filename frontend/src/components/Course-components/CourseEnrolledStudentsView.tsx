@@ -7,11 +7,17 @@ import {useEffect} from "react";
 export const CourseEnrolledStudentsView = () => {
 
     const students = useStudentStore((state) => state.students);
-    const fetchEnrolledStudents = useStudentStore((state) => state.fetchEnrolledStudents);
+    const fetchStudents = useStudentStore((state) => state.fetchStudents);
 
     useEffect(() => {
-        fetchEnrolledStudents();
-    }, [fetchEnrolledStudents]);
+        const controller = new AbortController();
+        const COURSE_ID = '697677e9de25671ccc2dd509';
+
+        // Just pass the string directly as the first argument
+        fetchStudents(COURSE_ID, controller.signal);
+
+        return () => controller.abort();
+    }, [fetchStudents]);
 
     return (
         <Paper className="view-container" elevation={2} sx={{p: 3}}>
