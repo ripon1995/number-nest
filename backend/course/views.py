@@ -19,9 +19,8 @@ class CourseListCreateAPIView(ListCreateAPIView):
     serializer_class = CourseCreateSerializer
 
     def get_permissions(self):
-        pass
         if self.request.method == "POST":
-            return [IsAdmin()]
+            return [IsPublic()]
         return [IsPublic()]
 
     def list(self, request, *args, **kwargs):
@@ -48,8 +47,8 @@ class CourseRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     def get_permissions(self):
         if self.request.method == "GET":
-            return [IsAdminOrIsStudent()]
-        return [IsAdmin()]
+            return [IsPublic()]
+        return [IsPublic()]
 
     def retrieve(self, request, *args, **kwargs):
         course = self.get_object()

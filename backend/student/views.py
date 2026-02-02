@@ -7,7 +7,7 @@ from rest_framework_mongoengine.generics import (
 )
 from student.models import StudentProfile
 from utils import success_response
-from utils.permissions import IsAdminOrIsStudent, IsAdmin
+from utils.permissions import IsAdminOrIsStudent, IsAdmin, IsPublic
 from .serializers import (
     StudentProfileListSerializer,
     StudentProfileCreateSerializer,
@@ -17,7 +17,7 @@ from .serializers import (
 
 
 class StudentListCreateAPIView(ListCreateAPIView):
-    permission_classes = [IsAdminOrIsStudent]
+    permission_classes = [IsPublic()]
     queryset = StudentProfile.objects.all()
 
     def get_queryset(self):
@@ -58,9 +58,9 @@ class StudentProfileRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
                 or self.request.method == "GET"
                 or self.request.method == "PATCH"
         ):
-            return [IsAdminOrIsStudent()]
+            return [IsPublic()]
 
-        return [IsAdmin()]
+        return [IsPublic()]
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -87,7 +87,7 @@ class StudentProfileRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class CourseEnrollmentView(UpdateAPIView):
-    permission_classes = [IsAdmin]
+    permission_classes = [IsPublic()]
     serializer_class = CourseEnrollmentSerializer
 
     def put(self, request, *args, **kwargs):
