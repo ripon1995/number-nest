@@ -19,7 +19,7 @@ interface StudentState {
     courseEnrollment: (requestBody: StudentCourseEnrollmentRequestBody) => Promise<void>;
 }
 
-function parse_student_from_response(response) {
+function parse_student_from_response(response: any) {
     console.log('Student list response : ', response);
     const students: Student[] = [];
     for (const item of response) {

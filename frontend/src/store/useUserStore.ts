@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import axiosInstance from '../utils/axiosConfig';
-import type { RegistrationData, LoginData, User, Profile, LoginResponse, ApiResponse, StudentProfileCreateData, StudentProfile } from '../types/user';
+import type { RegistrationData, LoginData, User, Profile, LoginResponse, ApiResponse, StudentProfileCreateData, StudentProfile, CreateStudentData } from '../types/user';
 import { registrationApi, loginApi, profileApi, studentProfileCreateApi, getStudentProfileApi } from '../constants/endpoints';
 
 interface UserState {
@@ -20,6 +20,7 @@ interface UserState {
   fetchStudentProfile: (userId: string, signal?: AbortSignal) => Promise<void>;
   createStudentProfile: (data: StudentProfileCreateData, signal?: AbortSignal) => Promise<boolean>;
   updateStudentProfile: (profileId: string, data: Partial<StudentProfileCreateData>, signal?: AbortSignal) => Promise<boolean>;
+  createStudentByAdmin: (data: CreateStudentData, signal?: AbortSignal) => Promise<boolean>;
   logout: () => void;
   resetState: () => void;
 }
@@ -325,6 +326,87 @@ export const useUserStore = create<UserState>((set) => ({
       }
 
       set({ error: (err as Error).message, loading: false });
+      return false;
+    }
+  },
+
+  createStudentByAdmin: async (data: CreateStudentData, signal?: AbortSignal): Promise<boolean> => {
+    set({ loading: true, error: null, success: false });
+    try {
+      // Step 1: Create User
+      const userResponse = await axiosInstance.post<ApiResponse>(
+        registrationApi,
+        {
+          name: data.name,
+          phone_number: data.phone_number,
+          password: data.password,
+        },
+        {
+          signal,
+        }
+      );
+
+      const userResult = userResponse.data;
+
+      if (!userResult.success) {
+        const errorMessage = userResult.message || 'Failed to create user';
+        const errors = userResult.errors;
+
+        if (errors && typeof errors === 'object') {
+          const formattedErrors = Object.entries(errors)
+            .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
+            .join('; ');
+          throw new Error(formattedErrors || errorMessage);
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      // Step 2: Create Student Profile
+      const profileResponse = await axiosInstance.post<ApiResponse<StudentProfile>>(
+        studentProfileCreateApi,
+        {
+          father_name: data.father_name,
+          father_contact: data.father_contact,
+          college: data.college,
+          email: data.email,
+        },
+        {
+          signal,
+        }
+      );
+
+      const profileResult = profileResponse.data;
+
+      if (!profileResult.success) {
+        const errorMessage = profileResult.message || 'Failed to create student profile';
+        const errors = profileResult.errors;
+
+        if (errors && typeof errors === 'object') {
+          const formattedErrors = Object.entries(errors)
+            .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
+            .join('; ');
+          throw new Error(formattedErrors || errorMessage);
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      set({ success: true, loading: false });
+      return true;
+    } catch (err) {
+      if (axios.isCancel(err)) {
+        set({ loading: false });
+        return false;
+      }
+
+      if (axios.isAxiosError(err)) {
+        const errorMessage = err.response?.data?.message || err.message || 'Failed to create student';
+        set({ error: errorMessage, loading: false, success: false });
+        return false;
+      }
+
+      set({ error: (err as Error).message, loading: false, success: false });
       return false;
     }
   },
