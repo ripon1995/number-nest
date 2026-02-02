@@ -2,7 +2,7 @@ import axios from 'axios';
 import axiosInstance from '../utils/axiosConfig';
 import {create} from 'zustand';
 import type {Course} from '../types/course';
-import {courseListCreateApi} from '../constants/endpoints';
+import {courseListCreateApi, getCourseDetailApi} from '../constants/endpoints';
 
 interface CourseState {
     courses: Course[];
@@ -10,6 +10,8 @@ interface CourseState {
     error: string | null;
     fetchCourses: (signal?: AbortSignal) => Promise<void>;
     addCourse: (courseData: Omit<Course, 'id'>) => Promise<Course | null>;
+    updateCourse: (courseId: string, courseData: Partial<Omit<Course, 'id'>>) => Promise<Course | null>;
+    deleteCourse: (courseId: string) => Promise<boolean>;
 }
 
 export const useCourseStore = create<CourseState>((set) => ({
@@ -83,6 +85,77 @@ export const useCourseStore = create<CourseState>((set) => ({
             set({error: errorMsg, loading: false});
             console.error('Add course error:', err);
             return null;
+        }
+    },
+
+    updateCourse: async (courseId: string, courseData: Partial<Omit<Course, 'id'>>): Promise<Course | null> => {
+        set({loading: true, error: null});
+
+        try {
+            const response = await axiosInstance.patch(
+                getCourseDetailApi(courseId),
+                courseData
+            );
+
+            const updatedCourse = response.data.data;
+
+            // Update the course in the local state
+            set((state) => ({
+                courses: state.courses.map((course) =>
+                    course.id === courseId ? updatedCourse : course
+                ),
+                loading: false,
+            }));
+
+            return updatedCourse;
+
+        } catch (err) {
+            let errorMsg = 'Failed to update course';
+
+            if (axios.isAxiosError(err)) {
+                errorMsg =
+                    err.response?.data?.message ||
+                    err.response?.data?.detail ||
+                    err.response?.data?.non_field_errors?.[0] ||
+                    err.message ||
+                    errorMsg;
+            }
+
+            set({error: errorMsg, loading: false});
+            console.error('Update course error:', err);
+            return null;
+        }
+    },
+
+    deleteCourse: async (courseId: string): Promise<boolean> => {
+        set({loading: true, error: null});
+
+        try {
+            await axiosInstance.delete(getCourseDetailApi(courseId));
+
+            // Remove the course from the local state
+            set((state) => ({
+                courses: state.courses.filter((course) => course.id !== courseId),
+                loading: false,
+            }));
+
+            return true;
+
+        } catch (err) {
+            let errorMsg = 'Failed to delete course';
+
+            if (axios.isAxiosError(err)) {
+                errorMsg =
+                    err.response?.data?.message ||
+                    err.response?.data?.detail ||
+                    err.response?.data?.non_field_errors?.[0] ||
+                    err.message ||
+                    errorMsg;
+            }
+
+            set({error: errorMsg, loading: false});
+            console.error('Delete course error:', err);
+            return false;
         }
     },
 

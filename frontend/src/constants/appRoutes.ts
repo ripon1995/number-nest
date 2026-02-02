@@ -2,6 +2,7 @@ export const AppRoutes = {
     LOGIN: '/',
     REGISTER: '/register',
     DASHBOARD: '/dashboard',
+    COURSES: '/courses',
     COURSE_DETAILS: '/course/:id',
     COURSE_PLAN: '/course/:id/course-plan',
     COURSE_ROUTINE: '/course/:id/course-routine',

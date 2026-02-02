@@ -1,30 +1,37 @@
 import {Card, CardContent, Typography, Box} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
-import {School, Info, ContactMail} from '@mui/icons-material';
+import {School, Info, ContactMail, MenuBook} from '@mui/icons-material';
 import {colors} from '../../utils/colors';
 import {AppRoutes} from '../../constants/appRoutes';
 
 const navigationItems = [
     {
+        title: 'Courses',
+        icon: MenuBook,
+        route: AppRoutes.COURSES,
+        description: 'Manage courses and batches',
+        color: colors.primary.main,
+    },
+    {
         title: 'Students',
         icon: School,
         route: AppRoutes.STUDENTS,
         description: 'Manage student information',
-        color: colors.primary.main,
+        color: colors.secondary.main,
     },
     {
         title: 'About',
         icon: Info,
         route: AppRoutes.ABOUT,
         description: 'Learn more about us',
-        color: colors.secondary.main,
+        color: colors.accent.teal,
     },
     {
         title: 'Contact',
         icon: ContactMail,
         route: AppRoutes.CONTACT,
         description: 'Get in touch with us',
-        color: colors.accent.teal,
+        color: colors.accent.purple,
     },
 ];
 

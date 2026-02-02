@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard';
 import Registration from './components/Registration';
 import Login from './components/Login';
 import {AppRoutes, PathName} from "./constants/appRoutes.ts";
+import Courses from "./components/Courses.tsx";
 import CourseDetail from "./components/CourseDetail.tsx";
 import Profile from "./components/Profile.tsx";
 import ProfileCreation from "./components/ProfileCreation.tsx";
@@ -27,6 +28,7 @@ function App() {
                 <Route path={AppRoutes.LOGIN} element={<Login/>}/>
                 <Route path={AppRoutes.REGISTER} element={<Registration/>}/>
                 <Route path={AppRoutes.DASHBOARD} element={<Dashboard/>}/>
+                <Route path={AppRoutes.COURSES} element={<Courses/>}/>
                 <Route path={AppRoutes.COURSE_DETAILS} element={<CourseDetail/>}>
                     <Route index element={<CourseInfoView/>}/>
                     <Route path={PathName.PATH_COURSE_PLAN} element={<CoursePlanView/>}/>
