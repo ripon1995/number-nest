@@ -19,7 +19,6 @@ class CourseListCreateAPIView(ListCreateAPIView):
     serializer_class = CourseCreateSerializer
 
     def get_permissions(self):
-        pass
         if self.request.method == "POST":
             return [IsAdmin()]
         return [IsAdminOrIsStudent()]

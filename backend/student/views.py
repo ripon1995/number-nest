@@ -18,8 +18,13 @@ from .serializers import (
 
 
 class StudentListCreateAPIView(ListCreateAPIView):
-    permission_classes = [IsAdminOrIsStudent]
     queryset = StudentProfile.objects.all()
+
+    def get_permissions(self):
+        pass
+        if self.request.method == "POST":
+            return [IsAdmin()]
+        return [IsAdminOrIsStudent()]
 
     def get_queryset(self):
         queryset = super().get_queryset()
