@@ -59,11 +59,7 @@ class StudentProfileRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = StudentProfile.objects.all()
 
     def get_permissions(self):
-        if (
-                self.request.method == "PUT"
-                or self.request.method == "GET"
-                or self.request.method == "PATCH"
-        ):
+        if self.request.method == "GET":
             return [IsAdminOrIsStudent()]
 
         return [IsAdmin()]
