@@ -5,7 +5,7 @@ from rest_framework_mongoengine.generics import (
 )
 
 from utils import success_response
-from utils.permissions import IsAdmin, IsAdminOrIsStudent, IsPublic
+from utils.permissions import IsAdmin, IsAdminOrIsStudent
 from .models import Course
 from .serializers import (
     CourseCreateSerializer,
@@ -19,9 +19,10 @@ class CourseListCreateAPIView(ListCreateAPIView):
     serializer_class = CourseCreateSerializer
 
     def get_permissions(self):
+        pass
         if self.request.method == "POST":
-            return [IsPublic()]
-        return [IsPublic()]
+            return [IsAdmin()]
+        return [IsAdminOrIsStudent()]
 
     def list(self, request, *args, **kwargs):
         queryset = self.queryset
@@ -47,8 +48,8 @@ class CourseRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     def get_permissions(self):
         if self.request.method == "GET":
-            return [IsPublic()]
-        return [IsPublic()]
+            return [IsAdminOrIsStudent()]
+        return [IsAdmin()]
 
     def retrieve(self, request, *args, **kwargs):
         course = self.get_object()
