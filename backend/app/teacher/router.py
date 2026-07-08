@@ -1,43 +1,25 @@
 from fastapi import APIRouter, Depends, status
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.database import get_db
 from app.core.dependencies import get_current_teacher
-from app.core.exceptions import AuthenticationException, ConflictException
 from app.teacher.models import Teacher
 from app.teacher.schemas import Token, TeacherLogin, TeacherRead, TeacherRegister
-from app.teacher.security import create_access_token, hash_password, verify_password
+from app.teacher.service import TeacherService, get_teacher_service
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/register", response_model=TeacherRead, status_code=status.HTTP_201_CREATED)
-async def register(payload: TeacherRegister, db: AsyncSession = Depends(get_db)) -> Teacher:
-    # Single-teacher system: once the one account exists, registration is closed.
-    existing = await db.scalar(select(Teacher))
-    if existing is not None:
-        raise ConflictException("A teacher account already exists")
-
-    teacher = Teacher(
-        email=payload.email,
-        name=payload.name,
-        hashed_password=hash_password(payload.password),
-    )
-    db.add(teacher)
-    await db.commit()
-    await db.refresh(teacher)
-    return teacher
+async def register(
+    payload: TeacherRegister, service: TeacherService = Depends(get_teacher_service)
+) -> Teacher:
+    return await service.register(payload)
 
 
 @router.post("/login", response_model=Token)
-async def login(payload: TeacherLogin, db: AsyncSession = Depends(get_db)) -> Token:
-    teacher = await db.scalar(select(Teacher).where(Teacher.email == payload.email))
-    if teacher is None or not verify_password(payload.password, teacher.hashed_password):
-        raise AuthenticationException("Invalid email or password")
-
-    access_token = create_access_token(subject=str(teacher.id))
-    return Token(access_token=access_token)
+async def login(
+    payload: TeacherLogin, service: TeacherService = Depends(get_teacher_service)
+) -> Token:
+    return await service.login(payload)
 
 
 @router.get("/me", response_model=TeacherRead)
