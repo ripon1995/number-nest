@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Navigate, useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { ApiError } from '../errors/api'
+import ErrorDialog from '../components/ErrorDialog'
 import './AuthForm.css'
 
 function LoginPage() {
@@ -11,7 +12,7 @@ function LoginPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<ApiError | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   if (!isLoading && teacher) {
@@ -26,7 +27,11 @@ function LoginPage() {
       await login({ email, password })
       navigate('/')
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Something went wrong')
+      setError(
+        err instanceof ApiError
+          ? err
+          : new ApiError(0, 'Something went wrong', 'Something went wrong'),
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -56,7 +61,6 @@ function LoginPage() {
             autoComplete="current-password"
           />
         </label>
-        {error && <p className="error">{error}</p>}
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Logging in…' : 'Log in'}
         </button>
@@ -64,6 +68,7 @@ function LoginPage() {
           No account yet? <Link to="/register">Register</Link>
         </p>
       </form>
+      <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>
   )
 }

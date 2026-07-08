@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Navigate, useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { ApiError } from '../errors/api'
+import ErrorDialog from '../components/ErrorDialog'
 import './AuthForm.css'
 
 function RegisterPage() {
@@ -12,7 +13,7 @@ function RegisterPage() {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<ApiError | null>(null)
   const [accountExists, setAccountExists] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -32,7 +33,11 @@ function RegisterPage() {
       if (err instanceof ApiError && err.status === 409) {
         setAccountExists(true)
       } else {
-        setError(err instanceof ApiError ? err.message : 'Something went wrong')
+        setError(
+          err instanceof ApiError
+            ? err
+            : new ApiError(0, 'Something went wrong', 'Something went wrong'),
+        )
       }
     } finally {
       setIsSubmitting(false)
@@ -73,7 +78,6 @@ function RegisterPage() {
             autoComplete="new-password"
           />
         </label>
-        {error && <p className="error">{error}</p>}
         {accountExists && (
           <p className="error">
             A teacher account already exists. <Link to="/login">Log in instead</Link>.
@@ -86,6 +90,7 @@ function RegisterPage() {
           Already have an account? <Link to="/login">Log in</Link>
         </p>
       </form>
+      <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>
   )
 }
