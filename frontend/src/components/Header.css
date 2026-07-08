@@ -1,20 +1,17 @@
 .app-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  padding: 20px 0;
+  justify-content: space-between;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--border);
 }
 
 .app-logo {
-  height: 64px;
+  height: 48px;
   width: auto;
 }
 
 .app-header-account {
-  position: absolute;
-  right: 20px;
   display: flex;
   align-items: center;
   gap: 10px;

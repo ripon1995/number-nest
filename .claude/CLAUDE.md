@@ -4,7 +4,7 @@ A basic course/student management system for tracking course enrollment, manual 
 
 ## Status
 
-`frontend/` is scaffolded (Vite + React + TypeScript, with a `Header` component rendering the app logo on every page). `backend/` is scaffolded with a module per feature (`app/courses/`, `app/students/`, `app/enrollments/`, `app/payments/`, `app/attendance/`) — most are still `# TODO` stubs. `app/teacher/` is implemented: the `Teacher` model plus register/login/me auth endpoints (JWT bearer tokens, bcrypt password hashing). Shared infra (`Settings`, DB engine/session, the `get_current_teacher` auth dependency) lives in `app/core/`. Alembic migrations run against a Supabase Postgres project over the transaction pooler. This file documents the intended stack and feature scope so implementation stays consistent as it's built out.
+`frontend/` is scaffolded (Vite + React + TypeScript) with teacher auth wired up end-to-end: `LoginPage`/`RegisterPage`/`DashboardPage`, an `AuthContext` holding the teacher session, and a `ProtectedRoute` gating authenticated routes. `Header` renders the app logo top-left (plus the logged-in teacher's name and a logout button) on every page. Once logged in, a `NavMenu` appears below the header linking to Dashboard, Students, Courses, Enrollments, Payments, and Attendance; the latter five are placeholder pages pending their backend endpoints. The layout is full-width and forced to a single light theme (no dark-mode media query). `backend/` is scaffolded with a module per feature (`app/courses/`, `app/students/`, `app/enrollments/`, `app/payments/`, `app/attendance/`) — most are still `# TODO` stubs. `app/teacher/` is implemented: the `Teacher` model plus register/login/me auth endpoints (JWT bearer tokens, bcrypt password hashing). Shared infra (`Settings`, DB engine/session, the `get_current_teacher` auth dependency) lives in `app/core/`. Alembic migrations run against a Supabase Postgres project over the transaction pooler. This file documents the intended stack and feature scope so implementation stays consistent as it's built out.
 
 ## Stack
 
@@ -28,7 +28,10 @@ backend/
   migrations/       Alembic (async env.py)
 frontend/   React app (Vite + TypeScript)
   src/assets/       static assets, incl. logo.svg
-  src/components/   shared components (e.g. Header)
+  src/components/   shared components: Header, NavMenu, ProtectedRoute
+  src/context/      AuthContext (teacher session state)
+  src/pages/        route pages: Login, Register, Dashboard (implemented); Students, Courses, Enrollments, Payments, Attendance (placeholders)
+  src/lib/          api.ts — fetch helpers for the backend
 docs/       project docs
 ```
 
