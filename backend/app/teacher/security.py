@@ -1,3 +1,5 @@
+import hashlib
+import secrets
 from datetime import datetime, timedelta, timezone
 
 import bcrypt
@@ -28,3 +30,18 @@ def decode_access_token(token: str) -> str:
         token, settings.jwt_secret_key, algorithms=[settings.jwt_algorithm]
     )
     return payload["sub"]
+
+
+def generate_refresh_token() -> str:
+    """A high-entropy opaque token — unlike the JWT access token, it carries no
+    payload, so it can only be validated by looking up its hash in the DB (which
+    also makes it revocable).
+    """
+    return secrets.token_urlsafe(48)
+
+
+def hash_refresh_token(raw_token: str) -> str:
+    """SHA-256 is sufficient here (not bcrypt): the token is already high-entropy
+    and random, not a low-entropy user-chosen password vulnerable to brute force.
+    """
+    return hashlib.sha256(raw_token.encode("utf-8")).hexdigest()

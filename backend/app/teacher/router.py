@@ -2,7 +2,13 @@ from fastapi import APIRouter, Depends, status
 
 from app.core.dependencies import get_current_teacher
 from app.teacher.models import Teacher
-from app.teacher.schemas import Token, TeacherLogin, TeacherRead, TeacherRegister
+from app.teacher.schemas import (
+    RefreshTokenRequest,
+    TeacherLogin,
+    TeacherRead,
+    TeacherRegister,
+    Token,
+)
 from app.teacher.service import TeacherService, get_teacher_service
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -22,6 +28,22 @@ async def login(
         service: TeacherService = Depends(get_teacher_service)
 ) -> Token:
     return await service.login(payload)
+
+
+@router.post("/refresh", response_model=Token)
+async def refresh(
+        payload: RefreshTokenRequest,
+        service: TeacherService = Depends(get_teacher_service)
+) -> Token:
+    return await service.refresh(payload.refresh_token)
+
+
+@router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
+async def logout(
+        payload: RefreshTokenRequest,
+        service: TeacherService = Depends(get_teacher_service)
+) -> None:
+    await service.logout(payload.refresh_token)
 
 
 @router.get("/me", response_model=TeacherRead)
