@@ -28,6 +28,7 @@ class CourseRepository:
         *,
         course_name: str,
         course_fee: Decimal,
+        enrollment_fee: Decimal,
         subject: str,
         course_days: list[str],
         capacity: int,
@@ -36,6 +37,7 @@ class CourseRepository:
         course = Course(
             course_name=course_name,
             course_fee=course_fee,
+            enrollment_fee=enrollment_fee,
             subject=subject,
             course_days=course_days,
             capacity=capacity,
@@ -52,6 +54,7 @@ class CourseRepository:
         *,
         course_name: str,
         course_fee: Decimal,
+        enrollment_fee: Decimal,
         subject: str,
         course_days: list[str],
         capacity: int,
@@ -59,6 +62,7 @@ class CourseRepository:
     ) -> Course:
         course.course_name = course_name
         course.course_fee = course_fee
+        course.enrollment_fee = enrollment_fee
         course.subject = subject
         course.course_days = course_days
         course.capacity = capacity

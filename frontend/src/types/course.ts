@@ -12,6 +12,7 @@ export interface Course {
   id: string
   course_name: string
   course_fee: string
+  enrollment_fee: string
   subject: CourseSubject
   course_days: CourseDay[]
   capacity: number
@@ -21,6 +22,7 @@ export interface Course {
 export interface CourseInput {
   course_name: string
   course_fee: string
+  enrollment_fee: string
   subject: CourseSubject
   course_days: CourseDay[]
   capacity: number

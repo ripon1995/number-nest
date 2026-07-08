@@ -10,7 +10,9 @@ interface EnrollmentTableProps {
   coursesById: Map<string, Course>
   isLoading: boolean
   deletingId: string | null
+  updatingFeePaidId: string | null
   onDelete: (enrollment: Enrollment) => void
+  onToggleFeePaid: (enrollment: Enrollment) => void
 }
 
 function EnrollmentTable({
@@ -19,7 +21,9 @@ function EnrollmentTable({
   coursesById,
   isLoading,
   deletingId,
+  updatingFeePaidId,
   onDelete,
+  onToggleFeePaid,
 }: EnrollmentTableProps) {
   if (isLoading) return <p>Loading enrollments…</p>
   if (enrollments.length === 0) return <p>No enrollments yet.</p>
@@ -31,6 +35,7 @@ function EnrollmentTable({
           <th>Student</th>
           <th>Course</th>
           <th>Start date</th>
+          <th>Fee paid</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -40,6 +45,15 @@ function EnrollmentTable({
             <td>{studentsById.get(enrollment.student_id)?.name ?? 'Unknown student'}</td>
             <td>{coursesById.get(enrollment.course_id)?.course_name ?? 'Unknown course'}</td>
             <td>{enrollment.start_from}</td>
+            <td>
+              <input
+                type="checkbox"
+                aria-label="Enrollment fee paid"
+                checked={enrollment.enrollment_fee_paid}
+                onChange={() => onToggleFeePaid(enrollment)}
+                disabled={updatingFeePaidId === enrollment.id}
+              />
+            </td>
             <td className="enrollment-row-actions">
               <button
                 type="button"

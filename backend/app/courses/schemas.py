@@ -10,6 +10,7 @@ from app.students.schemas import StudentRead
 class CourseBase(BaseModel):
     course_name: str = Field(min_length=1)
     course_fee: Decimal = Field(ge=0)
+    enrollment_fee: Decimal = Field(ge=0)
     subject: CourseSubject
     course_days: list[CourseDay] = Field(min_length=1)
     capacity: int = Field(gt=0)

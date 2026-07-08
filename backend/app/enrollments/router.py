@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 
 from app.core.dependencies import get_current_teacher
 from app.enrollments.models import Enrollment
-from app.enrollments.schemas import EnrollmentCreate, EnrollmentRead
+from app.enrollments.schemas import EnrollmentCreate, EnrollmentFeeUpdate, EnrollmentRead
 from app.enrollments.service import EnrollmentService, get_enrollment_service
 
 router = APIRouter(
@@ -27,6 +27,15 @@ async def list_enrollments(
         service: EnrollmentService = Depends(get_enrollment_service)
 ) -> list[Enrollment]:
     return await service.list_all(student_id=student_id, course_id=course_id)
+
+
+@router.patch("/{enrollment_id}/fee-paid", response_model=EnrollmentRead)
+async def update_enrollment_fee_paid(
+        enrollment_id: uuid.UUID,
+        payload: EnrollmentFeeUpdate,
+        service: EnrollmentService = Depends(get_enrollment_service)
+) -> Enrollment:
+    return await service.set_fee_paid(enrollment_id, payload.enrollment_fee_paid)
 
 
 @router.delete("/{enrollment_id}", status_code=status.HTTP_204_NO_CONTENT)

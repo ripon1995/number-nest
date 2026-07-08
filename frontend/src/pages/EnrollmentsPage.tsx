@@ -18,6 +18,7 @@ function EnrollmentsPage() {
   const isLoading = useEnrollmentStore((state) => state.isLoading)
   const fetchEnrollments = useEnrollmentStore((state) => state.fetchEnrollments)
   const deleteEnrollment = useEnrollmentStore((state) => state.deleteEnrollment)
+  const updateEnrollmentFeePaid = useEnrollmentStore((state) => state.updateEnrollmentFeePaid)
 
   const students = useStudentStore((state) => state.students)
   const fetchStudents = useStudentStore((state) => state.fetchStudents)
@@ -27,6 +28,7 @@ function EnrollmentsPage() {
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [updatingFeePaidId, setUpdatingFeePaidId] = useState<string | null>(null)
 
   useEffect(() => {
     fetchEnrollments().catch((err) => setError(toApiError(err)))
@@ -49,6 +51,18 @@ function EnrollmentsPage() {
       setError(toApiError(err))
     } finally {
       setDeletingId(null)
+    }
+  }
+
+  async function handleToggleFeePaid(enrollment: Enrollment) {
+    setUpdatingFeePaidId(enrollment.id)
+    setError(null)
+    try {
+      await updateEnrollmentFeePaid(enrollment.id, !enrollment.enrollment_fee_paid)
+    } catch (err) {
+      setError(toApiError(err))
+    } finally {
+      setUpdatingFeePaidId(null)
     }
   }
 
@@ -82,7 +96,9 @@ function EnrollmentsPage() {
           coursesById={coursesById}
           isLoading={isLoading}
           deletingId={deletingId}
+          updatingFeePaidId={updatingFeePaidId}
           onDelete={handleDelete}
+          onToggleFeePaid={handleToggleFeePaid}
         />
       </section>
 

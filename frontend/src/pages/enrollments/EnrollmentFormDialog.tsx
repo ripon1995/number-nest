@@ -18,6 +18,7 @@ interface FormState {
   student_id: string
   course_id: string
   start_from: string
+  enrollment_fee_paid: boolean
 }
 
 function EnrollmentFormDialog({ students, courses, onClose, onError }: EnrollmentFormDialogProps) {
@@ -27,6 +28,7 @@ function EnrollmentFormDialog({ students, courses, onClose, onError }: Enrollmen
     student_id: students[0]?.id ?? '',
     course_id: courses[0]?.id ?? '',
     start_from: '',
+    enrollment_fee_paid: false,
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -37,6 +39,7 @@ function EnrollmentFormDialog({ students, courses, onClose, onError }: Enrollmen
       student_id: form.student_id,
       course_id: form.course_id,
       start_from: form.start_from,
+      enrollment_fee_paid: form.enrollment_fee_paid,
     }
 
     setIsSubmitting(true)
@@ -94,6 +97,14 @@ function EnrollmentFormDialog({ students, courses, onClose, onError }: Enrollmen
             onChange={(e) => setForm({ ...form, start_from: e.target.value })}
             required
           />
+        </label>
+        <label className="enrollment-fee-paid-option">
+          <input
+            type="checkbox"
+            checked={form.enrollment_fee_paid}
+            onChange={(e) => setForm({ ...form, enrollment_fee_paid: e.target.checked })}
+          />
+          Enrollment fee paid
         </label>
         <div className="enrollment-form-actions">
           <button type="submit" disabled={isSubmitting}>

@@ -16,6 +16,7 @@ interface CourseFormDialogProps {
 interface FormState {
   course_name: string
   course_fee: string
+  enrollment_fee: string
   subject: CourseSubject
   course_days: CourseDay[]
   capacity: string
@@ -25,6 +26,7 @@ interface FormState {
 const emptyForm: FormState = {
   course_name: '',
   course_fee: '',
+  enrollment_fee: '',
   subject: 'math',
   course_days: [],
   capacity: '',
@@ -35,6 +37,7 @@ function toFormState(course: Course): FormState {
   return {
     course_name: course.course_name,
     course_fee: course.course_fee,
+    enrollment_fee: course.enrollment_fee,
     subject: course.subject,
     course_days: course.course_days,
     capacity: String(course.capacity),
@@ -71,6 +74,7 @@ function CourseFormDialog({ course, onClose, onError }: CourseFormDialogProps) {
     const payload: CourseInput = {
       course_name: form.course_name.trim(),
       course_fee: form.course_fee,
+      enrollment_fee: form.enrollment_fee,
       subject: form.subject,
       course_days: form.course_days,
       capacity: Number(form.capacity),
@@ -117,6 +121,17 @@ function CourseFormDialog({ course, onClose, onError }: CourseFormDialogProps) {
             step="0.01"
             value={form.course_fee}
             onChange={(e) => setForm({ ...form, course_fee: e.target.value })}
+            required
+          />
+        </label>
+        <label>
+          Enrollment fee
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            value={form.enrollment_fee}
+            onChange={(e) => setForm({ ...form, enrollment_fee: e.target.value })}
             required
           />
         </label>

@@ -26,6 +26,7 @@ class CourseService:
         return await self.repository.create(
             course_name=payload.course_name,
             course_fee=payload.course_fee,
+            enrollment_fee=payload.enrollment_fee,
             subject=payload.subject.value,
             course_days=[day.value for day in payload.course_days],
             capacity=payload.capacity,
@@ -58,6 +59,7 @@ class CourseService:
             course,
             course_name=payload.course_name,
             course_fee=payload.course_fee,
+            enrollment_fee=payload.enrollment_fee,
             subject=payload.subject.value,
             course_days=[day.value for day in payload.course_days],
             capacity=payload.capacity,

@@ -25,6 +25,7 @@ function CourseTable({ courses, isLoading, deletingId, onEdit, onDelete }: Cours
           <th>Name</th>
           <th>Subject</th>
           <th>Fee</th>
+          <th>Enrollment fee</th>
           <th>Days</th>
           <th>Capacity</th>
           <th>Action</th>
@@ -36,6 +37,7 @@ function CourseTable({ courses, isLoading, deletingId, onEdit, onDelete }: Cours
             <td>{course.course_name}</td>
             <td>{SUBJECT_LABELS[course.subject]}</td>
             <td>{formatFee(course.course_fee)}</td>
+            <td>{formatFee(course.enrollment_fee)}</td>
             <td>{course.course_days.map((day) => DAY_LABELS[day]).join(', ')}</td>
             <td>{course.capacity}</td>
             <td className="course-row-actions">

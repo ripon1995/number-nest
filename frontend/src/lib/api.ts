@@ -139,6 +139,14 @@ export function createEnrollment(input: EnrollmentInput): Promise<Enrollment> {
   })
 }
 
+export function updateEnrollmentFeePaid(id: string, enrollmentFeePaid: boolean): Promise<Enrollment> {
+  return request<Enrollment>(`/enrollments/${id}/fee-paid`, {
+    method: 'PATCH',
+    body: JSON.stringify({ enrollment_fee_paid: enrollmentFeePaid }),
+    headers: authHeaders(),
+  })
+}
+
 export function deleteEnrollment(id: string): Promise<void> {
   return request<void>(`/enrollments/${id}`, {
     method: 'DELETE',

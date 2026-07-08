@@ -13,6 +13,10 @@ plus a table of the course's enrolled students (see [[enrollment]]).
 
 - `course_name` — string, unique
 - `course_fee` — decimal (`Numeric(10, 2)`), must be >= 0
+- `enrollment_fee` — decimal (`Numeric(10, 2)`), must be >= 0 — the one-time fee charged when a
+  student enrolls, distinct from `course_fee`'s recurring amount. Whether a given [[enrollment]]
+  has actually paid it is tracked separately, on the `Enrollment` row (`enrollment_fee_paid`),
+  not here — this field is just the course-level amount owed.
 - `subject` — enum: `math`, `ict`. Validated by a Pydantic enum (`CourseSubject`
   in `app/courses/schemas.py`); stored as a plain string column, not a native
   Postgres enum type, to keep future value additions a simple app-layer change
@@ -33,10 +37,11 @@ plus a table of the course's enrolled students (see [[enrollment]]).
 - No payment gateway logic lives here — fee is just the amount used by [[payment-tracking]] when recording manual payments.
 - `course_name` is unique — creating or renaming to a name already in use raises a `ConflictException` (409).
 - Unlike [[enrollment]], courses support edit-in-place (`PUT /courses/{id}`), not just add/delete.
-- In the frontend list table, `course_fee` is rounded for display (`formatFee` in
-  `src/pages/courses/courseDisplay.ts`); the raw decimal string from the API is still
-  sent unchanged on create/update. `course_motto` is intentionally omitted from the
-  list table — it only appears in the create/edit form and the read-only detail page.
+- In the frontend list table, `course_fee` and `enrollment_fee` are rounded for display
+  (`formatFee` in `src/pages/courses/courseDisplay.ts`, reused for both); the raw decimal
+  string from the API is still sent unchanged on create/update. `course_motto` is
+  intentionally omitted from the list table — it only appears in the create/edit form and
+  the read-only detail page.
 - `GET /courses/{id}` returns `CourseDetailRead` (`app/courses/schemas.py`) — the course
   fields plus `students: StudentRead[]`, the list of currently enrolled [[students]].
   `CourseService.get_detail` builds this by calling `EnrollmentRepository.list_students_for_course`

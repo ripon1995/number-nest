@@ -1,7 +1,7 @@
 import uuid
 from datetime import date, datetime
 
-from sqlalchemy import Date, DateTime, ForeignKey, UniqueConstraint, func
+from sqlalchemy import Boolean, Date, DateTime, ForeignKey, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.database import Base
@@ -27,6 +27,7 @@ class Enrollment(Base):
         ForeignKey("courses.id", ondelete="CASCADE"), index=True
     )
     start_from: Mapped[date] = mapped_column(Date)
+    enrollment_fee_paid: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

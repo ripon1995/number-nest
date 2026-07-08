@@ -33,6 +33,7 @@ class Course(Base):
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     course_name: Mapped[str] = mapped_column(unique=True, index=True)
     course_fee: Mapped[Decimal] = mapped_column(Numeric(10, 2))
+    enrollment_fee: Mapped[Decimal] = mapped_column(Numeric(10, 2))
     subject: Mapped[str] = mapped_column(String)
     course_days: Mapped[list[str]] = mapped_column(ARRAY(String))
     capacity: Mapped[int]

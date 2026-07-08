@@ -50,6 +50,10 @@ function CourseDetailPage() {
                 <dd>{formatFee(course.course_fee)}</dd>
               </div>
               <div>
+                <dt>Enrollment fee</dt>
+                <dd>{formatFee(course.enrollment_fee)}</dd>
+              </div>
+              <div>
                 <dt>Days</dt>
                 <dd>{formatDays(course.course_days)}</dd>
               </div>

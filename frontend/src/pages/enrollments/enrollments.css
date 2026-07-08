@@ -67,6 +67,16 @@
   outline-offset: 1px;
 }
 
+.enrollment-fee-paid-option {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px !important;
+}
+
+.enrollment-fee-paid-option input {
+  width: auto;
+}
+
 .enrollment-form-actions {
   display: flex;
   gap: 10px;

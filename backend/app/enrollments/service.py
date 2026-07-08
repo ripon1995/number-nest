@@ -44,6 +44,15 @@ class EnrollmentService:
             student_id=payload.student_id,
             course_id=payload.course_id,
             start_from=payload.start_from,
+            enrollment_fee_paid=payload.enrollment_fee_paid,
+        )
+
+    async def set_fee_paid(self, enrollment_id: uuid.UUID, enrollment_fee_paid: bool) -> Enrollment:
+        enrollment = await self.repository.get_by_id(enrollment_id)
+        if enrollment is None:
+            raise NotFoundException(f"Enrollment {enrollment_id} not found")
+        return await self.repository.update_fee_paid(
+            enrollment, enrollment_fee_paid=enrollment_fee_paid
         )
 
     async def list_all(

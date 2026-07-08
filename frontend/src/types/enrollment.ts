@@ -3,6 +3,7 @@ export interface Enrollment {
   student_id: string
   course_id: string
   start_from: string
+  enrollment_fee_paid: boolean
   created_at: string
 }
 
@@ -10,4 +11,5 @@ export interface EnrollmentInput {
   student_id: string
   course_id: string
   start_from: string
+  enrollment_fee_paid: boolean
 }

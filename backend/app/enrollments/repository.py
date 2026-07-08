@@ -47,10 +47,26 @@ class EnrollmentRepository:
         return list(result.all())
 
     async def create(
-        self, *, student_id: uuid.UUID, course_id: uuid.UUID, start_from: date
+        self,
+        *,
+        student_id: uuid.UUID,
+        course_id: uuid.UUID,
+        start_from: date,
+        enrollment_fee_paid: bool,
     ) -> Enrollment:
-        enrollment = Enrollment(student_id=student_id, course_id=course_id, start_from=start_from)
+        enrollment = Enrollment(
+            student_id=student_id,
+            course_id=course_id,
+            start_from=start_from,
+            enrollment_fee_paid=enrollment_fee_paid,
+        )
         self.db.add(enrollment)
+        await self.db.commit()
+        await self.db.refresh(enrollment)
+        return enrollment
+
+    async def update_fee_paid(self, enrollment: Enrollment, *, enrollment_fee_paid: bool) -> Enrollment:
+        enrollment.enrollment_fee_paid = enrollment_fee_paid
         await self.db.commit()
         await self.db.refresh(enrollment)
         return enrollment
