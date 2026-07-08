@@ -10,14 +10,16 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=TeacherRead, status_code=status.HTTP_201_CREATED)
 async def register(
-    payload: TeacherRegister, service: TeacherService = Depends(get_teacher_service)
+        payload: TeacherRegister,
+        service: TeacherService = Depends(get_teacher_service)
 ) -> Teacher:
     return await service.register(payload)
 
 
 @router.post("/login", response_model=Token)
 async def login(
-    payload: TeacherLogin, service: TeacherService = Depends(get_teacher_service)
+        payload: TeacherLogin,
+        service: TeacherService = Depends(get_teacher_service)
 ) -> Token:
     return await service.login(payload)
 
