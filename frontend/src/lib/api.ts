@@ -4,6 +4,8 @@ import type { LoginInput, RegisterInput, Teacher, Token } from '../types/auth'
 import type { Course, CourseDetail, CourseInput } from '../types/course'
 import type { Student, StudentInput } from '../types/student'
 import type { Enrollment, EnrollmentInput } from '../types/enrollment'
+import type { Payment, PaymentInput } from '../types/payment'
+import type { AttendanceRecord, AttendanceBulkInput } from '../types/attendance'
 
 function authHeaders(): HeadersInit {
   const token = localStorage.getItem(TOKEN_STORAGE_KEY)
@@ -139,6 +141,46 @@ export function createEnrollment(input: EnrollmentInput): Promise<Enrollment> {
 
 export function deleteEnrollment(id: string): Promise<void> {
   return request<void>(`/enrollments/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  })
+}
+
+export function getPayments(): Promise<Payment[]> {
+  return request<Payment[]>('/payments', { headers: authHeaders() })
+}
+
+export function createPayment(input: PaymentInput): Promise<Payment> {
+  return request<Payment>('/payments', {
+    method: 'POST',
+    body: JSON.stringify(input),
+    headers: authHeaders(),
+  })
+}
+
+export function deletePayment(id: string): Promise<void> {
+  return request<void>(`/payments/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  })
+}
+
+export function getAttendance(courseId: string, sessionDate?: string): Promise<AttendanceRecord[]> {
+  const params = new URLSearchParams({ course_id: courseId })
+  if (sessionDate) params.set('session_date', sessionDate)
+  return request<AttendanceRecord[]>(`/attendance?${params.toString()}`, { headers: authHeaders() })
+}
+
+export function submitAttendance(input: AttendanceBulkInput): Promise<AttendanceRecord[]> {
+  return request<AttendanceRecord[]>('/attendance/bulk', {
+    method: 'POST',
+    body: JSON.stringify(input),
+    headers: authHeaders(),
+  })
+}
+
+export function deleteAttendance(id: string): Promise<void> {
+  return request<void>(`/attendance/${id}`, {
     method: 'DELETE',
     headers: authHeaders(),
   })

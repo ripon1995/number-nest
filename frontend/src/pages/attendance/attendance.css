@@ -1,0 +1,103 @@
+.attendance-page {
+  align-items: center;
+  width: 100%;
+}
+
+.attendance-page-header {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.attendance-page-header h1 {
+  margin: 32px 0;
+}
+
+.attendance-controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto 16px;
+  flex-wrap: wrap;
+}
+
+.attendance-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 15px;
+  color: var(--text-h);
+  min-width: 220px;
+}
+
+.attendance-controls input,
+.attendance-controls select {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-h);
+}
+
+.attendance-sheet {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.attendance-sheet table {
+  width: 100%;
+  max-width: 480px;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow:
+    rgba(16, 24, 40, 0.12) 0 20px 25px -5px,
+    rgba(16, 24, 40, 0.08) 0 8px 10px -6px;
+  overflow: hidden;
+  font-size: 15px;
+}
+
+.attendance-sheet th,
+.attendance-sheet td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.attendance-sheet th {
+  color: var(--text-h);
+  font-weight: 700;
+}
+
+.attendance-sheet tr:last-child td {
+  border-bottom: none;
+}
+
+.attendance-sheet input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+}
+
+.attendance-sheet-actions {
+  margin-top: 16px;
+}
+
+.attendance-sheet-actions button {
+  font: inherit;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.attendance-sheet-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

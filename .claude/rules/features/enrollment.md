@@ -29,8 +29,9 @@ and one course exist.
 - A student can't be enrolled in the same course twice — enforced by a DB unique constraint on
   `(student_id, course_id)` plus a service-layer `ConflictException` (409) check in `EnrollmentService.enroll`.
 - Deleting a student or course cascades to their enrollments (`ondelete="CASCADE"`). Deleting an enrollment is
-  the anchor point that [[payment-tracking]] and [[attendance]] records will hang off once those features exist —
-  consider whether those deletes should cascade or be blocked when related records exist.
+  the anchor point that [[payment-tracking]] and [[attendance]] records hang off (both via an `enrollment_id`
+  FK with `ondelete="CASCADE"`) — deleting an enrollment cascades to delete its payments and attendance records
+  too, rather than being blocked when related records exist.
 - [[course]]'s detail endpoint (`GET /courses/{id}`) surfaces a course's enrolled students via
   `EnrollmentRepository.list_students_for_course`, separately from the dedicated `EnrollmentsPage`
   list (the two are not backed by the same frontend query).
