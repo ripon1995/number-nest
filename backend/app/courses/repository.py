@@ -1,1 +1,72 @@
-# TODO: CourseRepository - data access for the Course model.
+import uuid
+from decimal import Decimal
+
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.courses.models import Course
+
+
+class CourseRepository:
+    """Data access for the Course model. No business rules belong above this layer."""
+
+    def __init__(self, db: AsyncSession) -> None:
+        self.db = db
+
+    async def get_by_id(self, course_id: uuid.UUID) -> Course | None:
+        return await self.db.get(Course, course_id)
+
+    async def get_by_name(self, course_name: str) -> Course | None:
+        return await self.db.scalar(select(Course).where(Course.course_name == course_name))
+
+    async def list_all(self) -> list[Course]:
+        result = await self.db.scalars(select(Course).order_by(Course.id))
+        return list(result.all())
+
+    async def create(
+        self,
+        *,
+        course_name: str,
+        course_fee: Decimal,
+        subject: str,
+        course_days: list[str],
+        capacity: int,
+        course_motto: str | None,
+    ) -> Course:
+        course = Course(
+            course_name=course_name,
+            course_fee=course_fee,
+            subject=subject,
+            course_days=course_days,
+            capacity=capacity,
+            course_motto=course_motto,
+        )
+        self.db.add(course)
+        await self.db.commit()
+        await self.db.refresh(course)
+        return course
+
+    async def update(
+        self,
+        course: Course,
+        *,
+        course_name: str,
+        course_fee: Decimal,
+        subject: str,
+        course_days: list[str],
+        capacity: int,
+        course_motto: str | None,
+    ) -> Course:
+        course.course_name = course_name
+        course.course_fee = course_fee
+        course.subject = subject
+        course.course_days = course_days
+        course.capacity = capacity
+        course.course_motto = course_motto
+        await self.db.commit()
+        await self.db.refresh(course)
+        return course
+
+    async def delete(self, course: Course) -> None:
+        await self.db.delete(course)
+        await self.db.commit()

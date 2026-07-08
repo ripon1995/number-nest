@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends
@@ -62,10 +63,10 @@ class TeacherService:
     async def logout(self, raw_refresh_token: str) -> None:
         await self.refresh_token_repository.revoke_by_hash(hash_refresh_token(raw_refresh_token))
 
-    async def get_by_id(self, teacher_id: int) -> Teacher | None:
+    async def get_by_id(self, teacher_id: uuid.UUID) -> Teacher | None:
         return await self.repository.get_by_id(teacher_id)
 
-    async def _issue_tokens(self, teacher_id: int) -> Token:
+    async def _issue_tokens(self, teacher_id: uuid.UUID) -> Token:
         access_token = create_access_token(subject=str(teacher_id))
 
         raw_refresh_token = generate_refresh_token()

@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime, timezone
 
 from sqlalchemy import select
@@ -12,7 +13,7 @@ class TeacherRepository:
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 
-    async def get_by_id(self, teacher_id: int) -> Teacher | None:
+    async def get_by_id(self, teacher_id: uuid.UUID) -> Teacher | None:
         return await self.db.get(Teacher, teacher_id)
 
     async def get_by_email(self, email: str) -> Teacher | None:
@@ -36,7 +37,7 @@ class RefreshTokenRepository:
         self.db = db
 
     async def create(
-        self, *, teacher_id: int, token_hash: str, expires_at: datetime
+        self, *, teacher_id: uuid.UUID, token_hash: str, expires_at: datetime
     ) -> RefreshToken:
         refresh_token = RefreshToken(
             teacher_id=teacher_id, token_hash=token_hash, expires_at=expires_at

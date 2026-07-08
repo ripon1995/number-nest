@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 
 from sqlalchemy import DateTime, ForeignKey, func
@@ -14,7 +15,7 @@ class Teacher(Base):
 
     __tablename__ = "teachers"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     email: Mapped[str] = mapped_column(unique=True, index=True)
     name: Mapped[str]
     hashed_password: Mapped[str]
@@ -30,8 +31,8 @@ class RefreshToken(Base):
 
     __tablename__ = "refresh_tokens"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    teacher_id: Mapped[int] = mapped_column(
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    teacher_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("teachers.id", ondelete="CASCADE"), index=True
     )
     token_hash: Mapped[str] = mapped_column(unique=True, index=True)
