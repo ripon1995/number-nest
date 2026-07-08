@@ -17,6 +17,10 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     throw new ApiError(response.status, message)
   }
 
+  if (response.status === 204) {
+    return undefined as T
+  }
+
   return response.json() as Promise<T>
 }
 
@@ -37,5 +41,19 @@ export function login(input: LoginInput): Promise<Token> {
 export function getCurrentTeacher(token: string): Promise<Teacher> {
   return request<Teacher>('/auth/me', {
     headers: { Authorization: `Bearer ${token}` },
+  })
+}
+
+export function refreshToken(refreshToken: string): Promise<Token> {
+  return request<Token>('/auth/refresh', {
+    method: 'POST',
+    body: JSON.stringify({ refresh_token: refreshToken }),
+  })
+}
+
+export function logout(refreshToken: string): Promise<void> {
+  return request<void>('/auth/logout', {
+    method: 'POST',
+    body: JSON.stringify({ refresh_token: refreshToken }),
   })
 }

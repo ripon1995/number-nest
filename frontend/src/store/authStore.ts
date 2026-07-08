@@ -3,13 +3,24 @@ import * as api from '../lib/api'
 import type { LoginInput, RegisterInput, Teacher } from '../types/auth'
 
 const TOKEN_STORAGE_KEY = 'number-nest.token'
+const REFRESH_TOKEN_STORAGE_KEY = 'number-nest.refreshToken'
 
 interface AuthState {
   teacher: Teacher | null
   isLoading: boolean
   login: (input: LoginInput) => Promise<void>
   register: (input: RegisterInput) => Promise<void>
-  logout: () => void
+  logout: () => Promise<void>
+}
+
+function storeTokens(accessToken: string, refreshToken: string) {
+  localStorage.setItem(TOKEN_STORAGE_KEY, accessToken)
+  localStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, refreshToken)
+}
+
+function clearTokens() {
+  localStorage.removeItem(TOKEN_STORAGE_KEY)
+  localStorage.removeItem(REFRESH_TOKEN_STORAGE_KEY)
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -17,8 +28,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoading: true,
 
   async login(input) {
-    const { access_token } = await api.login(input)
-    localStorage.setItem(TOKEN_STORAGE_KEY, access_token)
+    const { access_token, refresh_token } = await api.login(input)
+    storeTokens(access_token, refresh_token)
     const teacher = await api.getCurrentTeacher(access_token)
     set({ teacher })
   },
@@ -28,15 +39,22 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     await get().login(input)
   },
 
-  logout() {
-    localStorage.removeItem(TOKEN_STORAGE_KEY)
+  async logout() {
+    const refreshTokenValue = localStorage.getItem(REFRESH_TOKEN_STORAGE_KEY)
+    clearTokens()
     set({ teacher: null })
+    if (refreshTokenValue) {
+      // Best-effort: the local session is already cleared either way.
+      await api.logout(refreshTokenValue).catch(() => {})
+    }
   },
 }))
 
 async function hydrateFromStoredToken() {
   const token = localStorage.getItem(TOKEN_STORAGE_KEY)
-  if (!token) {
+  const refreshTokenValue = localStorage.getItem(REFRESH_TOKEN_STORAGE_KEY)
+  if (!token || !refreshTokenValue) {
+    clearTokens()
     useAuthStore.setState({ isLoading: false })
     return
   }
@@ -44,8 +62,18 @@ async function hydrateFromStoredToken() {
   try {
     const teacher = await api.getCurrentTeacher(token)
     useAuthStore.setState({ teacher, isLoading: false })
+    return
   } catch {
-    localStorage.removeItem(TOKEN_STORAGE_KEY)
+    // Access token likely expired — fall through to refresh.
+  }
+
+  try {
+    const refreshed = await api.refreshToken(refreshTokenValue)
+    storeTokens(refreshed.access_token, refreshed.refresh_token)
+    const teacher = await api.getCurrentTeacher(refreshed.access_token)
+    useAuthStore.setState({ teacher, isLoading: false })
+  } catch {
+    clearTokens()
     useAuthStore.setState({ teacher: null, isLoading: false })
   }
 }

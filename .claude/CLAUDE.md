@@ -4,7 +4,7 @@ A basic course/student management system for tracking course enrollment, manual 
 
 ## Status
 
-`frontend/` is scaffolded (Vite + React + TypeScript) with teacher auth wired up end-to-end: `LoginPage`/`RegisterPage`/`DashboardPage`, a Zustand `authStore` holding the teacher session, and a `ProtectedRoute` gating authenticated routes. `Header` renders the app logo top-left (plus the logged-in teacher's name and a logout button) on every page. Once logged in, a `NavMenu` appears below the header linking to Dashboard, Students, Courses, Enrollments, Payments, and Attendance; the latter five are placeholder pages pending their backend endpoints. The layout is full-width and forced to a single light theme (no dark-mode media query). `backend/` is scaffolded with a module per feature (`app/courses/`, `app/students/`, `app/enrollments/`, `app/payments/`, `app/attendance/`) — most are still `# TODO` stubs. `app/teacher/` is implemented: the `Teacher` model plus register/login/me auth endpoints (JWT bearer tokens, bcrypt password hashing), split into router (HTTP)/service (business logic)/repository (data access) layers — see [Backend architecture](#backend-architecture). Shared infra (`Settings`, DB engine/session, the `get_current_teacher` auth dependency, the `AppException` family + handler) lives in `app/core/`. Alembic migrations run against a Supabase Postgres project over the transaction pooler. This file documents the intended stack and feature scope so implementation stays consistent as it's built out.
+`frontend/` is scaffolded (Vite + React + TypeScript) with teacher auth wired up end-to-end: `LoginPage`/`RegisterPage`/`DashboardPage`, a Zustand `authStore` holding the teacher session, and a `ProtectedRoute` gating authenticated routes. `Header` renders the app logo top-left (plus the logged-in teacher's name and a logout button) on every page. Once logged in, a `NavMenu` appears below the header linking to Dashboard, Students, Courses, Enrollments, Payments, and Attendance; the latter five are placeholder pages pending their backend endpoints. The layout is full-width and forced to a single light theme (no dark-mode media query). `backend/` is scaffolded with a module per feature (`app/courses/`, `app/students/`, `app/enrollments/`, `app/payments/`, `app/attendance/`) — most are still `# TODO` stubs. `app/teacher/` is implemented: the `Teacher` and `RefreshToken` models plus register/login/refresh/logout/me auth endpoints (JWT bearer access tokens + opaque, hashed, DB-backed refresh tokens with rotation-on-use and revocation, bcrypt password hashing), split into router (HTTP)/service (business logic)/repository (data access) layers — see [Backend architecture](#backend-architecture). Shared infra (`Settings`, DB engine/session, the `get_current_teacher` auth dependency, the `AppException` family + handler) lives in `app/core/`. Alembic migrations run against a Supabase Postgres project over the transaction pooler. This file documents the intended stack and feature scope so implementation stays consistent as it's built out.
 
 ## Stack
 
@@ -21,9 +21,9 @@ backend/
     core/           shared infra: config.py (Settings), database.py (async engine/session),
                      dependencies.py (get_current_teacher), exceptions.py (AppException family + handler),
                      logging.py (request logging middleware)
-    teacher/        implemented: models, schemas, security (hashing/JWT),
-                     repository (TeacherRepository — data access), service (TeacherService — business logic),
-                     router (/auth/register, /auth/login, /auth/me — thin, delegates to service)
+    teacher/        implemented: models (Teacher, RefreshToken), schemas, security (hashing/JWT/refresh-token generation),
+                     repository (TeacherRepository, RefreshTokenRepository — data access), service (TeacherService — business logic),
+                     router (/auth/register, /auth/login, /auth/refresh, /auth/logout, /auth/me — thin, delegates to service)
     courses/        stub (models/schemas/router/repository/service all # TODO)
     students/       stub (models/schemas/router/repository/service all # TODO)
     enrollments/    stub (models/schemas/router/repository/service all # TODO)
