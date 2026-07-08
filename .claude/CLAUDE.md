@@ -4,7 +4,7 @@ A basic course/student management system for tracking course enrollment, manual 
 
 ## Status
 
-`frontend/` is scaffolded (Vite + React + TypeScript) with teacher auth wired up end-to-end: `LoginPage`/`RegisterPage`/`DashboardPage`, a Zustand `authStore` holding the teacher session, and a `ProtectedRoute` gating authenticated routes. `Header` renders the app logo top-left (plus the logged-in teacher's name and a logout button) on every page. Once logged in, a `NavMenu` appears below the header linking to Dashboard, Students, Courses, Enrollments, Payments, and Attendance; Students, Enrollments, Payments, and Attendance are still placeholder pages pending their backend endpoints. The layout is full-width and forced to a single light theme (no dark-mode media query). `backend/` is scaffolded with a module per feature — `app/students/`, `app/enrollments/`, `app/payments/`, `app/attendance/` are still `# TODO` stubs. `app/teacher/` is implemented: the `Teacher` and `RefreshToken` models plus register/login/refresh/logout/me auth endpoints (JWT bearer access tokens + opaque, hashed, DB-backed refresh tokens with rotation-on-use and revocation, bcrypt password hashing), split into router (HTTP)/service (business logic)/repository (data access) layers — see [Backend architecture](#backend-architecture). `app/courses/` is implemented: full CRUD (create/list/get/update/delete) on the `Course` model, gated behind `get_current_teacher` on every route. Shared infra (`Settings`, DB engine/session, the `get_current_teacher` auth dependency and `BearerAuth` bearer-scheme wrapper, the `AppException` family + handler) lives in `app/core/`. All models use UUID (not integer) primary keys. Alembic migrations run against a Supabase Postgres project over the transaction pooler. This file documents the intended stack and feature scope so implementation stays consistent as it's built out.
+`frontend/` is scaffolded (Vite + React + TypeScript) with teacher auth wired up end-to-end: `LoginPage`/`RegisterPage`/`DashboardPage`, a Zustand `authStore` holding the teacher session, and a `ProtectedRoute` gating authenticated routes. `Header` renders the app logo top-left (plus the logged-in teacher's name and a logout button) on every page. Once logged in, a `NavMenu` appears below the header linking to Dashboard, Students, Courses, Enrollments, Payments, and Attendance. `CoursesPage` is implemented end-to-end against `app/courses/`: a Zustand `courseStore` (`fetchCourses`/`createCourse`/`updateCourse`/`deleteCourse`) backs a list table (`CourseTable`, with view/edit/delete icon actions), a create/edit form (`CourseFormDialog`), and a read-only detail view (`CourseDetailDialog`) — the latter two render inside a generic `Modal` component (`src/components/Modal.tsx`) reusable by future features; all course-specific pieces live under `src/pages/courses/`. Students, Enrollments, Payments, and Attendance are still placeholder pages pending their backend endpoints. The layout is full-width and forced to a single light theme (no dark-mode media query). `backend/` is scaffolded with a module per feature — `app/students/`, `app/enrollments/`, `app/payments/`, `app/attendance/` are still `# TODO` stubs. `app/teacher/` is implemented: the `Teacher` and `RefreshToken` models plus register/login/refresh/logout/me auth endpoints (JWT bearer access tokens + opaque, hashed, DB-backed refresh tokens with rotation-on-use and revocation, bcrypt password hashing), split into router (HTTP)/service (business logic)/repository (data access) layers — see [Backend architecture](#backend-architecture). `app/courses/` is implemented: full CRUD (create/list/get/update/delete) on the `Course` model, gated behind `get_current_teacher` on every route. Shared infra (`Settings`, DB engine/session, the `get_current_teacher` auth dependency and `BearerAuth` bearer-scheme wrapper, the `AppException` family + handler) lives in `app/core/`. All models use UUID (not integer) primary keys. Alembic migrations run against a Supabase Postgres project over the transaction pooler. This file documents the intended stack and feature scope so implementation stays consistent as it's built out.
 
 ## Stack
 
@@ -34,9 +34,15 @@ backend/
   migrations/       Alembic (async env.py)
 frontend/   React app (Vite + TypeScript)
   src/assets/       static assets, incl. logo.svg
-  src/components/   shared components: Header, NavMenu, ProtectedRoute
-  src/store/        Zustand stores, incl. authStore (teacher session state)
-  src/pages/        route pages: Login, Register, Dashboard (implemented); Students, Courses, Enrollments, Payments, Attendance (placeholders)
+  src/components/   shared components: Header, NavMenu, ProtectedRoute, Modal (generic backdrop+dialog, Escape-to-close),
+                     ErrorDialog (renders ApiError via Modal-like backdrop)
+  src/store/        Zustand stores: authStore (teacher session), courseStore (course list + create/update/delete)
+  src/pages/        route pages: Login, Register, Dashboard, Courses (implemented); Students, Enrollments, Payments,
+                     Attendance (placeholders)
+  src/pages/courses/  CoursesPage's building blocks: CourseTable (list), CourseFormDialog (create/edit),
+                       CourseDetailDialog (read-only view), CourseIcons (inline SVGs), courseDisplay.ts
+                       (label/formatting helpers), courses.css (styles shared by all of the above)
+  src/types/        auth.ts, course.ts — request/response shapes matching the backend Pydantic schemas
   src/lib/          api.ts — fetch helpers for the backend
 docs/       project docs
 ```
@@ -62,6 +68,15 @@ Run from `backend/`, with the venv activated (`source .number-nest-venv/bin/acti
 - Run dev server: `uvicorn app.main:app --reload`
 - Apply migrations: `alembic upgrade head`
 - Create a migration: `alembic revision -m "..."` (this project hand-writes `upgrade`/`downgrade` bodies rather than relying on `--autogenerate`)
+
+## Frontend commands
+
+Run from `frontend/`:
+
+- Install deps: `npm install`
+- Run dev server: `npm run dev`
+- Type-check + production build: `npm run build` (runs `tsc -b && vite build`)
+- Lint: `npm run lint` (oxlint)
 
 ## Features
 
