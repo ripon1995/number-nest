@@ -9,7 +9,7 @@ Greenfield project. `backend/` and `frontend/` currently only contain a Python v
 ## Stack
 
 - **Backend**: Python 3.14, FastAPI
-- **Frontend**: Node 24, React
+- **Frontend**: Node 24, React (Vite)
 - **Database**: PostgreSQL via Supabase
 - **Payments**: manual/offline tracking only — no payment gateway integration
 
