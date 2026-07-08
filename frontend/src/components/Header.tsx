@@ -1,9 +1,10 @@
 import logo from '../assets/logo.svg'
-import { useAuth } from '../context/AuthContext'
+import { useAuthStore } from '../store/authStore'
 import './Header.css'
 
 function Header() {
-  const { teacher, logout } = useAuth()
+  const teacher = useAuthStore((state) => state.teacher)
+  const logout = useAuthStore((state) => state.logout)
 
   return (
     <header className="app-header">

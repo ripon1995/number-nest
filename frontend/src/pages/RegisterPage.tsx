@@ -1,11 +1,13 @@
 import { useState, type FormEvent } from 'react'
 import { Navigate, useNavigate, Link } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuthStore } from '../store/authStore'
 import { ApiError } from '../errors/api'
 import './AuthForm.css'
 
 function RegisterPage() {
-  const { teacher, isLoading, register } = useAuth()
+  const teacher = useAuthStore((state) => state.teacher)
+  const isLoading = useAuthStore((state) => state.isLoading)
+  const register = useAuthStore((state) => state.register)
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')

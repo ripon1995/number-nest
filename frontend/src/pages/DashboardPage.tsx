@@ -1,7 +1,7 @@
-import { useAuth } from '../context/AuthContext'
+import { useAuthStore } from '../store/authStore'
 
 function DashboardPage() {
-  const { teacher } = useAuth()
+  const teacher = useAuthStore((state) => state.teacher)
 
   return (
     <main id="content">

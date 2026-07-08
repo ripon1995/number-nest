@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuthStore } from '../store/authStore'
 
 export function ProtectedRoute({ children }: { children: ReactNode }) {
-  const { teacher, isLoading } = useAuth()
+  const teacher = useAuthStore((state) => state.teacher)
+  const isLoading = useAuthStore((state) => state.isLoading)
 
   if (isLoading) {
     return null
