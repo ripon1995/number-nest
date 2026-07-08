@@ -2,6 +2,10 @@ fastapi
 uvicorn[standard]
 sqlalchemy
 alembic
-psycopg[binary]
+asyncpg
+greenlet
 pydantic-settings
 python-dotenv
+pydantic[email]
+bcrypt
+pyjwt
