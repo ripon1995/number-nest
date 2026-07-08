@@ -2,7 +2,17 @@
 
 The join between a student and a course. Implemented in `app/enrollments/` (see
 [Backend architecture](../../CLAUDE.md#backend-architecture)) — routes require
-`get_current_teacher`.
+`get_current_teacher`. The frontend `EnrollmentsPage` (`frontend/src/pages/EnrollmentsPage.tsx`
++ `frontend/src/pages/enrollments/`) consumes this end-to-end: a Zustand `enrollmentStore`
+(`fetchEnrollments`/`createEnrollment`/`deleteEnrollment` — no update, matching the
+add/delete-only API) backs a list table (`EnrollmentTable`). `EnrollmentRead` only returns
+`student_id`/`course_id`, not nested objects, so `EnrollmentsPage` fetches [[students]] and
+[[course]] lists too and builds client-side id→record lookup maps to resolve display names.
+Creating an enrollment happens in `EnrollmentFormDialog` — student/course `<select>`s plus a
+`start_from` date input, rendered in a `Modal` widened via an `enrollment-modal` class (the
+generic `Modal` component gained an optional `className` prop for this). The "Add enrollment"
+action is disabled (via a client-side check, not a backend rule) until at least one student
+and one course exist.
 
 ## Fields
 
@@ -22,4 +32,5 @@ The join between a student and a course. Implemented in `app/enrollments/` (see
   the anchor point that [[payment-tracking]] and [[attendance]] records will hang off once those features exist —
   consider whether those deletes should cascade or be blocked when related records exist.
 - [[course]]'s detail endpoint (`GET /courses/{id}`) surfaces a course's enrolled students via
-  `EnrollmentRepository.list_students_for_course`, not through a dedicated enrollments UI yet.
+  `EnrollmentRepository.list_students_for_course`, separately from the dedicated `EnrollmentsPage`
+  list (the two are not backed by the same frontend query).
