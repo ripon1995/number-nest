@@ -1,9 +1,7 @@
 import { create } from 'zustand'
 import * as api from '../lib/api'
+import { REFRESH_TOKEN_STORAGE_KEY, TOKEN_STORAGE_KEY } from '../constants/config'
 import type { LoginInput, RegisterInput, Teacher } from '../types/auth'
-
-const TOKEN_STORAGE_KEY = 'number-nest.token'
-const REFRESH_TOKEN_STORAGE_KEY = 'number-nest.refreshToken'
 
 interface AuthState {
   teacher: Teacher | null

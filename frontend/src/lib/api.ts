@@ -1,6 +1,12 @@
-import { API_URL } from '../constants/config'
+import { API_URL, TOKEN_STORAGE_KEY } from '../constants/config'
 import { ApiError } from '../errors/api'
 import type { LoginInput, RegisterInput, Teacher, Token } from '../types/auth'
+import type { Course, CourseInput } from '../types/course'
+
+function authHeaders(): HeadersInit {
+  const token = localStorage.getItem(TOKEN_STORAGE_KEY)
+  return token ? { Authorization: `Bearer ${token}` } : {}
+}
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${API_URL}${path}`, {
@@ -56,5 +62,32 @@ export function logout(refreshToken: string): Promise<void> {
   return request<void>('/auth/logout', {
     method: 'POST',
     body: JSON.stringify({ refresh_token: refreshToken }),
+  })
+}
+
+export function getCourses(): Promise<Course[]> {
+  return request<Course[]>('/courses', { headers: authHeaders() })
+}
+
+export function createCourse(input: CourseInput): Promise<Course> {
+  return request<Course>('/courses', {
+    method: 'POST',
+    body: JSON.stringify(input),
+    headers: authHeaders(),
+  })
+}
+
+export function updateCourse(id: string, input: CourseInput): Promise<Course> {
+  return request<Course>(`/courses/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(input),
+    headers: authHeaders(),
+  })
+}
+
+export function deleteCourse(id: string): Promise<void> {
+  return request<void>(`/courses/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
   })
 }

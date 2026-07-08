@@ -1,0 +1,162 @@
+.courses-page {
+  align-items: center;
+  width: 100%;
+}
+
+.course-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.course-form h2 {
+  margin: 0;
+}
+
+.course-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 15px;
+  color: var(--text-h);
+}
+
+.course-form input,
+.course-form select {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-h);
+}
+
+.course-form input:focus,
+.course-form select:focus {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 1px;
+}
+
+.course-days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.course-days legend {
+  width: 100%;
+  padding: 0 0 6px;
+  font-size: 15px;
+  color: var(--text-h);
+}
+
+.course-day-option {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 6px !important;
+  font-size: 14px;
+}
+
+.course-form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.course-form button {
+  font: inherit;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.course-form button.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-h);
+}
+
+.course-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.course-form .error {
+  color: #e5484d;
+  font-size: 14px;
+  margin: 0;
+}
+
+.course-list {
+  width: 100%;
+  max-width: 900px;
+  margin: 12px auto 0;
+  overflow-x: auto;
+}
+
+.course-list table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 15px;
+}
+
+.course-list th,
+.course-list td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.course-list th {
+  color: var(--text-h);
+  font-weight: 500;
+}
+
+.course-list tr:last-child td {
+  border-bottom: none;
+}
+
+.course-row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.course-row-actions button {
+  font: inherit;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.course-row-actions button.secondary {
+  color: #e5484d;
+  border-color: rgba(229, 72, 77, 0.35);
+}
+
+.course-row-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
