@@ -2,6 +2,7 @@ import { API_URL, TOKEN_STORAGE_KEY } from '../constants/config'
 import { ApiError } from '../errors/api'
 import type { LoginInput, RegisterInput, Teacher, Token } from '../types/auth'
 import type { Course, CourseDetail, CourseInput } from '../types/course'
+import type { Student, StudentInput } from '../types/student'
 
 function authHeaders(): HeadersInit {
   const token = localStorage.getItem(TOKEN_STORAGE_KEY)
@@ -91,6 +92,33 @@ export function updateCourse(id: string, input: CourseInput): Promise<Course> {
 
 export function deleteCourse(id: string): Promise<void> {
   return request<void>(`/courses/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  })
+}
+
+export function getStudents(): Promise<Student[]> {
+  return request<Student[]>('/students', { headers: authHeaders() })
+}
+
+export function createStudent(input: StudentInput): Promise<Student> {
+  return request<Student>('/students', {
+    method: 'POST',
+    body: JSON.stringify(input),
+    headers: authHeaders(),
+  })
+}
+
+export function updateStudent(id: string, input: StudentInput): Promise<Student> {
+  return request<Student>(`/students/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(input),
+    headers: authHeaders(),
+  })
+}
+
+export function deleteStudent(id: string): Promise<void> {
+  return request<void>(`/students/${id}`, {
     method: 'DELETE',
     headers: authHeaders(),
   })
