@@ -4,12 +4,12 @@ A basic course/student management system for tracking course enrollment, manual 
 
 ## Status
 
-Greenfield project. `backend/` and `frontend/` currently only contain a Python venv and a `.node-version` file — no application code exists yet. This file documents the intended stack and feature scope so implementation stays consistent as it's built out.
+Greenfield project. `frontend/` is scaffolded (Vite + React + TypeScript, with a `Header` component rendering the app logo on every page); `backend/` currently only contains a Python venv — no API code exists yet. This file documents the intended stack and feature scope so implementation stays consistent as it's built out.
 
 ## Stack
 
 - **Backend**: Python 3.14, FastAPI
-- **Frontend**: Node 24, React (Vite)
+- **Frontend**: Node 24, React (Vite), TypeScript
 - **Database**: PostgreSQL via Supabase
 - **Payments**: manual/offline tracking only — no payment gateway integration
 
@@ -17,7 +17,9 @@ Greenfield project. `backend/` and `frontend/` currently only contain a Python v
 
 ```
 backend/    FastAPI app
-frontend/   React app
+frontend/   React app (Vite + TypeScript)
+  src/assets/       static assets, incl. logo.svg
+  src/components/   shared components (e.g. Header)
 docs/       project docs
 ```
 
