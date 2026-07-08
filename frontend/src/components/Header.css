@@ -1,0 +1,11 @@
+.app-header {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.app-logo {
+  height: 64px;
+  width: auto;
+}
