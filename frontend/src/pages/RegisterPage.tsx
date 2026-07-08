@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Navigate, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { ApiError } from '../lib/api'
+import { ApiError } from '../errors/api'
 import './AuthForm.css'
 
 function RegisterPage() {
@@ -24,7 +24,7 @@ function RegisterPage() {
     setAccountExists(false)
     setIsSubmitting(true)
     try {
-      await register(email, name, password)
+      await register({ email, name, password })
       navigate('/')
     } catch (err) {
       if (err instanceof ApiError && err.status === 409) {

@@ -1,24 +1,6 @@
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
-
-export interface Teacher {
-  id: number
-  email: string
-  name: string
-}
-
-export interface Token {
-  access_token: string
-  token_type: string
-}
-
-export class ApiError extends Error {
-  status: number
-
-  constructor(status: number, message: string) {
-    super(message)
-    this.status = status
-  }
-}
+import { API_URL } from '../constants/config'
+import { ApiError } from '../errors/api'
+import type { LoginInput, RegisterInput, Teacher, Token } from '../types/auth'
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${API_URL}${path}`, {
@@ -38,17 +20,17 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   return response.json() as Promise<T>
 }
 
-export function register(email: string, name: string, password: string): Promise<Teacher> {
+export function register(input: RegisterInput): Promise<Teacher> {
   return request<Teacher>('/auth/register', {
     method: 'POST',
-    body: JSON.stringify({ email, name, password }),
+    body: JSON.stringify(input),
   })
 }
 
-export function login(email: string, password: string): Promise<Token> {
+export function login(input: LoginInput): Promise<Token> {
   return request<Token>('/auth/login', {
     method: 'POST',
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify(input),
   })
 }
 

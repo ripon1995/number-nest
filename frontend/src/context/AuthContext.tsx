@@ -1,14 +1,14 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import * as api from '../lib/api'
-import type { Teacher } from '../lib/api'
+import type { LoginInput, RegisterInput, Teacher } from '../types/auth'
 
 const TOKEN_STORAGE_KEY = 'number-nest.token'
 
 interface AuthContextValue {
   teacher: Teacher | null
   isLoading: boolean
-  login: (email: string, password: string) => Promise<void>
-  register: (email: string, name: string, password: string) => Promise<void>
+  login: (input: LoginInput) => Promise<void>
+  register: (input: RegisterInput) => Promise<void>
   logout: () => void
 }
 
@@ -39,15 +39,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .finally(() => setIsLoading(false))
   }, [token])
 
-  async function login(email: string, password: string) {
-    const { access_token } = await api.login(email, password)
+  async function login(input: LoginInput) {
+    const { access_token } = await api.login(input)
     localStorage.setItem(TOKEN_STORAGE_KEY, access_token)
     setToken(access_token)
   }
 
-  async function register(email: string, name: string, password: string) {
-    await api.register(email, name, password)
-    await login(email, password)
+  async function register(input: RegisterInput) {
+    await api.register(input)
+    await login(input)
   }
 
   function logout() {
