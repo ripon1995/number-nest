@@ -1,14 +1,10 @@
 # Teacher
 
-Create and manage teacher records.
-
-## Fields
-
-- name
-- contact info (phone/email)
-- (add fields as schema solidifies — keep this list in sync)
+The single teacher is the sole user/operator of the system.
 
 ## Rules
 
-- A teacher can be assigned to multiple courses; a course can have multiple teachers (many-to-many via a course-teacher assignment, analogous to [[enrollment]]).
-- No payment or attendance tracking hangs off teachers in the current scope — [[payment-tracking]] and [[attendance]] are student-course concerns only.
+- Single teacher only — this is not a multi-tenant or multi-teacher system. Don't model a teacher-course assignment relation or a teachers list/table beyond what's needed for the one account.
+- The teacher is the only actor who logs in and uses the system. They add/manage [[students]] and [[course]] records.
+- Students do not log in — no student-facing auth, portal, or account. Students are just data managed by the teacher.
+- No many-to-many teacher-course relation — a course simply belongs to the one teacher.

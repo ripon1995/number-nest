@@ -28,12 +28,12 @@ docs/       project docs
 3. **Enrollment** — add or remove a student from a course (add/delete only, no edit-in-place semantics implied)
 4. **Payment tracking** — manually record payments against a student's course enrollment; no gateway, no automated billing
 5. **Attendance** — record attendance per student per course session
-6. **Teacher** — create/manage teacher records; assign teachers to courses
+6. **Teacher** — the single teacher is the sole system user/operator; adds/manages students and courses
 
 ## Domain notes
 
+- Single teacher only — not multi-tenant, no teacher-course assignment relation. The teacher is the only actor who logs in; students have no login/portal.
 - A student can be enrolled in multiple courses; a course can have multiple students (many-to-many via the enrollment relation).
-- A teacher can be assigned to multiple courses; a course can have multiple teachers (many-to-many, analogous to enrollment).
 - Payments and attendance both hang off the student-course enrollment, not the student or course alone.
 - Per-feature details live in `.claude/rules/features/`.
 - Keep this file updated as the schema and API surface solidify — add real run/build/test/lint commands here once the backend and frontend are scaffolded.
