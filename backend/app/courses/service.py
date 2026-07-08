@@ -8,13 +8,16 @@ from app.core.exceptions import ConflictException, NotFoundException
 from app.courses.models import Course
 from app.courses.repository import CourseRepository
 from app.courses.schemas import CourseCreate, CourseUpdate
+from app.enrollments.repository import EnrollmentRepository
+from app.students.models import Student
 
 
 class CourseService:
     """Business logic for creating/managing courses."""
 
-    def __init__(self, repository: CourseRepository) -> None:
+    def __init__(self, repository: CourseRepository, enrollment_repository: EnrollmentRepository) -> None:
         self.repository = repository
+        self.enrollment_repository = enrollment_repository
 
     async def create(self, payload: CourseCreate) -> Course:
         if await self.repository.get_by_name(payload.course_name) is not None:
@@ -37,6 +40,11 @@ class CourseService:
         if course is None:
             raise NotFoundException(f"Course {course_id} not found")
         return course
+
+    async def get_detail(self, course_id: uuid.UUID) -> tuple[Course, list[Student]]:
+        course = await self.get_by_id(course_id)
+        students = await self.enrollment_repository.list_students_for_course(course_id)
+        return course, students
 
     async def update(self, course_id: uuid.UUID, payload: CourseUpdate) -> Course:
         course = await self.get_by_id(course_id)
@@ -62,4 +70,4 @@ class CourseService:
 
 
 def get_course_service(db: AsyncSession = Depends(get_db)) -> CourseService:
-    return CourseService(CourseRepository(db))
+    return CourseService(CourseRepository(db), EnrollmentRepository(db))

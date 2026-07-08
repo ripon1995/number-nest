@@ -8,6 +8,7 @@ import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage'
 import StudentsPage from './pages/StudentsPage'
 import CoursesPage from './pages/CoursesPage'
+import CourseDetailPage from './pages/courses/CourseDetailPage'
 import EnrollmentsPage from './pages/EnrollmentsPage'
 import PaymentsPage from './pages/PaymentsPage'
 import AttendancePage from './pages/AttendancePage'
@@ -47,6 +48,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CoursesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/courses/:id"
+          element={
+            <ProtectedRoute>
+              <CourseDetailPage />
             </ProtectedRoute>
           }
         />

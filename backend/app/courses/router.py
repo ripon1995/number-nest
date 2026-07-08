@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 
 from app.core.dependencies import get_current_teacher
 from app.courses.models import Course
-from app.courses.schemas import CourseCreate, CourseRead, CourseUpdate
+from app.courses.schemas import CourseCreate, CourseDetailRead, CourseRead, CourseUpdate
 from app.courses.service import CourseService, get_course_service
 
 router = APIRouter(
@@ -25,12 +25,13 @@ async def list_courses(service: CourseService = Depends(get_course_service)) -> 
     return await service.list_all()
 
 
-@router.get("/{course_id}", response_model=CourseRead)
+@router.get("/{course_id}", response_model=CourseDetailRead)
 async def get_course(
         course_id: uuid.UUID,
         service: CourseService = Depends(get_course_service)
-) -> Course:
-    return await service.get_by_id(course_id)
+) -> CourseDetailRead:
+    course, students = await service.get_detail(course_id)
+    return CourseDetailRead(**CourseRead.model_validate(course).model_dump(), students=students)
 
 
 @router.put("/{course_id}", response_model=CourseRead)

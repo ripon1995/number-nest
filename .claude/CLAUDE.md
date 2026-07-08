@@ -4,7 +4,7 @@ A basic course/student management system for tracking course enrollment, manual 
 
 ## Status
 
-`frontend/` is scaffolded (Vite + React + TypeScript) with teacher auth wired up end-to-end: `LoginPage`/`RegisterPage`/`DashboardPage`, a Zustand `authStore` holding the teacher session, and a `ProtectedRoute` gating authenticated routes. `Header` renders the app logo top-left (plus the logged-in teacher's name and a logout button) on every page. Once logged in, a `NavMenu` appears below the header linking to Dashboard, Students, Courses, Enrollments, Payments, and Attendance. `CoursesPage` is implemented end-to-end against `app/courses/`: a Zustand `courseStore` (`fetchCourses`/`createCourse`/`updateCourse`/`deleteCourse`) backs a list table (`CourseTable`, with view/edit/delete icon actions), a create/edit form (`CourseFormDialog`), and a read-only detail view (`CourseDetailDialog`) — the latter two render inside a generic `Modal` component (`src/components/Modal.tsx`) reusable by future features; all course-specific pieces live under `src/pages/courses/`. Students, Enrollments, Payments, and Attendance are still placeholder pages pending their backend endpoints. The layout is full-width and forced to a single light theme (no dark-mode media query). `backend/` is scaffolded with a module per feature — `app/students/`, `app/enrollments/`, `app/payments/`, `app/attendance/` are still `# TODO` stubs. `app/teacher/` is implemented: the `Teacher` and `RefreshToken` models plus register/login/refresh/logout/me auth endpoints (JWT bearer access tokens + opaque, hashed, DB-backed refresh tokens with rotation-on-use and revocation, bcrypt password hashing), split into router (HTTP)/service (business logic)/repository (data access) layers — see [Backend architecture](#backend-architecture). `app/courses/` is implemented: full CRUD (create/list/get/update/delete) on the `Course` model, gated behind `get_current_teacher` on every route. Shared infra (`Settings`, DB engine/session, the `get_current_teacher` auth dependency and `BearerAuth` bearer-scheme wrapper, the `AppException` family + handler) lives in `app/core/`. All models use UUID (not integer) primary keys. Alembic migrations run against a Supabase Postgres project over the transaction pooler. This file documents the intended stack and feature scope so implementation stays consistent as it's built out.
+`frontend/` is scaffolded (Vite + React + TypeScript) with teacher auth wired up end-to-end: `LoginPage`/`RegisterPage`/`DashboardPage`, a Zustand `authStore` holding the teacher session, and a `ProtectedRoute` gating authenticated routes. `Header` renders the app logo top-left (plus the logged-in teacher's name and a logout button) on every page. Once logged in, a `NavMenu` appears below the header linking to Dashboard, Students, Courses, Enrollments, Payments, and Attendance. `CoursesPage` is implemented end-to-end against `app/courses/`: a Zustand `courseStore` (`fetchCourses`/`createCourse`/`updateCourse`/`deleteCourse`) backs a list table (`CourseTable`, with edit/delete icon actions), and a create/edit form (`CourseFormDialog`) that renders inside a generic `Modal` component (`src/components/Modal.tsx`) reusable by future features. Course list rows are clickable and navigate to `CourseDetailPage` (route `/courses/:id`) — a full page (not a modal) showing a read-only course card plus a table of the course's enrolled students, fetched via `GET /courses/{id}` (which now returns the enrolled student list alongside the course fields). Students, Enrollments, Payments, and Attendance pages remain placeholders — only the course detail page consumes the new `app/students/`/`app/enrollments/` backend endpoints so far. The layout is full-width and forced to a single light theme (no dark-mode media query). `backend/` is scaffolded with a module per feature. `app/teacher/` is implemented: the `Teacher` and `RefreshToken` models plus register/login/refresh/logout/me auth endpoints (JWT bearer access tokens + opaque, hashed, DB-backed refresh tokens with rotation-on-use and revocation, bcrypt password hashing), split into router (HTTP)/service (business logic)/repository (data access) layers — see [Backend architecture](#backend-architecture). `app/courses/` is implemented: full CRUD (create/list/get/update/delete) on the `Course` model, gated behind `get_current_teacher` on every route; `GET /courses/{id}` returns `CourseDetailRead` (course fields plus `students: StudentRead[]`, sourced via `EnrollmentRepository.list_students_for_course`). `app/students/` is implemented: full CRUD on the `Student` model. `app/enrollments/` is implemented: add/list/delete only (no edit-in-place) on the `Enrollment` join model, with a DB-level unique constraint on `(student_id, course_id)` plus a service-layer `ConflictException` guard against double-enrollment. `app/payments/` and `app/attendance/` are still `# TODO` stubs. Shared infra (`Settings`, DB engine/session, the `get_current_teacher` auth dependency and `BearerAuth` bearer-scheme wrapper, the `AppException` family + handler) lives in `app/core/`. All models use UUID (not integer) primary keys. Alembic migrations run against a Supabase Postgres project over the transaction pooler. This file documents the intended stack and feature scope so implementation stays consistent as it's built out.
 
 ## Stack
 
@@ -25,10 +25,16 @@ backend/
     teacher/        implemented: models (Teacher, RefreshToken), schemas, security (hashing/JWT/refresh-token generation),
                      repository (TeacherRepository, RefreshTokenRepository — data access), service (TeacherService — business logic),
                      router (/auth/register, /auth/login, /auth/refresh, /auth/logout, /auth/me — thin, delegates to service)
-    courses/        implemented: models (Course), schemas, repository (CourseRepository), service (CourseService — unique
-                     course_name enforced), router (/courses CRUD — all routes require get_current_teacher)
-    students/       stub (models/schemas/router/repository/service all # TODO)
-    enrollments/    stub (models/schemas/router/repository/service all # TODO)
+    courses/        implemented: models (Course), schemas (CourseRead / CourseDetailRead with nested students), repository
+                     (CourseRepository), service (CourseService — unique course_name enforced; get_detail joins in
+                     enrolled students via EnrollmentRepository), router (/courses CRUD — all routes require
+                     get_current_teacher; GET /courses/{id} returns CourseDetailRead)
+    students/       implemented: models (Student: name, college, contact, email, whatsapp_number), schemas, repository
+                     (StudentRepository), service (StudentService), router (/students CRUD)
+    enrollments/    implemented: models (Enrollment: student_id, course_id, start_from date, unique(student_id, course_id)),
+                     schemas, repository (EnrollmentRepository, incl. list_students_for_course used by courses/service),
+                     service (EnrollmentService — enroll/unenroll, ConflictException on duplicate enrollment), router
+                     (POST/GET /enrollments, DELETE /enrollments/{id} — add/delete only, no edit-in-place)
     payments/       stub (models/schemas/router/repository/service all # TODO)
     attendance/     stub (models/schemas/router/repository/service all # TODO)
   migrations/       Alembic (async env.py)
@@ -39,10 +45,13 @@ frontend/   React app (Vite + TypeScript)
   src/store/        Zustand stores: authStore (teacher session), courseStore (course list + create/update/delete)
   src/pages/        route pages: Login, Register, Dashboard, Courses (implemented); Students, Enrollments, Payments,
                      Attendance (placeholders)
-  src/pages/courses/  CoursesPage's building blocks: CourseTable (list), CourseFormDialog (create/edit),
-                       CourseDetailDialog (read-only view), CourseIcons (inline SVGs), courseDisplay.ts
-                       (label/formatting helpers), courses.css (styles shared by all of the above)
-  src/types/        auth.ts, course.ts — request/response shapes matching the backend Pydantic schemas
+  src/pages/courses/  CoursesPage's building blocks: CourseTable (list, rows navigate to /courses/:id),
+                       CourseFormDialog (create/edit, renders in a Modal), CourseDetailPage (full page, route
+                       /courses/:id — course detail card + enrolled students table, fetched via api.getCourse),
+                       CourseIcons (inline SVGs), courseDisplay.ts (label/formatting helpers), courses.css
+                       (styles shared by all of the above)
+  src/types/        auth.ts, course.ts (incl. CourseDetail), student.ts — request/response shapes matching the
+                     backend Pydantic schemas
   src/lib/          api.ts — fetch helpers for the backend
 docs/       project docs
 ```
@@ -80,9 +89,9 @@ Run from `frontend/`:
 
 ## Features
 
-1. **Course** — create/manage courses (name, fee, subject, days, capacity, motto)
-2. **Students** — create/manage student records
-3. **Enrollment** — add or remove a student from a course (add/delete only, no edit-in-place semantics implied)
+1. **Course** — create/manage courses (name, fee, subject, days, capacity, motto); course detail includes the list of enrolled students
+2. **Students** — create/manage student records (name, college, contact, email, whatsapp_number)
+3. **Enrollment** — add or remove a student from a course, with a `start_from` date (add/delete only, no edit-in-place semantics implied)
 4. **Payment tracking** — manually record payments against a student's course enrollment; no gateway, no automated billing
 5. **Attendance** — record attendance per student per course session
 6. **Teacher** — the single teacher is the sole system user/operator; adds/manages students and courses

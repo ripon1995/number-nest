@@ -4,6 +4,7 @@ from decimal import Decimal
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.courses.models import CourseDay, CourseSubject
+from app.students.schemas import StudentRead
 
 
 class CourseBase(BaseModel):
@@ -27,3 +28,7 @@ class CourseRead(CourseBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: uuid.UUID
+
+
+class CourseDetailRead(CourseRead):
+    students: list[StudentRead]

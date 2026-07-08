@@ -1,7 +1,7 @@
 import { API_URL, TOKEN_STORAGE_KEY } from '../constants/config'
 import { ApiError } from '../errors/api'
 import type { LoginInput, RegisterInput, Teacher, Token } from '../types/auth'
-import type { Course, CourseInput } from '../types/course'
+import type { Course, CourseDetail, CourseInput } from '../types/course'
 
 function authHeaders(): HeadersInit {
   const token = localStorage.getItem(TOKEN_STORAGE_KEY)
@@ -67,6 +67,10 @@ export function logout(refreshToken: string): Promise<void> {
 
 export function getCourses(): Promise<Course[]> {
   return request<Course[]>('/courses', { headers: authHeaders() })
+}
+
+export function getCourse(id: string): Promise<CourseDetail> {
+  return request<CourseDetail>(`/courses/${id}`, { headers: authHeaders() })
 }
 
 export function createCourse(input: CourseInput): Promise<Course> {

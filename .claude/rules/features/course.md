@@ -4,8 +4,10 @@ Create and manage courses. Implemented as full CRUD in `app/courses/` (see
 [Backend architecture](../../CLAUDE.md#backend-architecture)) — routes require
 `get_current_teacher`. The frontend `CoursesPage` (`frontend/src/pages/CoursesPage.tsx`
 + `frontend/src/pages/courses/`) consumes this end-to-end: list/create/update/delete
-go through a Zustand `courseStore`, and creating/editing/viewing a course happens in
-a `Modal` dialog rather than a separate route.
+go through a Zustand `courseStore`, and creating/editing a course happens in a `Modal`
+dialog. Viewing a course is not a modal — clicking a row in `CourseTable` navigates to
+`CourseDetailPage` at route `/courses/:id`, a full page showing a read-only course card
+plus a table of the course's enrolled students (see [[enrollment]]).
 
 ## Fields
 
@@ -34,4 +36,9 @@ a `Modal` dialog rather than a separate route.
 - In the frontend list table, `course_fee` is rounded for display (`formatFee` in
   `src/pages/courses/courseDisplay.ts`); the raw decimal string from the API is still
   sent unchanged on create/update. `course_motto` is intentionally omitted from the
-  list table — it only appears in the create/edit form and the read-only detail dialog.
+  list table — it only appears in the create/edit form and the read-only detail page.
+- `GET /courses/{id}` returns `CourseDetailRead` (`app/courses/schemas.py`) — the course
+  fields plus `students: StudentRead[]`, the list of currently enrolled [[students]].
+  `CourseService.get_detail` builds this by calling `EnrollmentRepository.list_students_for_course`
+  alongside the plain course lookup; `list`/create/update/delete still use the plain `CourseRead`
+  schema without the students list.

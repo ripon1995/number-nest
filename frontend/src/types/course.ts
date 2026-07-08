@@ -1,3 +1,5 @@
+import type { Student } from './student'
+
 export type CourseSubject = 'math' | 'ict'
 
 export const COURSE_SUBJECTS: CourseSubject[] = ['math', 'ict']
@@ -23,4 +25,8 @@ export interface CourseInput {
   course_days: CourseDay[]
   capacity: number
   course_motto: string | null
+}
+
+export interface CourseDetail extends Course {
+  students: Student[]
 }

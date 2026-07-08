@@ -4,7 +4,6 @@ import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
 import CourseTable from './courses/CourseTable'
 import CourseFormDialog from './courses/CourseFormDialog'
-import CourseDetailDialog from './courses/CourseDetailDialog'
 import type { Course } from '../types/course'
 import './courses/courses.css'
 
@@ -18,7 +17,6 @@ function CoursesPage() {
   const fetchCourses = useCourseStore((state) => state.fetchCourses)
   const deleteCourse = useCourseStore((state) => state.deleteCourse)
 
-  const [viewingCourse, setViewingCourse] = useState<Course | null>(null)
   const [editingCourse, setEditingCourse] = useState<Course | null>(null)
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
@@ -62,13 +60,10 @@ function CoursesPage() {
           courses={courses}
           isLoading={isLoading}
           deletingId={deletingId}
-          onView={setViewingCourse}
           onEdit={setEditingCourse}
           onDelete={handleDelete}
         />
       </section>
-
-      {viewingCourse && <CourseDetailDialog course={viewingCourse} onClose={() => setViewingCourse(null)} />}
 
       {isFormOpen && <CourseFormDialog course={editingCourse} onClose={closeForm} onError={setError} />}
 
