@@ -5,9 +5,10 @@ interface ModalProps {
   labelledBy: string
   onClose: () => void
   children: ReactNode
+  className?: string
 }
 
-function Modal({ labelledBy, onClose, children }: ModalProps) {
+function Modal({ labelledBy, onClose, children, className }: ModalProps) {
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') onClose()
@@ -19,7 +20,7 @@ function Modal({ labelledBy, onClose, children }: ModalProps) {
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div
-        className="modal"
+        className={className ? `modal ${className}` : 'modal'}
         role="dialog"
         aria-modal="true"
         aria-labelledby={labelledBy}

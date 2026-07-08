@@ -3,6 +3,7 @@ import { ApiError } from '../errors/api'
 import type { LoginInput, RegisterInput, Teacher, Token } from '../types/auth'
 import type { Course, CourseDetail, CourseInput } from '../types/course'
 import type { Student, StudentInput } from '../types/student'
+import type { Enrollment, EnrollmentInput } from '../types/enrollment'
 
 function authHeaders(): HeadersInit {
   const token = localStorage.getItem(TOKEN_STORAGE_KEY)
@@ -119,6 +120,25 @@ export function updateStudent(id: string, input: StudentInput): Promise<Student>
 
 export function deleteStudent(id: string): Promise<void> {
   return request<void>(`/students/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  })
+}
+
+export function getEnrollments(): Promise<Enrollment[]> {
+  return request<Enrollment[]>('/enrollments', { headers: authHeaders() })
+}
+
+export function createEnrollment(input: EnrollmentInput): Promise<Enrollment> {
+  return request<Enrollment>('/enrollments', {
+    method: 'POST',
+    body: JSON.stringify(input),
+    headers: authHeaders(),
+  })
+}
+
+export function deleteEnrollment(id: string): Promise<void> {
+  return request<void>(`/enrollments/${id}`, {
     method: 'DELETE',
     headers: authHeaders(),
   })

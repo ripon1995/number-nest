@@ -1,8 +1,101 @@
+import { useEffect, useState } from 'react'
+import { useEnrollmentStore } from '../store/enrollmentStore'
+import { useStudentStore } from '../store/studentStore'
+import { useCourseStore } from '../store/courseStore'
+import { ApiError } from '../errors/api'
+import ErrorDialog from '../components/ErrorDialog'
+import EnrollmentTable from './enrollments/EnrollmentTable'
+import EnrollmentFormDialog from './enrollments/EnrollmentFormDialog'
+import type { Enrollment } from '../types/enrollment'
+import './enrollments/enrollments.css'
+
+function toApiError(err: unknown): ApiError {
+  return err instanceof ApiError ? err : new ApiError(0, 'Something went wrong', 'Something went wrong')
+}
+
 function EnrollmentsPage() {
+  const enrollments = useEnrollmentStore((state) => state.enrollments)
+  const isLoading = useEnrollmentStore((state) => state.isLoading)
+  const fetchEnrollments = useEnrollmentStore((state) => state.fetchEnrollments)
+  const deleteEnrollment = useEnrollmentStore((state) => state.deleteEnrollment)
+
+  const students = useStudentStore((state) => state.students)
+  const fetchStudents = useStudentStore((state) => state.fetchStudents)
+  const courses = useCourseStore((state) => state.courses)
+  const fetchCourses = useCourseStore((state) => state.fetchCourses)
+
+  const [isCreating, setIsCreating] = useState(false)
+  const [error, setError] = useState<ApiError | null>(null)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchEnrollments().catch((err) => setError(toApiError(err)))
+    fetchStudents().catch((err) => setError(toApiError(err)))
+    fetchCourses().catch((err) => setError(toApiError(err)))
+  }, [fetchEnrollments, fetchStudents, fetchCourses])
+
+  const studentsById = new Map(students.map((student) => [student.id, student]))
+  const coursesById = new Map(courses.map((course) => [course.id, course]))
+
+  async function handleDelete(enrollment: Enrollment) {
+    const studentName = studentsById.get(enrollment.student_id)?.name ?? 'this student'
+    const courseName = coursesById.get(enrollment.course_id)?.course_name ?? 'this course'
+    if (!window.confirm(`Remove ${studentName} from ${courseName}?`)) return
+    setDeletingId(enrollment.id)
+    setError(null)
+    try {
+      await deleteEnrollment(enrollment.id)
+    } catch (err) {
+      setError(toApiError(err))
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
+  function handleAddClick() {
+    if (students.length === 0 || courses.length === 0) {
+      setError(
+        new ApiError(
+          0,
+          'Nothing to enroll',
+          'Add at least one student and one course before creating an enrollment.',
+        ),
+      )
+      return
+    }
+    setIsCreating(true)
+  }
+
   return (
-    <main id="content">
-      <h1>Enrollments</h1>
-      <p>Enrollment management is coming soon.</p>
+    <main id="content" className="enrollments-page">
+      <div className="enrollments-page-header">
+        <h1>Enrollments</h1>
+        <button type="button" onClick={handleAddClick}>
+          Add enrollment
+        </button>
+      </div>
+
+      <section className="enrollment-list">
+        <EnrollmentTable
+          enrollments={enrollments}
+          studentsById={studentsById}
+          coursesById={coursesById}
+          isLoading={isLoading}
+          deletingId={deletingId}
+          onDelete={handleDelete}
+        />
+      </section>
+
+      {isCreating && (
+        <EnrollmentFormDialog
+          students={students}
+          courses={courses}
+          onClose={() => setIsCreating(false)}
+          onError={setError}
+        />
+      )}
+
+      <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>
   )
 }
