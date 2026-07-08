@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.core.logging import log_requests, setup_logging
 from app.teacher.router import router as teacher_router
+
+setup_logging()
 
 app = FastAPI(title="number-nest")
 
@@ -13,6 +16,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.middleware("http")(log_requests)
 
 app.include_router(teacher_router)
 
