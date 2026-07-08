@@ -1,12 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.core.exceptions import AppException, app_exception_handler
 from app.core.logging import log_requests, setup_logging
 from app.teacher.router import router as teacher_router
 
 setup_logging()
 
 app = FastAPI(title="number-nest")
+
+app.add_exception_handler(AppException, app_exception_handler)
 
 # Dev-only: allow the Vite dev server to call the API. Single-teacher system,
 # no cookies/credentials involved — auth is a Bearer token, so no allow_credentials needed.

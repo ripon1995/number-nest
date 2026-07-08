@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.dependencies import get_current_teacher
+from app.core.exceptions import AuthenticationException, ConflictException
 from app.teacher.models import Teacher
 from app.teacher.schemas import Token, TeacherLogin, TeacherRead, TeacherRegister
 from app.teacher.security import create_access_token, hash_password, verify_password
@@ -16,10 +17,7 @@ async def register(payload: TeacherRegister, db: AsyncSession = Depends(get_db))
     # Single-teacher system: once the one account exists, registration is closed.
     existing = await db.scalar(select(Teacher))
     if existing is not None:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="A teacher account already exists",
-        )
+        raise ConflictException("A teacher account already exists")
 
     teacher = Teacher(
         email=payload.email,
@@ -36,10 +34,7 @@ async def register(payload: TeacherRegister, db: AsyncSession = Depends(get_db))
 async def login(payload: TeacherLogin, db: AsyncSession = Depends(get_db)) -> Token:
     teacher = await db.scalar(select(Teacher).where(Teacher.email == payload.email))
     if teacher is None or not verify_password(payload.password, teacher.hashed_password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password",
-        )
+        raise AuthenticationException("Invalid email or password")
 
     access_token = create_access_token(subject=str(teacher.id))
     return Token(access_token=access_token)
