@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import * as api from '../lib/api'
+import * as api from '../api'
 import { useCourseStore } from '../store/courseStore'
 import { useAttendanceStore } from '../store/attendanceStore'
 import { ApiError } from '../errors/api'

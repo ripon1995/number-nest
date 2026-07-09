@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import * as api from '../lib/api'
+import * as api from '../api'
 import type { Payment, PaymentInput } from '../types/payment'
 
 interface PaymentState {

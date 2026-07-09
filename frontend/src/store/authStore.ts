@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import * as api from '../lib/api'
+import * as api from '../api'
 import { REFRESH_TOKEN_STORAGE_KEY, TOKEN_STORAGE_KEY } from '../constants/config'
 import type { LoginInput, RegisterInput, Teacher } from '../types/auth'
 

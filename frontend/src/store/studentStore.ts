@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import * as api from '../lib/api'
+import * as api from '../api'
 import type { Student, StudentInput } from '../types/student'
 
 interface StudentState {

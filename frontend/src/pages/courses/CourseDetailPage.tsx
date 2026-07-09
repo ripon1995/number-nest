@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import * as api from '../../lib/api'
+import * as api from '../../api'
 import { ApiError } from '../../errors/api'
 import ErrorDialog from '../../components/ErrorDialog'
 import type { CourseDetail } from '../../types/course'
