@@ -16,9 +16,10 @@
 .attendance-controls {
   display: flex;
   align-items: flex-end;
+  justify-content: space-between;
   gap: 16px;
   width: 100%;
-  max-width: 1400px;
+  max-width: 900px;
   margin: 0 auto 16px;
   flex-wrap: wrap;
 }
@@ -50,7 +51,8 @@
 
 .attendance-sheet table {
   width: 100%;
-  max-width: 480px;
+  max-width: 900px;
+  margin: 0 auto;
   border-collapse: collapse;
   background: var(--surface);
   border: 1px solid var(--border);
