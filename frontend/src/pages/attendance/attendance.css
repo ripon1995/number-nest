@@ -53,6 +53,7 @@
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
+  table-layout: fixed;
   border-collapse: collapse;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -69,6 +70,17 @@
   padding: 12px 14px;
   text-align: left;
   border-bottom: 1px solid var(--border);
+}
+
+.attendance-sheet th:first-child,
+.attendance-sheet td:first-child {
+  width: 88px;
+  padding-left: 24px;
+}
+
+.attendance-sheet th:last-child,
+.attendance-sheet td:last-child {
+  width: 110px;
 }
 
 .attendance-sheet th {
