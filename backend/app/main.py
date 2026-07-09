@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.attendance.router import router as attendance_router
-from app.core.exceptions import AppException, app_exception_handler
+from app.core.config import settings
+from app.core.exception_handler import register_exception_handlers
 from app.core.logging import log_requests, setup_logging
 from app.courses.router import router as courses_router
 from app.enrollments.router import router as enrollments_router
@@ -12,15 +13,23 @@ from app.teacher.router import router as teacher_router
 
 setup_logging()
 
-app = FastAPI(title="number-nest")
+app = FastAPI(
+    title="Number Nest",
+    description="Number Nest APIs for management",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url=None,
+)
 
-app.add_exception_handler(AppException, app_exception_handler)
+# ── Exception handlers ──────────────────────────────────────────────────────
+register_exception_handlers(app)
 
 # Dev-only: allow the Vite dev server to call the API. Single-teacher system,
 # no cookies/credentials involved — auth is a Bearer token, so no allow_credentials needed.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=settings.ALLOW_ORIGINS,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
