@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="100%" height="100%">
+    <defs>
+        <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0f172a" />
+            <stop offset="50%" stop-color="#1e1b4b" />
+            <stop offset="100%" stop-color="#0f172a" />
+        </linearGradient>
+
+        <pattern id="math-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#334155" stroke-width="0.5" opacity="0.3" />
+        </pattern>
+
+        <linearGradient id="accent-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4" />
+            <stop offset="100%" stop-color="#0369a1" stop-opacity="0.05" />
+        </linearGradient>
+
+        <linearGradient id="accent-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#c084fc" stop-opacity="0.3" />
+            <stop offset="100%" stop-color="#7e22ce" stop-opacity="0" />
+        </linearGradient>
+
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="8" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+    </defs>
+
+    <rect width="1440" height="900" fill="url(#bg-gradient)" />
+
+    <rect width="1440" height="900" fill="url(#math-grid)" />
+
+    <g id="geometric-shapes">
+        <path d="M 0 450 Q 360 150, 720 450 T 1440 450" fill="none" stroke="#0ea5e9" stroke-width="2" opacity="0.25" />
+        <path d="M 0 450 Q 360 750, 720 450 T 1440 450" fill="none" stroke="#a855f7" stroke-width="1.5" opacity="0.15" stroke-dasharray="5,5" />
+
+        <polygon points="150,750 550,750 550,450" fill="url(#accent-blue)" stroke="#38bdf8" stroke-width="1" opacity="0.6" />
+        <path d="M 520 750 L 520 720 L 550 720" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.6" /> <circle cx="1150" cy="250" r="120" fill="none" stroke="#ec4899" stroke-width="1.5" opacity="0.25" filter="url(#glow)" />
+        <circle cx="1150" cy="250" r="80" fill="url(#accent-purple)" stroke="#a855f7" stroke-width="1" opacity="0.4" />
+        <circle cx="1150" cy="250" r="40" fill="none" stroke="#c084fc" stroke-width="1" opacity="0.3" stroke-dasharray="4,4" />
+        <line x1="1150" y1="250" x2="1235" y2="165" stroke="#f43f5e" stroke-width="2" opacity="0.5" />
+
+        <circle cx="250" cy="200" r="90" fill="url(#accent-blue)" stroke="#0ea5e9" stroke-width="1" opacity="0.3" />
+        <circle cx="330" cy="200" r="90" fill="url(#accent-purple)" stroke="#a855f7" stroke-width="1" opacity="0.3" />
+
+        <path d="M 1300 800 A 10 10 0 0 1 1290 790 A 20 20 0 0 1 1310 770 A 40 40 0 0 1 1350 810 A 80 80 0 0 1 1270 890 A 160 160 0 0 1 1110 730 A 320 320 0 0 1 1430 410"
+              fill="none" stroke="#e2e8f0" stroke-width="1" opacity="0.15" />
+    </g>
+
+    <g id="math-formulas" font-family="Courier New, monospace" font-weight="bold" fill="#94a3b8" opacity="0.15">
+        <text x="100" y="100" font-size="28">e^(iπ) + 1 = 0</text>
+        <text x="1200" y="450" font-size="26">f(x) = ∫ v dv</text>
+        <text x="950" y="700" font-size="32">a² + b² = c²</text>
+        <text x="700" y="180" font-size="24">∑ x_i</text>
+        <text x="150" y="520" font-size="22">Δx → 0</text>
+        <text x="1250" y="100" font-size="30">π ≈ 3.14159</text>
+        <text x="580" y="820" font-size="24">A = πr²</text>
+
+        <text x="750" y="500" font-size="20">[ a  b ]</text>
+        <text x="750" y="525" font-size="20">[ c  d ]</text>
+    </g>
+
+    <g fill="#38bdf8" opacity="0.6">
+        <circle cx="550" cy="450" r="4" />
+        <circle cx="550" cy="750" r="4" />
+        <circle cx="150" cy="750" r="4" />
+        <circle cx="1150" cy="250" r="3" />
+        <circle cx="1235" cy="165" r="4" fill="#f43f5e" />
+    </g>
+</svg>
