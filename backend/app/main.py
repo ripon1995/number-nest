@@ -1,10 +1,10 @@
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.attendance.router import router as attendance_router
 from app.core.config import settings
 from app.core.exception_handler import register_exception_handlers
-from app.core.logging import log_requests, setup_logging
+from app.core.logging import RequestLoggerMiddleware, setup_logging
 from app.courses.router import router as courses_router
 from app.enrollments.router import router as enrollments_router
 from app.payments.router import router as payments_router
@@ -24,6 +24,7 @@ app = FastAPI(
 # ── Exception handlers ──────────────────────────────────────────────────────
 register_exception_handlers(app)
 
+# ── Middleware ──────────────────────────────────────────────────────────────
 # Dev-only: allow the Vite dev server to call the API. Single-teacher system,
 # no cookies/credentials involved — auth is a Bearer token, so no allow_credentials needed.
 app.add_middleware(
@@ -34,14 +35,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.middleware("http")(log_requests)
+# request logger middleware
+app.add_middleware(RequestLoggerMiddleware, env_name=settings.environment)
 
-app.include_router(teacher_router)
-app.include_router(courses_router)
-app.include_router(students_router)
-app.include_router(enrollments_router)
-app.include_router(payments_router)
-app.include_router(attendance_router)
+api_router = APIRouter()
+api_router.include_router(teacher_router)
+api_router.include_router(courses_router)
+api_router.include_router(students_router)
+api_router.include_router(enrollments_router)
+api_router.include_router(payments_router)
+api_router.include_router(attendance_router)
+
+app.include_router(api_router, prefix="/api")
 
 
 @app.get("/", include_in_schema=False)

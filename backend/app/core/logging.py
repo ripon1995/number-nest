@@ -4,8 +4,8 @@ from collections.abc import Awaitable, Callable
 from datetime import datetime
 
 from fastapi import Request, Response
-
-from app.core.config import settings
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.types import ASGIApp
 
 request_logger = logging.getLogger("request")
 
@@ -17,22 +17,28 @@ def setup_logging() -> None:
     )
 
 
-async def log_requests(
-    request: Request, call_next: Callable[[Request], Awaitable[Response]]
-) -> Response:
-    environment = settings.environment.upper()
-    request_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    request_logger.info("START | %s | %s | %s | ", request_time, environment, request.method)
+class RequestLoggerMiddleware(BaseHTTPMiddleware):
+    def __init__(self, app: ASGIApp, env_name: str) -> None:
+        super().__init__(app)
+        self.env_name = env_name.upper()
 
-    start = time.perf_counter()
-    response = await call_next(request)
-    duration_ms = (time.perf_counter() - start) * 1000
+    async def dispatch(
+        self, request: Request, call_next: Callable[[Request], Awaitable[Response]]
+    ) -> Response:
+        request_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        request_logger.info(
+            "START | %s | %s | %s | ", request_time, self.env_name, request.method
+        )
 
-    request_logger.info(
-        "FINISHED | %s | %s | Status: %s | Duration: %.2fms",
-        request.method,
-        request.url.path,
-        response.status_code,
-        duration_ms,
-    )
-    return response
+        start = time.perf_counter()
+        response = await call_next(request)
+        duration_ms = (time.perf_counter() - start) * 1000
+
+        request_logger.info(
+            "FINISHED | %s | %s | Status: %s | Duration: %.2fms",
+            request.method,
+            request.url.path,
+            response.status_code,
+            duration_ms,
+        )
+        return response
