@@ -36,7 +36,7 @@ function EnrollmentTable({
           <th>Student</th>
           <th>Course</th>
           <th>Start date</th>
-          <th>Fee paid</th>
+          <th>Enrollment Fee paid</th>
           <th>Action</th>
         </tr>
       </thead>
