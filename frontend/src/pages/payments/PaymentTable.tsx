@@ -44,6 +44,7 @@ function PaymentTable({
     <table>
       <thead>
         <tr>
+          <th>SL</th>
           <th>Student</th>
           <th>Course</th>
           <th>Month</th>
@@ -53,8 +54,9 @@ function PaymentTable({
         </tr>
       </thead>
       <tbody>
-        {payments.map((payment) => (
+        {payments.map((payment, index) => (
           <tr key={payment.id}>
+            <td>{index + 1}</td>
             <td>{studentName(payment)}</td>
             <td>{courseName(payment)}</td>
             <td>{formatMonth(payment.month)}</td>

@@ -39,13 +39,15 @@ function AttendanceSheet({ students, records, isLoading, isSubmitting, onSubmit 
       <table>
         <thead>
           <tr>
+            <th>SL</th>
             <th>Student</th>
             <th>Present</th>
           </tr>
         </thead>
         <tbody>
-          {students.map((student) => (
+          {students.map((student, index) => (
             <tr key={student.id}>
+              <td>{index + 1}</td>
               <td>{student.name}</td>
               <td>
                 <input

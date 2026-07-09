@@ -22,6 +22,7 @@ function CourseTable({ courses, isLoading, deletingId, onEdit, onDelete }: Cours
     <table>
       <thead>
         <tr>
+          <th>SL</th>
           <th>Name</th>
           <th>Subject</th>
           <th>Fee</th>
@@ -32,8 +33,9 @@ function CourseTable({ courses, isLoading, deletingId, onEdit, onDelete }: Cours
         </tr>
       </thead>
       <tbody>
-        {courses.map((course) => (
+        {courses.map((course, index) => (
           <tr key={course.id} className="course-row-clickable" onClick={() => navigate(`/courses/${course.id}`)}>
+            <td>{index + 1}</td>
             <td>{course.course_name}</td>
             <td>{SUBJECT_LABELS[course.subject]}</td>
             <td>{formatFee(course.course_fee)}</td>

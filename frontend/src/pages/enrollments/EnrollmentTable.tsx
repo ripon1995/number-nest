@@ -32,6 +32,7 @@ function EnrollmentTable({
     <table>
       <thead>
         <tr>
+          <th>SL</th>
           <th>Student</th>
           <th>Course</th>
           <th>Start date</th>
@@ -40,8 +41,9 @@ function EnrollmentTable({
         </tr>
       </thead>
       <tbody>
-        {enrollments.map((enrollment) => (
+        {enrollments.map((enrollment, index) => (
           <tr key={enrollment.id}>
+            <td>{index + 1}</td>
             <td>{studentsById.get(enrollment.student_id)?.name ?? 'Unknown student'}</td>
             <td>{coursesById.get(enrollment.course_id)?.course_name ?? 'Unknown course'}</td>
             <td>{enrollment.start_from}</td>

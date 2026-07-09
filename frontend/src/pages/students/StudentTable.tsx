@@ -18,6 +18,7 @@ function StudentTable({ students, isLoading, deletingId, onEdit, onDelete }: Stu
     <table>
       <thead>
         <tr>
+          <th>SL</th>
           <th>Name</th>
           <th>College</th>
           <th>Contact</th>
@@ -27,8 +28,9 @@ function StudentTable({ students, isLoading, deletingId, onEdit, onDelete }: Stu
         </tr>
       </thead>
       <tbody>
-        {students.map((student) => (
+        {students.map((student, index) => (
           <tr key={student.id}>
+            <td>{index + 1}</td>
             <td>{student.name}</td>
             <td>{student.college ?? '—'}</td>
             <td>{student.contact}</td>
