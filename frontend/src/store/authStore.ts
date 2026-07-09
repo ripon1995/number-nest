@@ -76,4 +76,9 @@ async function hydrateFromStoredToken() {
   }
 }
 
+api.setUnauthorizedHandler(() => {
+  clearTokens()
+  useAuthStore.setState({ teacher: null })
+})
+
 hydrateFromStoredToken()
