@@ -126,6 +126,21 @@
   border-bottom: none;
 }
 
+.payment-list tbody tr {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.payment-list tbody tr:hover {
+  position: relative;
+  z-index: 1;
+  transform: scale(1.015);
+  box-shadow:
+    rgba(16, 24, 40, 0.18) 0 12px 20px -6px,
+    rgba(16, 24, 40, 0.1) 0 4px 8px -2px;
+}
+
 .payment-row-actions {
   display: flex;
   gap: 8px;
