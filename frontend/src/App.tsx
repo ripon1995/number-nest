@@ -23,67 +23,71 @@ function App() {
   return (
     <BrowserRouter>
       <Header />
-      <AppNav />
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/students"
-          element={
-            <ProtectedRoute>
-              <StudentsPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/courses"
-          element={
-            <ProtectedRoute>
-              <CoursesPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/courses/:id"
-          element={
-            <ProtectedRoute>
-              <CourseDetailPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/enrollments"
-          element={
-            <ProtectedRoute>
-              <EnrollmentsPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/payments"
-          element={
-            <ProtectedRoute>
-              <PaymentsPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/attendance"
-          element={
-            <ProtectedRoute>
-              <AttendancePage />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <div className="app-body">
+        <AppNav />
+        <div className="app-main">
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/students"
+              element={
+                <ProtectedRoute>
+                  <StudentsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/courses"
+              element={
+                <ProtectedRoute>
+                  <CoursesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/courses/:id"
+              element={
+                <ProtectedRoute>
+                  <CourseDetailPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/enrollments"
+              element={
+                <ProtectedRoute>
+                  <EnrollmentsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/payments"
+              element={
+                <ProtectedRoute>
+                  <PaymentsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/attendance"
+              element={
+                <ProtectedRoute>
+                  <AttendancePage />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </div>
+      </div>
     </BrowserRouter>
   )
 }

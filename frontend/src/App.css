@@ -1,3 +1,17 @@
+.app-body {
+  display: flex;
+  align-items: stretch;
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.app-main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+}
+
 #content {
   display: flex;
   flex-direction: column;
