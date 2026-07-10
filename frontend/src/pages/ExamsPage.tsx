@@ -4,6 +4,7 @@ import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
 import { PlusIcon } from '../components/Icons'
+import { ExamsIcon } from '../components/NavIcons'
 import ExamTable from './exams/ExamTable'
 import ExamFormDialog from './exams/ExamFormDialog'
 import type { Exam } from '../types/exam'
@@ -57,7 +58,12 @@ function ExamsPage() {
   return (
     <main id="content" className="exams-page">
       <div className="exams-page-header">
-        <h1>Exams</h1>
+        <h1 className="page-title">
+          <span className="app-nav-icon">
+            <ExamsIcon />
+          </span>
+          Exams
+        </h1>
         <button type="button" onClick={handleAddClick}>
           <PlusIcon /> Add exam
         </button>

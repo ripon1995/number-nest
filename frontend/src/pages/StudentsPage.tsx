@@ -3,6 +3,7 @@ import { useStudentStore } from '../store/studentStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
 import { PlusIcon } from '../components/Icons'
+import { StudentsIcon } from '../components/NavIcons'
 import StudentTable from './students/StudentTable'
 import StudentFormDialog from './students/StudentFormDialog'
 import type { Student } from '../types/student'
@@ -50,7 +51,12 @@ function StudentsPage() {
   return (
     <main id="content" className="students-page">
       <div className="students-page-header">
-        <h1>Students</h1>
+        <h1 className="page-title">
+          <span className="app-nav-icon">
+            <StudentsIcon />
+          </span>
+          Students
+        </h1>
         <button type="button" onClick={() => setIsCreating(true)}>
           <PlusIcon /> Add student
         </button>

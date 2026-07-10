@@ -4,6 +4,7 @@ import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
 import { PlusIcon } from '../components/Icons'
+import { NoticesIcon } from '../components/NavIcons'
 import NoticeTable from './notices/NoticeTable'
 import NoticeFormDialog from './notices/NoticeFormDialog'
 import type { Notice } from '../types/notice'
@@ -57,7 +58,12 @@ function NoticesPage() {
   return (
     <main id="content" className="notices-page">
       <div className="notices-page-header">
-        <h1>Notices</h1>
+        <h1 className="page-title">
+          <span className="app-nav-icon">
+            <NoticesIcon />
+          </span>
+          Notices
+        </h1>
         <button type="button" onClick={handleAddClick}>
           <PlusIcon /> Add notice
         </button>

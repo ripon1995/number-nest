@@ -4,6 +4,7 @@ import { useCourseStore } from '../store/courseStore'
 import { useAttendanceStore } from '../store/attendanceStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import { AttendanceIcon } from '../components/NavIcons'
 import AttendanceSheet from './attendance/AttendanceSheet'
 import type { CourseDetail } from '../types/course'
 import type { AttendanceEntryInput } from '../types/attendance'
@@ -76,7 +77,12 @@ function AttendancePage() {
   return (
     <main id="content" className="attendance-page">
       <div className="attendance-page-header">
-        <h1>Attendance</h1>
+        <h1 className="page-title">
+          <span className="app-nav-icon">
+            <AttendanceIcon />
+          </span>
+          Attendance
+        </h1>
       </div>
 
       <div className="attendance-controls">

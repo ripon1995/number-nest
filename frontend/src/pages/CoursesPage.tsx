@@ -3,6 +3,7 @@ import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
 import { PlusIcon } from '../components/Icons'
+import { CoursesIcon } from '../components/NavIcons'
 import CourseTable from './courses/CourseTable'
 import CourseFormDialog from './courses/CourseFormDialog'
 import type { Course } from '../types/course'
@@ -50,7 +51,12 @@ function CoursesPage() {
   return (
     <main id="content" className="courses-page">
       <div className="courses-page-header">
-        <h1>Courses</h1>
+        <h1 className="page-title">
+          <span className="app-nav-icon">
+            <CoursesIcon />
+          </span>
+          Courses
+        </h1>
         <button type="button" onClick={() => setIsCreating(true)}>
           <PlusIcon /> Add course
         </button>
