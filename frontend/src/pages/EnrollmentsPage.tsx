@@ -4,6 +4,7 @@ import { useStudentStore } from '../store/studentStore'
 import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import { PlusIcon } from '../components/Icons'
 import EnrollmentTable from './enrollments/EnrollmentTable'
 import EnrollmentFormDialog from './enrollments/EnrollmentFormDialog'
 import type { Enrollment } from '../types/enrollment'
@@ -85,7 +86,7 @@ function EnrollmentsPage() {
       <div className="enrollments-page-header">
         <h1>Enrollments</h1>
         <button type="button" onClick={handleAddClick}>
-          Add enrollment
+          <PlusIcon /> Add enrollment
         </button>
       </div>
 

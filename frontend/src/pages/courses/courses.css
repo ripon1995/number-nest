@@ -20,6 +20,9 @@
 
 .courses-page-header > button,
 .courses-page-header > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font: inherit;
   padding: 10px 16px;
   border: none;

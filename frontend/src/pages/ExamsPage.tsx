@@ -3,6 +3,7 @@ import { useExamStore } from '../store/examStore'
 import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import { PlusIcon } from '../components/Icons'
 import ExamTable from './exams/ExamTable'
 import ExamFormDialog from './exams/ExamFormDialog'
 import type { Exam } from '../types/exam'
@@ -58,7 +59,7 @@ function ExamsPage() {
       <div className="exams-page-header">
         <h1>Exams</h1>
         <button type="button" onClick={handleAddClick}>
-          Add exam
+          <PlusIcon /> Add exam
         </button>
       </div>
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import { PlusIcon } from '../components/Icons'
 import CourseTable from './courses/CourseTable'
 import CourseFormDialog from './courses/CourseFormDialog'
 import type { Course } from '../types/course'
@@ -51,7 +52,7 @@ function CoursesPage() {
       <div className="courses-page-header">
         <h1>Courses</h1>
         <button type="button" onClick={() => setIsCreating(true)}>
-          Add course
+          <PlusIcon /> Add course
         </button>
       </div>
 

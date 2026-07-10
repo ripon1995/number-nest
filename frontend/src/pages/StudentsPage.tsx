@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useStudentStore } from '../store/studentStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import { PlusIcon } from '../components/Icons'
 import StudentTable from './students/StudentTable'
 import StudentFormDialog from './students/StudentFormDialog'
 import type { Student } from '../types/student'
@@ -51,7 +52,7 @@ function StudentsPage() {
       <div className="students-page-header">
         <h1>Students</h1>
         <button type="button" onClick={() => setIsCreating(true)}>
-          Add student
+          <PlusIcon /> Add student
         </button>
       </div>
 

@@ -5,6 +5,7 @@ import { useStudentStore } from '../store/studentStore'
 import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import { PlusIcon } from '../components/Icons'
 import PaymentTable from './payments/PaymentTable'
 import PaymentFormDialog from './payments/PaymentFormDialog'
 import type { Payment } from '../types/payment'
@@ -74,7 +75,7 @@ function PaymentsPage() {
       <div className="payments-page-header">
         <h1>Payments</h1>
         <button type="button" onClick={handleAddClick}>
-          Add payment
+          <PlusIcon /> Add payment
         </button>
       </div>
 

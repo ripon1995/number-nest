@@ -132,3 +132,39 @@ export function NoticesIcon() {
     </svg>
   )
 }
+
+export function ProfileIcon() {
+  return (
+    <svg {...iconProps()}>
+      <circle cx="12" cy="8.5" r="3.5" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export function LogoutIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path
+        d="M9 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14 8l4 4-4 4M18 12H9"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}

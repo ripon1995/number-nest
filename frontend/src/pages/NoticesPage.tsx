@@ -3,6 +3,7 @@ import { useNoticeStore } from '../store/noticeStore'
 import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import { PlusIcon } from '../components/Icons'
 import NoticeTable from './notices/NoticeTable'
 import NoticeFormDialog from './notices/NoticeFormDialog'
 import type { Notice } from '../types/notice'
@@ -58,7 +59,7 @@ function NoticesPage() {
       <div className="notices-page-header">
         <h1>Notices</h1>
         <button type="button" onClick={handleAddClick}>
-          Add notice
+          <PlusIcon /> Add notice
         </button>
       </div>
 

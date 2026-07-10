@@ -6,6 +6,7 @@ import { useAuthStore } from './store/authStore'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage'
+import ProfilePage from './pages/ProfilePage'
 import StudentsPage from './pages/StudentsPage'
 import CoursesPage from './pages/CoursesPage'
 import CourseDetailPage from './pages/courses/CourseDetailPage'
@@ -109,6 +110,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <NoticesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
                 </ProtectedRoute>
               }
             />

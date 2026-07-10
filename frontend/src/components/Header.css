@@ -23,14 +23,24 @@
   color: #f1f5f9;
 }
 
-.app-header-account button {
-  font: inherit;
-  padding: 6px 10px;
+.app-header-profile,
+.app-header-logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   border: 1px solid rgba(241, 245, 249, 0.35);
   border-radius: 6px;
   background: transparent;
   color: #f1f5f9;
   cursor: pointer;
+}
+
+.app-header-profile:hover,
+.app-header-logout:hover {
+  background: rgba(241, 245, 249, 0.1);
 }
 
 @media (max-width: 640px) {
