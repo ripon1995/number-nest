@@ -4,6 +4,8 @@ import {
   CoursesIcon,
   DashboardIcon,
   EnrollmentsIcon,
+  ExamsIcon,
+  NoticesIcon,
   PaymentsIcon,
   StudentsIcon,
 } from './NavIcons'
@@ -16,6 +18,8 @@ const links = [
   { to: '/enrollments', label: 'Enrollments', Icon: EnrollmentsIcon },
   { to: '/payments', label: 'Payments', Icon: PaymentsIcon },
   { to: '/attendance', label: 'Attendance', Icon: AttendanceIcon },
+  { to: '/exams', label: 'Exams', Icon: ExamsIcon },
+  { to: '/notices', label: 'Notices', Icon: NoticesIcon },
 ]
 
 function NavMenu() {

@@ -1,0 +1,183 @@
+.exams-page {
+  align-items: center;
+  width: 100%;
+}
+
+.exams-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.exams-page-header h1 {
+  margin: 32px 0;
+}
+
+.exams-page-header > button {
+  font: inherit;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.exam-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.exam-form h2 {
+  margin: 0;
+}
+
+.exam-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 15px;
+  color: var(--text-h);
+}
+
+.exam-form input,
+.exam-form select,
+.exam-form textarea {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-h);
+  resize: vertical;
+}
+
+.exam-form input:focus,
+.exam-form select:focus,
+.exam-form textarea:focus {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 1px;
+}
+
+.exam-form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.exam-form button {
+  font: inherit;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.exam-form button.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-h);
+}
+
+.exam-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.exam-list {
+  width: 100%;
+  max-width: 1400px;
+  margin: 12px auto 0;
+  overflow-x: auto;
+}
+
+.exam-list table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow:
+    rgba(16, 24, 40, 0.12) 0 20px 25px -5px,
+    rgba(16, 24, 40, 0.08) 0 8px 10px -6px;
+  overflow: hidden;
+  font-size: 15px;
+}
+
+.exam-list th,
+.exam-list td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.exam-list th {
+  color: var(--text-h);
+  font-weight: 700;
+}
+
+.exam-list tr:last-child td {
+  border-bottom: none;
+}
+
+.exam-list tbody tr {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.exam-list tbody tr:hover {
+  position: relative;
+  z-index: 1;
+  transform: scale(1.015);
+  box-shadow:
+    rgba(16, 24, 40, 0.18) 0 12px 20px -6px,
+    rgba(16, 24, 40, 0.1) 0 4px 8px -2px;
+}
+
+.exam-row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.exam-row-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.exam-row-actions button:hover {
+  background: var(--accent-bg);
+}
+
+.exam-row-actions button.secondary {
+  color: #e5484d;
+  border-color: rgba(229, 72, 77, 0.35);
+}
+
+.exam-row-actions button.secondary:hover {
+  background: rgba(229, 72, 77, 0.1);
+}
+
+.exam-row-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

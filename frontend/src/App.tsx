@@ -12,6 +12,8 @@ import CourseDetailPage from './pages/courses/CourseDetailPage'
 import EnrollmentsPage from './pages/EnrollmentsPage'
 import PaymentsPage from './pages/PaymentsPage'
 import AttendancePage from './pages/AttendancePage'
+import ExamsPage from './pages/ExamsPage'
+import NoticesPage from './pages/NoticesPage'
 import './App.css'
 
 function AppNav() {
@@ -82,6 +84,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AttendancePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/exams"
+              element={
+                <ProtectedRoute>
+                  <ExamsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/notices"
+              element={
+                <ProtectedRoute>
+                  <NoticesPage />
                 </ProtectedRoute>
               }
             />
