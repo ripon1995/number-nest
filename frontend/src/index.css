@@ -9,6 +9,8 @@
   --accent-bg: rgba(52, 84, 209, 0.08);
   --accent-border: rgba(52, 84, 209, 0.45);
   --social-bg: rgba(238, 240, 243, 0.6);
+  --status-good: #0ca30c;
+  --status-critical: #d03b3b;
   --shadow:
     rgba(16, 24, 40, 0.08) 0 10px 15px -3px, rgba(16, 24, 40, 0.04) 0 4px 6px -2px;
 

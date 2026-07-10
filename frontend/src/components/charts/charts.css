@@ -1,0 +1,187 @@
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow:
+    rgba(16, 24, 40, 0.12) 0 20px 25px -5px,
+    rgba(16, 24, 40, 0.08) 0 8px 10px -6px;
+  text-align: left;
+  flex: 1 1 360px;
+  min-width: 0;
+}
+
+.chart-title {
+  margin: 0;
+  font-size: 18px;
+}
+
+.chart-empty {
+  margin: 0;
+  color: var(--text);
+  font-size: 15px;
+}
+
+/* Donut */
+
+.donut-layout {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.donut-ring {
+  position: relative;
+  flex: none;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+}
+
+.donut-hole {
+  position: absolute;
+  inset: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.donut-hole-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.donut-hole-label {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.chart-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex: 1 1 140px;
+}
+
+.chart-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.chart-legend-swatch {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.chart-legend-swatch--good {
+  background: var(--status-good);
+}
+
+.chart-legend-swatch--critical {
+  background: var(--status-critical);
+}
+
+.chart-legend-label {
+  color: var(--text-h);
+  font-weight: 500;
+}
+
+.chart-legend-value {
+  margin-left: auto;
+  color: var(--text);
+}
+
+/* Bar chart — fixed pixel spacers keep the value row, track, and label row the
+   same height in every column so the gridlines (which mirror the track's
+   vertical extent) line up with the bars regardless of value/label text length. */
+
+.bar-chart-plot {
+  position: relative;
+  height: 220px;
+}
+
+.bar-chart-gridlines {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 22px;
+  height: 172px;
+}
+
+.bar-chart-gridline {
+  position: absolute;
+  left: 34px;
+  right: 0;
+  border-top: 1px solid var(--border);
+}
+
+.bar-chart-gridline span {
+  position: absolute;
+  left: -34px;
+  width: 28px;
+  transform: translateY(-50%);
+  text-align: right;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.bar-chart-bars {
+  position: absolute;
+  inset: 0 0 0 34px;
+  display: flex;
+  gap: 12px;
+}
+
+.bar-chart-col {
+  flex: 1 1 0;
+  max-width: 56px;
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bar-chart-value {
+  height: 22px;
+  display: flex;
+  align-items: flex-end;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.bar-chart-track {
+  height: 172px;
+  width: 22px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar-chart-bar {
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+}
+
+.bar-chart-label {
+  height: 26px;
+  padding-top: 8px;
+  font-size: 12px;
+  color: var(--text);
+  white-space: nowrap;
+}
