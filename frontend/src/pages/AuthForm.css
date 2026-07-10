@@ -3,9 +3,9 @@
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  max-width: 360px;
+  max-width: 700px;
   margin: 0 auto;
-  padding: 28px;
+  padding: 36px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
