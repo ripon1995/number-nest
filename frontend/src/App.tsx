@@ -13,6 +13,7 @@ import EnrollmentsPage from './pages/EnrollmentsPage'
 import PaymentsPage from './pages/PaymentsPage'
 import AttendancePage from './pages/AttendancePage'
 import ExamsPage from './pages/ExamsPage'
+import ExamDetailPage from './pages/exams/ExamDetailPage'
 import NoticesPage from './pages/NoticesPage'
 import './App.css'
 
@@ -92,6 +93,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ExamsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/exams/:id"
+              element={
+                <ProtectedRoute>
+                  <ExamDetailPage />
                 </ProtectedRoute>
               }
             />

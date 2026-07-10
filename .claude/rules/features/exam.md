@@ -12,7 +12,11 @@ for `exam_datetime`, an optional `description` textarea, and an `exam_mark` numb
 rendered in the default-width `Modal`. The "Add exam" action is disabled (via a client-side
 check, not a backend rule) until at least one course exists, same pattern as payments/
 enrollments' guard. There's a standalone "Exams" nav link/route (`/exams`), same as every
-other list feature — this is not part of the Dashboard.
+other list feature — this is not part of the Dashboard. `ExamTable` rows are clickable (same
+pattern as `CourseTable`) and navigate to `ExamDetailPage` at route `/exams/:id` — a full page
+showing a read-only exam card (course name, date/time, description, exam mark) plus a
+[[mark]] sheet for recording each of the course's enrolled students' marks for that exam.
+`GET /exams/{id}` (`ExamService.get_detail`) backs this page's initial fetch.
 
 ## Fields
 
@@ -34,4 +38,4 @@ other list feature — this is not part of the Dashboard.
   the same datetime (e.g. different subjects/sections aren't modeled, so this isn't blocked).
 - Deleting a course cascades to delete its exams (`ondelete="CASCADE"`).
 - Not tied to [[enrollment]] or student — an exam belongs to a course as a whole, not to
-  individual enrolled students. There's no per-student exam result recorded anywhere yet.
+  individual enrolled students. Per-student results are tracked separately, in [[mark]].

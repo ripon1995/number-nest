@@ -28,6 +28,14 @@ async def list_exams(
     return await service.list_all(course_id=course_id)
 
 
+@router.get("/{exam_id}", response_model=ExamRead)
+async def get_exam(
+        exam_id: uuid.UUID,
+        service: ExamService = Depends(get_exam_service)
+) -> Exam:
+    return await service.get_detail(exam_id)
+
+
 @router.delete("/{exam_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_exam(
         exam_id: uuid.UUID,

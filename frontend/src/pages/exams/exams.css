@@ -18,7 +18,8 @@
   margin: 32px 0;
 }
 
-.exams-page-header > button {
+.exams-page-header > button,
+.exams-page-header > a {
   font: inherit;
   padding: 10px 16px;
   border: none;
@@ -27,6 +28,7 @@
   color: #fff;
   cursor: pointer;
   white-space: nowrap;
+  text-decoration: none;
 }
 
 .exam-form {
@@ -178,6 +180,188 @@
 }
 
 .exam-row-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.exam-row-clickable {
+  cursor: pointer;
+}
+
+.exam-row-clickable:hover {
+  background: var(--accent-bg);
+}
+
+.exam-detail-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 12px auto 0;
+}
+
+.exam-detail.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow:
+    rgba(16, 24, 40, 0.12) 0 20px 25px -5px,
+    rgba(16, 24, 40, 0.08) 0 8px 10px -6px;
+}
+
+.exam-detail.card h2 {
+  margin: 0;
+}
+
+.exam-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+}
+
+.exam-detail-list > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.exam-detail-list > div:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.exam-detail-list dt {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.exam-detail-list dd {
+  margin: 0;
+  color: var(--text-h);
+  font-weight: 500;
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .exam-detail-list > div {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .exam-detail-list dd {
+    text-align: left;
+  }
+}
+
+.exam-marks {
+  text-align: left;
+}
+
+.exam-marks h2 {
+  margin: 0 0 12px;
+}
+
+.mark-sheet {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.mark-sheet table {
+  width: 100%;
+  max-width: 900px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow:
+    rgba(16, 24, 40, 0.12) 0 20px 25px -5px,
+    rgba(16, 24, 40, 0.08) 0 8px 10px -6px;
+  overflow: hidden;
+  font-size: 15px;
+}
+
+.mark-sheet th,
+.mark-sheet td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.mark-sheet th:first-child,
+.mark-sheet td:first-child {
+  width: 88px;
+  padding-left: 24px;
+}
+
+.mark-sheet th:last-child,
+.mark-sheet td:last-child {
+  width: 140px;
+}
+
+.mark-sheet th {
+  color: var(--text-h);
+  font-weight: 700;
+}
+
+.mark-sheet tr:last-child td {
+  border-bottom: none;
+}
+
+.mark-sheet tbody tr {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.mark-sheet tbody tr:hover {
+  position: relative;
+  z-index: 1;
+  transform: scale(1.015);
+  box-shadow:
+    rgba(16, 24, 40, 0.18) 0 12px 20px -6px,
+    rgba(16, 24, 40, 0.1) 0 4px 8px -2px;
+}
+
+.mark-sheet input[type='number'] {
+  font: inherit;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-h);
+}
+
+.mark-sheet input[type='number']:focus {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 1px;
+}
+
+.mark-sheet-actions {
+  margin-top: 16px;
+}
+
+.mark-sheet-actions button {
+  font: inherit;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.mark-sheet-actions button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

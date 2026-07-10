@@ -8,6 +8,7 @@ from app.core.logging import RequestLoggerMiddleware, setup_logging
 from app.courses.router import router as courses_router
 from app.enrollments.router import router as enrollments_router
 from app.exams.router import router as exams_router
+from app.marks.router import router as marks_router
 from app.notices.router import router as notices_router
 from app.payments.router import router as payments_router
 from app.students.router import router as students_router
@@ -49,6 +50,7 @@ api_router.include_router(payments_router)
 api_router.include_router(attendance_router)
 api_router.include_router(exams_router)
 api_router.include_router(notices_router)
+api_router.include_router(marks_router)
 
 app.include_router(api_router, prefix="/api")
 

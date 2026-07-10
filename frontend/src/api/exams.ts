@@ -5,6 +5,10 @@ export function getExams(): Promise<Exam[]> {
   return request<Exam[]>('/exams', { headers: authHeaders() })
 }
 
+export function getExam(id: string): Promise<Exam> {
+  return request<Exam>(`/exams/${id}`, { headers: authHeaders() })
+}
+
 export function createExam(input: ExamInput): Promise<Exam> {
   return request<Exam>('/exams', {
     method: 'POST',

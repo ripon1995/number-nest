@@ -38,6 +38,12 @@ class ExamService:
     async def list_all(self, *, course_id: uuid.UUID | None = None) -> list[Exam]:
         return await self.repository.list_all(course_id=course_id)
 
+    async def get_detail(self, exam_id: uuid.UUID) -> Exam:
+        exam = await self.repository.get_by_id(exam_id)
+        if exam is None:
+            raise NotFoundException(f"Exam {exam_id} not found")
+        return exam
+
     async def delete_exam(self, exam_id: uuid.UUID) -> None:
         exam = await self.repository.get_by_id(exam_id)
         if exam is None:
