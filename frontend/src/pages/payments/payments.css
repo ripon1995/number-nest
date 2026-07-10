@@ -29,6 +29,10 @@
   white-space: nowrap;
 }
 
+.payment-modal {
+  max-width: 820px;
+}
+
 .payment-form {
   display: flex;
   flex-direction: column;
@@ -66,6 +70,7 @@
 
 .payment-form-actions {
   display: flex;
+  justify-content: space-between;
   gap: 10px;
 }
 

@@ -93,8 +93,8 @@ function PaymentsPage() {
       {isCreating && (
         <PaymentFormDialog
           enrollments={enrollments}
+          courses={courses}
           studentsById={studentsById}
-          coursesById={coursesById}
           onClose={() => setIsCreating(false)}
           onError={setError}
         />
