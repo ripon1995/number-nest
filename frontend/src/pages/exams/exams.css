@@ -277,7 +277,6 @@
 
 .mark-sheet table {
   width: 100%;
-  max-width: 900px;
   table-layout: fixed;
   border-collapse: collapse;
   background: var(--surface);
@@ -334,6 +333,7 @@
 
 .mark-sheet input[type='number'] {
   font: inherit;
+  box-sizing: border-box;
   width: 100%;
   padding: 8px 10px;
   border: 1px solid var(--border);
