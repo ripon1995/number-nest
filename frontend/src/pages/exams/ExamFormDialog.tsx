@@ -102,11 +102,11 @@ function ExamFormDialog({ courses, onClose, onError }: ExamFormDialogProps) {
           />
         </label>
         <div className="exam-form-actions">
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving…' : 'Create exam'}
-          </button>
           <button type="button" className="secondary" onClick={onClose}>
             Cancel
+          </button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Saving…' : 'Create exam'}
           </button>
         </div>
       </form>

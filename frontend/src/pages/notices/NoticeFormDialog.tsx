@@ -101,11 +101,11 @@ function NoticeFormDialog({ courses, onClose, onError }: NoticeFormDialogProps) 
           </select>
         </label>
         <div className="notice-form-actions">
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving…' : 'Create notice'}
-          </button>
           <button type="button" className="secondary" onClick={onClose}>
             Cancel
+          </button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Saving…' : 'Create notice'}
           </button>
         </div>
       </form>

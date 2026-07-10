@@ -182,11 +182,11 @@ function CourseFormDialog({ course, onClose, onError }: CourseFormDialogProps) {
         </label>
         {formError && <p className="error">{formError}</p>}
         <div className="course-form-actions">
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving…' : course ? 'Save changes' : 'Add course'}
-          </button>
           <button type="button" className="secondary" onClick={onClose}>
             Cancel
+          </button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Saving…' : course ? 'Save changes' : 'Add course'}
           </button>
         </div>
       </form>

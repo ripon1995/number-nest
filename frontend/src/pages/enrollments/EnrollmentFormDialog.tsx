@@ -107,11 +107,11 @@ function EnrollmentFormDialog({ students, courses, onClose, onError }: Enrollmen
           Enrollment fee paid
         </label>
         <div className="enrollment-form-actions">
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving…' : 'Add enrollment'}
-          </button>
           <button type="button" className="secondary" onClick={onClose}>
             Cancel
+          </button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Saving…' : 'Add enrollment'}
           </button>
         </div>
       </form>

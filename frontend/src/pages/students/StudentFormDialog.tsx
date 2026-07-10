@@ -122,11 +122,11 @@ function StudentFormDialog({ student, onClose, onError }: StudentFormDialogProps
           />
         </label>
         <div className="student-form-actions">
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving…' : student ? 'Save changes' : 'Add student'}
-          </button>
           <button type="button" className="secondary" onClick={onClose}>
             Cancel
+          </button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Saving…' : student ? 'Save changes' : 'Add student'}
           </button>
         </div>
       </form>
