@@ -17,13 +17,19 @@
 }
 
 .app-nav a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 12px 14px;
   font-size: 15px;
   color: var(--text);
   text-decoration: none;
   border-radius: 6px;
   border-left: 3px solid transparent;
+}
+
+.app-nav a svg {
+  flex-shrink: 0;
 }
 
 .app-nav a:hover {
