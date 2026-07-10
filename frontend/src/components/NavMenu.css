@@ -28,8 +28,16 @@
   border-left: 3px solid transparent;
 }
 
-.app-nav a svg {
+.app-nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: inherit;
 }
 
 .app-nav a:hover {

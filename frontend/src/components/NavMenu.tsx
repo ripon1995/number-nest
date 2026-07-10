@@ -25,7 +25,9 @@ function NavMenu() {
         {links.map(({ to, label, end, Icon }) => (
           <li key={to}>
             <NavLink to={to} end={end}>
-              <Icon />
+              <span className="app-nav-icon">
+                <Icon />
+              </span>
               <span>{label}</span>
             </NavLink>
           </li>
