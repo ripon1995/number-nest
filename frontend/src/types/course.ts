@@ -6,7 +6,7 @@ export const COURSE_SUBJECTS: CourseSubject[] = ['math', 'ict']
 
 export type CourseDay = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'
 
-export const COURSE_DAYS: CourseDay[] = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+export const COURSE_DAYS: CourseDay[] = ['sat', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri']
 
 export interface Course {
   id: string
