@@ -32,7 +32,7 @@ function LandingPage() {
   return (
     <main id="content" className="landing-page">
       <h1>Number Nest</h1>
-      <p className="landing-tagline">Upcoming notices and course routines, no login required.</p>
+      <p className="landing-tagline">Upcoming Notices & Course Routines.</p>
 
       <section className="landing-section">
         <h2>Notices</h2>
