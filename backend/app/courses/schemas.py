@@ -1,4 +1,5 @@
 import uuid
+from datetime import time
 from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -13,8 +14,10 @@ class CourseBase(BaseModel):
     enrollment_fee: Decimal = Field(ge=0)
     subject: CourseSubject
     course_days: list[CourseDay] = Field(min_length=1)
+    class_time: time
     capacity: int = Field(gt=0)
     course_motto: str | None = None
+    note: str | None = None
 
 
 class CourseCreate(CourseBase):

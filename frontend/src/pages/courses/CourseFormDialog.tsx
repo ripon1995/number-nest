@@ -19,8 +19,10 @@ interface FormState {
   enrollment_fee: string
   subject: CourseSubject
   course_days: CourseDay[]
+  class_time: string
   capacity: string
   course_motto: string
+  note: string
 }
 
 const emptyForm: FormState = {
@@ -29,8 +31,10 @@ const emptyForm: FormState = {
   enrollment_fee: '',
   subject: 'math',
   course_days: [],
+  class_time: '',
   capacity: '',
   course_motto: '',
+  note: '',
 }
 
 function toFormState(course: Course): FormState {
@@ -40,8 +44,10 @@ function toFormState(course: Course): FormState {
     enrollment_fee: course.enrollment_fee,
     subject: course.subject,
     course_days: course.course_days,
+    class_time: course.class_time.slice(0, 5),
     capacity: String(course.capacity),
     course_motto: course.course_motto ?? '',
+    note: course.note ?? '',
   }
 }
 
@@ -77,8 +83,10 @@ function CourseFormDialog({ course, onClose, onError }: CourseFormDialogProps) {
       enrollment_fee: form.enrollment_fee,
       subject: form.subject,
       course_days: form.course_days,
+      class_time: form.class_time,
       capacity: Number(form.capacity),
       course_motto: form.course_motto.trim() || null,
+      note: form.note.trim() || null,
     }
 
     setIsSubmitting(true)
@@ -162,6 +170,15 @@ function CourseFormDialog({ course, onClose, onError }: CourseFormDialogProps) {
           ))}
         </fieldset>
         <label>
+          Class time
+          <input
+            type="time"
+            value={form.class_time}
+            onChange={(e) => setForm({ ...form, class_time: e.target.value })}
+            required
+          />
+        </label>
+        <label>
           Capacity
           <input
             type="number"
@@ -178,6 +195,14 @@ function CourseFormDialog({ course, onClose, onError }: CourseFormDialogProps) {
             type="text"
             value={form.course_motto}
             onChange={(e) => setForm({ ...form, course_motto: e.target.value })}
+          />
+        </label>
+        <label>
+          Note (optional)
+          <textarea
+            value={form.note}
+            onChange={(e) => setForm({ ...form, note: e.target.value })}
+            rows={3}
           />
         </label>
         {formError && <p className="error">{formError}</p>}

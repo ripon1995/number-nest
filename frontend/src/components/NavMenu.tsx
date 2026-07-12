@@ -12,7 +12,7 @@ import {
 import './NavMenu.css'
 
 const links = [
-  { to: '/', label: 'Dashboard', end: true, Icon: DashboardIcon },
+  { to: '/dashboard', label: 'Dashboard', end: true, Icon: DashboardIcon },
   { to: '/students', label: 'Students', Icon: StudentsIcon },
   { to: '/courses', label: 'Courses', Icon: CoursesIcon },
   { to: '/enrollments', label: 'Enrollments', Icon: EnrollmentsIcon },

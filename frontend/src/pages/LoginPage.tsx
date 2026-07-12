@@ -16,7 +16,7 @@ function LoginPage() {
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     if (!isLoading && teacher) {
-        return <Navigate to="/" replace/>
+        return <Navigate to="/dashboard" replace/>
     }
 
     async function handleSubmit(event: FormEvent) {
@@ -25,7 +25,7 @@ function LoginPage() {
         setIsSubmitting(true)
         try {
             await login({email, password})
-            navigate('/')
+            navigate('/dashboard')
         } catch (err) {
             setError(
                 err instanceof ApiError

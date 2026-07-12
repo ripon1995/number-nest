@@ -29,8 +29,10 @@ class CourseService:
             enrollment_fee=payload.enrollment_fee,
             subject=payload.subject.value,
             course_days=[day.value for day in payload.course_days],
+            class_time=payload.class_time,
             capacity=payload.capacity,
             course_motto=payload.course_motto,
+            note=payload.note,
         )
 
     async def list_all(self) -> list[Course]:
@@ -62,8 +64,10 @@ class CourseService:
             enrollment_fee=payload.enrollment_fee,
             subject=payload.subject.value,
             course_days=[day.value for day in payload.course_days],
+            class_time=payload.class_time,
             capacity=payload.capacity,
             course_motto=payload.course_motto,
+            note=payload.note,
         )
 
     async def delete(self, course_id: uuid.UUID) -> None:

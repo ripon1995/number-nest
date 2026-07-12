@@ -43,6 +43,19 @@
   background: rgba(241, 245, 249, 0.1);
 }
 
+.app-header-login {
+  padding: 8px 14px;
+  border: 1px solid rgba(241, 245, 249, 0.35);
+  border-radius: 6px;
+  color: #f1f5f9;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.app-header-login:hover {
+  background: rgba(241, 245, 249, 0.1);
+}
+
 @media (max-width: 640px) {
   .app-header {
     flex-wrap: wrap;

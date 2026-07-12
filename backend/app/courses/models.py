@@ -1,9 +1,9 @@
 import enum
 import uuid
-from datetime import datetime
+from datetime import datetime, time
 from decimal import Decimal
 
-from sqlalchemy import DateTime, Numeric, String, func
+from sqlalchemy import DateTime, Numeric, String, Time, func
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -36,8 +36,10 @@ class Course(Base):
     enrollment_fee: Mapped[Decimal] = mapped_column(Numeric(10, 2))
     subject: Mapped[str] = mapped_column(String)
     course_days: Mapped[list[str]] = mapped_column(ARRAY(String))
+    class_time: Mapped[time] = mapped_column(Time)
     capacity: Mapped[int]
     course_motto: Mapped[str | None] = mapped_column(String, default=None)
+    note: Mapped[str | None] = mapped_column(String, default=None)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

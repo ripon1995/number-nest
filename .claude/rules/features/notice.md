@@ -12,6 +12,10 @@ input for `event_datetime`, and a course `<select>`, rendered in the default-wid
 The "Add notice" action is disabled (via a client-side check, not a backend rule) until at
 least one course exists, same pattern as [[exam]]'s guard. There's a standalone "Notices" nav
 link/route (`/notices`), same as every other list feature — this is not part of the Dashboard.
+Notices are also surfaced publicly, read-only, as cards on the [[landing-page]] — but only
+**upcoming** ones (`event_datetime >= now`), via a separate unauthenticated `GET /public/notices`
+route (`NoticeRepository.list_upcoming`), not the teacher-gated `GET /notices` used by
+`NoticesPage`. The public cards have no click-through/detail page, unlike [[exam]]'s pattern.
 
 ## Fields
 

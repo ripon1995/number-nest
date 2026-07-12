@@ -9,7 +9,7 @@ function ProfilePage() {
     <main id="content" className="profile-page">
       <div className="profile-page-header">
         <h1>Profile</h1>
-        <Link to="/">Back to dashboard</Link>
+        <Link to="/dashboard">Back to dashboard</Link>
       </div>
 
       {teacher && (

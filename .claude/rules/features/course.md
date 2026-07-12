@@ -7,7 +7,9 @@ Create and manage courses. Implemented as full CRUD in `app/courses/` (see
 go through a Zustand `courseStore`, and creating/editing a course happens in a `Modal`
 dialog. Viewing a course is not a modal — clicking a row in `CourseTable` navigates to
 `CourseDetailPage` at route `/courses/:id`, a full page showing a read-only course card
-plus a table of the course's enrolled students (see [[enrollment]]).
+plus a table of the course's enrolled students (see [[enrollment]]). A course's `course_days`
++ `class_time` also drive the read-only routine table on the public [[landing-page]] — the one
+place a course is surfaced outside teacher auth.
 
 ## Fields
 
@@ -27,6 +29,15 @@ plus a table of the course's enrolled students (see [[enrollment]]).
   as `subject`.
 - `capacity` — positive integer
 - `course_motto` — optional string
+- `class_time` — time of day, required — the single time all of `course_days`' sessions run at
+  (e.g. a course meeting Mon/Wed/Fri all meets at the same `class_time`; there's no
+  per-day time). Stored as a plain `Time` column (no timezone, no seconds precision expected —
+  fed from an HTML `<input type="time">`), same deliberate no-timezone treatment as
+  [[exam]]'s `exam_datetime`/[[notice]]'s `event_datetime`.
+- `note` — optional string, freeform instructions/context shown alongside the routine (e.g.
+  room number, materials to bring) — distinct from `course_motto` (a short tagline shown on
+  the course card/detail page); `note` is specifically what renders on the public
+  [[landing-page]]'s routine table.
 - (add fields as schema solidifies — keep this list in sync)
 
 ## Rules
@@ -47,3 +58,6 @@ plus a table of the course's enrolled students (see [[enrollment]]).
   `CourseService.get_detail` builds this by calling `EnrollmentRepository.list_students_for_course`
   alongside the plain course lookup; `list`/create/update/delete still use the plain `CourseRead`
   schema without the students list.
+- `GET /public/courses` (no auth) returns the same unfiltered `CourseRead` list as the
+  authenticated `GET /courses` — see [[landing-page]]. There is no visitor-specific trimming;
+  nothing on `Course` is sensitive.

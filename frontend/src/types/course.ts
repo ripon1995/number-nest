@@ -15,8 +15,10 @@ export interface Course {
   enrollment_fee: string
   subject: CourseSubject
   course_days: CourseDay[]
+  class_time: string
   capacity: number
   course_motto: string | null
+  note: string | null
 }
 
 export interface CourseInput {
@@ -25,8 +27,10 @@ export interface CourseInput {
   enrollment_fee: string
   subject: CourseSubject
   course_days: CourseDay[]
+  class_time: string
   capacity: number
   course_motto: string | null
+  note: string | null
 }
 
 export interface CourseDetail extends Course {

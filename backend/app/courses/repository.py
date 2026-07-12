@@ -1,4 +1,5 @@
 import uuid
+from datetime import time
 from decimal import Decimal
 
 from sqlalchemy import select
@@ -31,8 +32,10 @@ class CourseRepository:
         enrollment_fee: Decimal,
         subject: str,
         course_days: list[str],
+        class_time: time,
         capacity: int,
         course_motto: str | None,
+        note: str | None,
     ) -> Course:
         course = Course(
             course_name=course_name,
@@ -40,8 +43,10 @@ class CourseRepository:
             enrollment_fee=enrollment_fee,
             subject=subject,
             course_days=course_days,
+            class_time=class_time,
             capacity=capacity,
             course_motto=course_motto,
+            note=note,
         )
         self.db.add(course)
         await self.db.commit()
@@ -57,16 +62,20 @@ class CourseRepository:
         enrollment_fee: Decimal,
         subject: str,
         course_days: list[str],
+        class_time: time,
         capacity: int,
         course_motto: str | None,
+        note: str | None,
     ) -> Course:
         course.course_name = course_name
         course.course_fee = course_fee
         course.enrollment_fee = enrollment_fee
         course.subject = subject
         course.course_days = course_days
+        course.class_time = class_time
         course.capacity = capacity
         course.course_motto = course_motto
+        course.note = note
         await self.db.commit()
         await self.db.refresh(course)
         return course

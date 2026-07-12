@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import logo from '../assets/logo.svg'
 import { useAuthStore } from '../store/authStore'
 import { LogoutIcon, ProfileIcon } from './NavIcons'
@@ -7,6 +7,7 @@ import './Header.css'
 function Header() {
   const teacher = useAuthStore((state) => state.teacher)
   const logout = useAuthStore((state) => state.logout)
+  const location = useLocation()
 
   return (
     <header className="app-header">
@@ -20,6 +21,11 @@ function Header() {
             <LogoutIcon />
           </button>
         </div>
+      )}
+      {!teacher && location.pathname !== '/login' && (
+        <Link to="/login" className="app-header-login">
+          Teacher login
+        </Link>
       )}
     </header>
   )

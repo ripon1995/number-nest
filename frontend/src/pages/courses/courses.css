@@ -99,17 +99,20 @@
 }
 
 .course-form input,
-.course-form select {
+.course-form select,
+.course-form textarea {
   font: inherit;
   padding: 10px 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
   background: var(--surface);
   color: var(--text-h);
+  resize: vertical;
 }
 
 .course-form input:focus,
-.course-form select:focus {
+.course-form select:focus,
+.course-form textarea:focus {
   outline: 2px solid var(--accent-border);
   outline-offset: 1px;
 }

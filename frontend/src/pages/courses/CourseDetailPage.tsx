@@ -4,7 +4,7 @@ import * as api from '../../api'
 import { ApiError } from '../../errors/api'
 import ErrorDialog from '../../components/ErrorDialog'
 import type { CourseDetail } from '../../types/course'
-import { SUBJECT_LABELS, formatDays, formatFee } from './courseDisplay'
+import { SUBJECT_LABELS, formatDays, formatFee, formatTime } from './courseDisplay'
 import './courses.css'
 
 function toApiError(err: unknown): ApiError {
@@ -58,12 +58,20 @@ function CourseDetailPage() {
                 <dd>{formatDays(course.course_days)}</dd>
               </div>
               <div>
+                <dt>Class time</dt>
+                <dd>{formatTime(course.class_time)}</dd>
+              </div>
+              <div>
                 <dt>Capacity</dt>
                 <dd>{course.capacity}</dd>
               </div>
               <div>
                 <dt>Motto</dt>
                 <dd>{course.course_motto ?? '—'}</dd>
+              </div>
+              <div>
+                <dt>Note</dt>
+                <dd>{course.note ?? '—'}</dd>
               </div>
             </dl>
           </div>

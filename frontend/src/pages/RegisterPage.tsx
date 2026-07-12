@@ -18,7 +18,7 @@ function RegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   if (!isLoading && teacher) {
-    return <Navigate to="/" replace />
+    return <Navigate to="/dashboard" replace />
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -28,7 +28,7 @@ function RegisterPage() {
     setIsSubmitting(true)
     try {
       await register({ email, name, password })
-      navigate('/')
+      navigate('/dashboard')
     } catch (err) {
       if (err instanceof ApiError && err.status === 409) {
         setAccountExists(true)

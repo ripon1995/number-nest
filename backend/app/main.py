@@ -11,6 +11,7 @@ from app.exams.router import router as exams_router
 from app.marks.router import router as marks_router
 from app.notices.router import router as notices_router
 from app.payments.router import router as payments_router
+from app.public.router import router as public_router
 from app.students.router import router as students_router
 from app.teacher.router import router as teacher_router
 
@@ -51,6 +52,7 @@ api_router.include_router(attendance_router)
 api_router.include_router(exams_router)
 api_router.include_router(notices_router)
 api_router.include_router(marks_router)
+api_router.include_router(public_router)
 
 app.include_router(api_router, prefix="/api")
 

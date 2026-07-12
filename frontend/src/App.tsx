@@ -5,6 +5,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { useAuthStore } from './store/authStore'
 import LoginPage from './pages/LoginPage'
 // import RegisterPage from './pages/RegisterPage'
+import LandingPage from './pages/LandingPage'
 import DashboardPage from './pages/DashboardPage'
 import ProfilePage from './pages/ProfilePage'
 import StudentsPage from './pages/StudentsPage'
@@ -33,8 +34,9 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             {/*<Route path="/register" element={<RegisterPage />} />*/}
+            <Route path="/" element={<LandingPage />} />
             <Route
-              path="/"
+              path="/dashboard"
               element={
                 <ProtectedRoute>
                   <DashboardPage />

@@ -23,6 +23,15 @@ class NoticeRepository:
         result = await self.db.scalars(query)
         return list(result.all())
 
+    async def list_upcoming(self, now: datetime) -> list[Notice]:
+        query = (
+            select(Notice)
+            .where(Notice.event_datetime >= now)
+            .order_by(Notice.event_datetime.asc())
+        )
+        result = await self.db.scalars(query)
+        return list(result.all())
+
     async def create(
         self,
         *,
