@@ -13,7 +13,10 @@ hide `NavMenu` for a logged-out visitor. `DashboardPage` moves from `/` to a new
 route, `/dashboard`; `NavMenu`'s "Dashboard" link and the post-login redirect (`LoginPage`)
 both point at `/dashboard` instead of `/`. A logged-in teacher who navigates to `/` still sees
 the public landing page (no auto-redirect to `/dashboard`) — the landing page and the
-authenticated app are independent surfaces, not mutually exclusive.
+authenticated app are independent surfaces, not mutually exclusive. `NavMenu` also gains a
+"Landing page" link (`HomeIcon`, first item, pointing at `/`) so a logged-in teacher can get
+back to it without leaving the URL bar — clicking it exits the sidebar/protected-route shell
+just like any other navigation to `/`.
 
 ## Backend
 

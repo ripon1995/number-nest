@@ -5,6 +5,7 @@ import {
   DashboardIcon,
   EnrollmentsIcon,
   ExamsIcon,
+  HomeIcon,
   NoticesIcon,
   PaymentsIcon,
   StudentsIcon,
@@ -12,6 +13,7 @@ import {
 import './NavMenu.css'
 
 const links = [
+  { to: '/', label: 'Landing page', end: true, Icon: HomeIcon },
   { to: '/dashboard', label: 'Dashboard', end: true, Icon: DashboardIcon },
   { to: '/students', label: 'Students', Icon: StudentsIcon },
   { to: '/courses', label: 'Courses', Icon: CoursesIcon },

@@ -2,6 +2,28 @@ function iconProps(width = 18, height = 18) {
   return { viewBox: '0 0 24 24', width, height, fill: 'none', 'aria-hidden': true } as const
 }
 
+export function HomeIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path
+        d="M4 11.5 12 4l8 7.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M10 20v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 export function DashboardIcon() {
   return (
     <svg {...iconProps()}>
