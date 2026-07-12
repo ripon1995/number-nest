@@ -39,18 +39,21 @@ by a `publicStore` (`fetchPublicCourses`/`fetchPublicNotices`), fetched unauthen
 bearer header — `src/api/client.ts`'s auth-header attachment is conditional on a stored
 session, so these calls simply go out without one). The page has two sections:
 
-- **Notices** — a card grid (`NoticeCard`), one per upcoming notice: `event_name`,
-  `event_place`, `event_datetime` (formatted), and the course name resolved via the fetched
-  `/public/courses` list. No click-through, no detail page — cards are display-only.
-- **Watch your routine** — a card containing a course `<select>` (populated from
-  `/public/courses`); picking a course renders a `RoutineTable` below it — a real HTML
-  `<table>`, one row per entry in that course's `course_days` (sorted into canonical
-  Mon→Sun order, since the array's stored order isn't guaranteed — reuse the `CourseDay`
-  enum's declaration order), columns Day | Time, `class_time` formatted and repeated per row
-  (one time for the whole course, not per-day — see [[course]]). The course's `note` (and,
-  if present, `course_motto`) renders above the table as the routine's freeform
-  instructions/context. Nothing here is a form — this whole section is read-only, same as the
-  notice cards.
+- **Notices** — a single horizontally-scrolling row of cards (`NoticeCard`, `.notice-grid` is
+  `display: flex; overflow-x: auto`, not a wrapping grid — deliberately never breaks into
+  multiple lines), one per upcoming notice: `event_name`, `event_place`, `event_datetime`
+  (formatted), and the course name resolved via the fetched `/public/courses` list. No
+  click-through, no detail page — cards are display-only.
+- **Routine** — a section heading ("Routine") sits before the container, same as "Notices"
+  sits before its card row; the container itself holds a centered, wide course `<select>`
+  labelled "Select your course" (populated from `/public/courses`). Picking a course renders
+  a `RoutineTable` below it — a real HTML `<table>`, one row per entry in that course's
+  `course_days` (sorted into canonical Mon→Sun order, since the array's stored order isn't
+  guaranteed — reuse the `CourseDay` enum's declaration order), columns Day | Time, `class_time`
+  formatted and repeated per row (one time for the whole course, not per-day — see [[course]]).
+  The course's `note` — not `course_motto`, which doesn't appear here — renders **below** the
+  table, styled bold and red, as a standout callout rather than routine detail. Nothing here is
+  a form — this whole section is read-only, same as the notice cards.
 
 ## Rules
 

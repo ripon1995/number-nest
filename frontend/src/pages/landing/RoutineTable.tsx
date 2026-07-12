@@ -11,9 +11,6 @@ function RoutineTable({ course }: RoutineTableProps) {
 
   return (
     <div className="routine">
-      {(course.note || course.course_motto) && (
-        <p className="routine-note">{course.note ?? course.course_motto}</p>
-      )}
       <div className="routine-table-wrap">
         <table className="routine-table">
           <thead>
@@ -32,6 +29,7 @@ function RoutineTable({ course }: RoutineTableProps) {
           </tbody>
         </table>
       </div>
+      {course.note && <p className="routine-note">{course.note}</p>}
     </div>
   )
 }

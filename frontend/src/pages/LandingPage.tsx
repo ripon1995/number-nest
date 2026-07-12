@@ -53,25 +53,27 @@ function LandingPage() {
         )}
       </section>
 
-      <section className="landing-section landing-routine">
-        <h2>Watch your routine</h2>
-        <label className="landing-routine-select">
-          Course
-          <select value={selectedCourseId} onChange={(event) => setSelectedCourseId(event.target.value)}>
-            <option value="">Select a course…</option>
-            {courses.map((course) => (
-              <option key={course.id} value={course.id}>
-                {course.course_name}
-              </option>
-            ))}
-          </select>
-        </label>
+      <section className="landing-section">
+        <h2>Routine</h2>
+        <div className="landing-routine">
+          <label className="landing-routine-select">
+            Select your course
+            <select value={selectedCourseId} onChange={(event) => setSelectedCourseId(event.target.value)}>
+              <option value="">Select a course…</option>
+              {courses.map((course) => (
+                <option key={course.id} value={course.id}>
+                  {course.course_name}
+                </option>
+              ))}
+            </select>
+          </label>
 
-        {isLoadingCourses && <p className="landing-hint">Loading courses…</p>}
-        {!isLoadingCourses && courses.length === 0 && (
-          <p className="landing-hint">No courses have been added yet.</p>
-        )}
-        {selectedCourse && <RoutineTable course={selectedCourse} />}
+          {isLoadingCourses && <p className="landing-hint">Loading courses…</p>}
+          {!isLoadingCourses && courses.length === 0 && (
+            <p className="landing-hint">No courses have been added yet.</p>
+          )}
+          {selectedCourse && <RoutineTable course={selectedCourse} />}
+        </div>
       </section>
 
       <ErrorDialog error={error} onClose={() => setError(null)} />
