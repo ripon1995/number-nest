@@ -131,3 +131,22 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.monthly-attendance {
+  width: 100%;
+  max-width: 1400px;
+  margin: 40px auto 0;
+}
+
+.monthly-attendance-title {
+  text-align: center;
+  margin: 0 0 16px;
+  color: var(--text-h);
+}
+
+.monthly-attendance-summary {
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0 0 12px;
+}

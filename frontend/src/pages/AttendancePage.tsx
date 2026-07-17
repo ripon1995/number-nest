@@ -6,6 +6,7 @@ import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
 import { AttendanceIcon } from '../components/NavIcons'
 import AttendanceSheet from './attendance/AttendanceSheet'
+import MonthlyAttendance from './attendance/MonthlyAttendance'
 import type { CourseDetail } from '../types/course'
 import type { AttendanceEntryInput } from '../types/attendance'
 import './attendance/attendance.css'
@@ -116,6 +117,8 @@ function AttendancePage() {
           onSubmit={handleSubmit}
         />
       )}
+
+      {courseId && <MonthlyAttendance courseId={courseId} students={courseDetail?.students ?? []} />}
 
       <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>
