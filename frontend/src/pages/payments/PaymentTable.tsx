@@ -14,6 +14,7 @@ interface PaymentTableProps {
   isLoading: boolean
   deletingId: string | null
   onDelete: (payment: Payment) => void
+  emptyMessage?: string
 }
 
 function PaymentTable({
@@ -24,9 +25,10 @@ function PaymentTable({
   isLoading,
   deletingId,
   onDelete,
+  emptyMessage = 'No payments recorded yet.',
 }: PaymentTableProps) {
   if (isLoading) return <p>Loading payments…</p>
-  if (payments.length === 0) return <p>No payments recorded yet.</p>
+  if (payments.length === 0) return <p>{emptyMessage}</p>
 
   function studentName(payment: Payment): string {
     const enrollment = enrollmentsById.get(payment.enrollment_id)

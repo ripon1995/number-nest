@@ -98,6 +98,55 @@
   cursor: not-allowed;
 }
 
+.payment-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 16px auto 0;
+}
+
+.payment-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--text-h);
+}
+
+.payment-filters input,
+.payment-filters select {
+  font: inherit;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-h);
+  min-width: 160px;
+}
+
+.payment-filters input:focus,
+.payment-filters select:focus {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 1px;
+}
+
+.payment-filters button {
+  font: inherit;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.payment-filters button:hover {
+  background: var(--accent-bg);
+}
+
 .payment-list {
   width: 100%;
   max-width: 1400px;

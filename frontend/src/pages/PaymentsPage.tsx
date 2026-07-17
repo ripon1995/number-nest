@@ -33,6 +33,11 @@ function PaymentsPage() {
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
+  const [filterCourseId, setFilterCourseId] = useState('')
+  const [filterStudentId, setFilterStudentId] = useState('')
+  const [filterMonth, setFilterMonth] = useState('')
+  const [filterDay, setFilterDay] = useState('')
+
   useEffect(() => {
     fetchPayments().catch((err) => setError(toApiError(err)))
     fetchEnrollments().catch((err) => setError(toApiError(err)))
@@ -43,6 +48,24 @@ function PaymentsPage() {
   const enrollmentsById = new Map(enrollments.map((enrollment) => [enrollment.id, enrollment]))
   const studentsById = new Map(students.map((student) => [student.id, student]))
   const coursesById = new Map(courses.map((course) => [course.id, course]))
+
+  const filteredPayments = payments.filter((payment) => {
+    const enrollment = enrollmentsById.get(payment.enrollment_id)
+    if (filterCourseId && enrollment?.course_id !== filterCourseId) return false
+    if (filterStudentId && enrollment?.student_id !== filterStudentId) return false
+    if (filterMonth && payment.month.slice(0, 7) !== filterMonth) return false
+    if (filterDay && payment.payment_date !== filterDay) return false
+    return true
+  })
+
+  const hasActiveFilters = Boolean(filterCourseId || filterStudentId || filterMonth || filterDay)
+
+  function handleClearFilters() {
+    setFilterCourseId('')
+    setFilterStudentId('')
+    setFilterMonth('')
+    setFilterDay('')
+  }
 
   async function handleDelete(payment: Payment) {
     if (!window.confirm('Delete this payment record?')) return
@@ -85,15 +108,60 @@ function PaymentsPage() {
         </button>
       </div>
 
+      <section className="payment-filters">
+        <label>
+          Course
+          <select value={filterCourseId} onChange={(e) => setFilterCourseId(e.target.value)}>
+            <option value="">All courses</option>
+            {courses.map((course) => (
+              <option key={course.id} value={course.id}>
+                {course.course_name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Student
+          <select value={filterStudentId} onChange={(e) => setFilterStudentId(e.target.value)}>
+            <option value="">All students</option>
+            {students.map((student) => (
+              <option key={student.id} value={student.id}>
+                {student.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Month
+          <input
+            type="month"
+            value={filterMonth}
+            onChange={(e) => setFilterMonth(e.target.value)}
+          />
+        </label>
+        <label>
+          Payment date
+          <input type="date" value={filterDay} onChange={(e) => setFilterDay(e.target.value)} />
+        </label>
+        {hasActiveFilters && (
+          <button type="button" className="secondary" onClick={handleClearFilters}>
+            Clear filters
+          </button>
+        )}
+      </section>
+
       <section className="payment-list">
         <PaymentTable
-          payments={payments}
+          payments={filteredPayments}
           enrollmentsById={enrollmentsById}
           studentsById={studentsById}
           coursesById={coursesById}
           isLoading={isLoading}
           deletingId={deletingId}
           onDelete={handleDelete}
+          emptyMessage={
+            hasActiveFilters ? 'No payments match the selected filters.' : undefined
+          }
         />
       </section>
 
