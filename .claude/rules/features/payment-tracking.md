@@ -16,6 +16,18 @@ first-of-month date `YYYY-MM-01` on submit), `payment_date`, and `amount` inputs
 a `Modal`. The "Add payment" action is disabled (via a client-side check, not a backend rule)
 until at least one enrollment exists.
 
+Above the table, `PaymentsPage` also renders a filter bar — course and student `<select>`s plus
+`month` and `payment_date` inputs — that narrows the full `payments` list client-side before
+handing it to `PaymentTable` (filter state lives in the page itself, not `paymentStore`). Course/
+student filters resolve through the same `enrollment_id` → enrollment → `student_id`/`course_id`
+lookup used for display; the month filter compares the `YYYY-MM` prefix of `payment.month`
+against the `<input type="month">` value; the payment_date filter compares `payment.payment_date`
+directly. This is a pure frontend filter — `GET /payments` only supports an `enrollment_id` query
+param (see Rules below), so there's no month/day/course/student filtering on the backend to call
+into. A "Clear filters" button appears once any filter is active, and `PaymentTable` shows a
+distinct "no payments match the selected filters" message (via its `emptyMessage` prop) instead
+of the normal empty-state copy when filters exclude everything.
+
 ## Fields
 
 - `enrollment_id` — FK to `enrollments.id`, `ondelete="CASCADE"` (not `student_id`/`course_id`
