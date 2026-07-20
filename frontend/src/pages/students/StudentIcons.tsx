@@ -2,6 +2,21 @@ function iconProps(width = 16, height = 16) {
   return { viewBox: '0 0 24 24', width, height, fill: 'none', 'aria-hidden': true } as const
 }
 
+export function EyeIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path
+        d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  )
+}
+
 export function PencilIcon() {
   return (
     <svg {...iconProps()}>

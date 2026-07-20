@@ -5,6 +5,10 @@ export function getStudents(): Promise<Student[]> {
   return request<Student[]>('/students', { headers: authHeaders() })
 }
 
+export function getStudent(id: string): Promise<Student> {
+  return request<Student>(`/students/${id}`, { headers: authHeaders() })
+}
+
 export function createStudent(input: StudentInput): Promise<Student> {
   return request<Student>('/students', {
     method: 'POST',

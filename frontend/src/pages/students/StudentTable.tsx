@@ -1,16 +1,17 @@
 import type { Student } from '../../types/student'
-import { PencilIcon, TrashIcon } from './StudentIcons'
+import { EyeIcon, PencilIcon, TrashIcon } from './StudentIcons'
 import './students.css'
 
 interface StudentTableProps {
   students: Student[]
   isLoading: boolean
   deletingId: string | null
+  onViewDetail: (student: Student) => void
   onEdit: (student: Student) => void
   onDelete: (student: Student) => void
 }
 
-function StudentTable({ students, isLoading, deletingId, onEdit, onDelete }: StudentTableProps) {
+function StudentTable({ students, isLoading, deletingId, onViewDetail, onEdit, onDelete }: StudentTableProps) {
   if (isLoading) return <p>Loading students…</p>
   if (students.length === 0) return <p>No students yet.</p>
 
@@ -37,6 +38,14 @@ function StudentTable({ students, isLoading, deletingId, onEdit, onDelete }: Stu
             <td>{student.email ?? '—'}</td>
             <td>{student.whatsapp_number}</td>
             <td className="student-row-actions">
+              <button
+                type="button"
+                aria-label="View student details"
+                title="Details"
+                onClick={() => onViewDetail(student)}
+              >
+                <EyeIcon />
+              </button>
               <button type="button" aria-label="Edit student" title="Edit" onClick={() => onEdit(student)}>
                 <PencilIcon />
               </button>

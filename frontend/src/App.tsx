@@ -9,6 +9,7 @@ import LandingPage from './pages/LandingPage'
 import DashboardPage from './pages/DashboardPage'
 import ProfilePage from './pages/ProfilePage'
 import StudentsPage from './pages/StudentsPage'
+import StudentDetailPage from './pages/students/StudentDetailPage'
 import CoursesPage from './pages/CoursesPage'
 import CourseDetailPage from './pages/courses/CourseDetailPage'
 import EnrollmentsPage from './pages/EnrollmentsPage'
@@ -48,6 +49,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <StudentsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/students/:id"
+              element={
+                <ProtectedRoute>
+                  <StudentDetailPage />
                 </ProtectedRoute>
               }
             />

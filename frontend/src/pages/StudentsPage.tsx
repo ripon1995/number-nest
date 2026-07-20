@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useStudentStore } from '../store/studentStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
@@ -14,6 +15,7 @@ function toApiError(err: unknown): ApiError {
 }
 
 function StudentsPage() {
+  const navigate = useNavigate()
   const students = useStudentStore((state) => state.students)
   const isLoading = useStudentStore((state) => state.isLoading)
   const fetchStudents = useStudentStore((state) => state.fetchStudents)
@@ -67,6 +69,7 @@ function StudentsPage() {
           students={students}
           isLoading={isLoading}
           deletingId={deletingId}
+          onViewDetail={(student) => navigate(`/students/${student.id}`)}
           onEdit={setEditingStudent}
           onDelete={handleDelete}
         />
