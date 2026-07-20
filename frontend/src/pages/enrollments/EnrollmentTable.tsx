@@ -13,6 +13,7 @@ interface EnrollmentTableProps {
   updatingFeePaidId: string | null
   onDelete: (enrollment: Enrollment) => void
   onToggleFeePaid: (enrollment: Enrollment) => void
+  emptyMessage?: string
 }
 
 function EnrollmentTable({
@@ -24,9 +25,10 @@ function EnrollmentTable({
   updatingFeePaidId,
   onDelete,
   onToggleFeePaid,
+  emptyMessage,
 }: EnrollmentTableProps) {
   if (isLoading) return <p>Loading enrollments…</p>
-  if (enrollments.length === 0) return <p>No enrollments yet.</p>
+  if (enrollments.length === 0) return <p>{emptyMessage ?? 'No enrollments yet.'}</p>
 
   return (
     <table>

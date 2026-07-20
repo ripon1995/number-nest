@@ -32,6 +32,9 @@ function EnrollmentsPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [updatingFeePaidId, setUpdatingFeePaidId] = useState<string | null>(null)
 
+  const [filterCourseId, setFilterCourseId] = useState('')
+  const [filterStudentId, setFilterStudentId] = useState('')
+
   useEffect(() => {
     fetchEnrollments().catch((err) => setError(toApiError(err)))
     fetchStudents().catch((err) => setError(toApiError(err)))
@@ -40,6 +43,19 @@ function EnrollmentsPage() {
 
   const studentsById = new Map(students.map((student) => [student.id, student]))
   const coursesById = new Map(courses.map((course) => [course.id, course]))
+
+  const filteredEnrollments = enrollments.filter((enrollment) => {
+    if (filterCourseId && enrollment.course_id !== filterCourseId) return false
+    if (filterStudentId && enrollment.student_id !== filterStudentId) return false
+    return true
+  })
+
+  const hasActiveFilters = Boolean(filterCourseId || filterStudentId)
+
+  function handleClearFilters() {
+    setFilterCourseId('')
+    setFilterStudentId('')
+  }
 
   async function handleDelete(enrollment: Enrollment) {
     const studentName = studentsById.get(enrollment.student_id)?.name ?? 'this student'
@@ -96,9 +112,39 @@ function EnrollmentsPage() {
         </button>
       </div>
 
+      <section className="enrollment-filters">
+        <label>
+          Course
+          <select value={filterCourseId} onChange={(e) => setFilterCourseId(e.target.value)}>
+            <option value="">All courses</option>
+            {courses.map((course) => (
+              <option key={course.id} value={course.id}>
+                {course.course_name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Student
+          <select value={filterStudentId} onChange={(e) => setFilterStudentId(e.target.value)}>
+            <option value="">All students</option>
+            {students.map((student) => (
+              <option key={student.id} value={student.id}>
+                {student.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        {hasActiveFilters && (
+          <button type="button" className="secondary" onClick={handleClearFilters}>
+            Clear filters
+          </button>
+        )}
+      </section>
+
       <section className="enrollment-list">
         <EnrollmentTable
-          enrollments={enrollments}
+          enrollments={filteredEnrollments}
           studentsById={studentsById}
           coursesById={coursesById}
           isLoading={isLoading}
@@ -106,6 +152,9 @@ function EnrollmentsPage() {
           updatingFeePaidId={updatingFeePaidId}
           onDelete={handleDelete}
           onToggleFeePaid={handleToggleFeePaid}
+          emptyMessage={
+            hasActiveFilters ? 'No enrollments match the selected filters.' : undefined
+          }
         />
       </section>
 

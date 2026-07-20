@@ -108,6 +108,53 @@
   cursor: not-allowed;
 }
 
+.enrollment-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 16px auto 0;
+}
+
+.enrollment-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--text-h);
+}
+
+.enrollment-filters select {
+  font: inherit;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-h);
+  min-width: 160px;
+}
+
+.enrollment-filters select:focus {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 1px;
+}
+
+.enrollment-filters button {
+  font: inherit;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.enrollment-filters button:hover {
+  background: var(--accent-bg);
+}
+
 .enrollment-list {
   width: 100%;
   max-width: 1400px;
