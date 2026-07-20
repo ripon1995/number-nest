@@ -9,11 +9,20 @@ interface StudentTableProps {
   onViewDetail: (student: Student) => void
   onEdit: (student: Student) => void
   onDelete: (student: Student) => void
+  emptyMessage?: string
 }
 
-function StudentTable({ students, isLoading, deletingId, onViewDetail, onEdit, onDelete }: StudentTableProps) {
+function StudentTable({
+  students,
+  isLoading,
+  deletingId,
+  onViewDetail,
+  onEdit,
+  onDelete,
+  emptyMessage = 'No students yet.',
+}: StudentTableProps) {
   if (isLoading) return <p>Loading students…</p>
-  if (students.length === 0) return <p>No students yet.</p>
+  if (students.length === 0) return <p>{emptyMessage}</p>
 
   return (
     <table>

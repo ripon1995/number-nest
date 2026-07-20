@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useStudentStore } from '../store/studentStore'
+import { useEnrollmentStore } from '../store/enrollmentStore'
+import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
 import { PlusIcon } from '../components/Icons'
@@ -21,14 +23,37 @@ function StudentsPage() {
   const fetchStudents = useStudentStore((state) => state.fetchStudents)
   const deleteStudent = useStudentStore((state) => state.deleteStudent)
 
+  const enrollments = useEnrollmentStore((state) => state.enrollments)
+  const fetchEnrollments = useEnrollmentStore((state) => state.fetchEnrollments)
+  const courses = useCourseStore((state) => state.courses)
+  const fetchCourses = useCourseStore((state) => state.fetchCourses)
+
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
+  const [filterCourseId, setFilterCourseId] = useState('')
+
   useEffect(() => {
     fetchStudents().catch((err) => setError(toApiError(err)))
-  }, [fetchStudents])
+    fetchEnrollments().catch((err) => setError(toApiError(err)))
+    fetchCourses().catch((err) => setError(toApiError(err)))
+  }, [fetchStudents, fetchEnrollments, fetchCourses])
+
+  const filteredStudents = filterCourseId
+    ? students.filter((student) =>
+        enrollments.some(
+          (enrollment) => enrollment.student_id === student.id && enrollment.course_id === filterCourseId,
+        ),
+      )
+    : students
+
+  const hasActiveFilters = Boolean(filterCourseId)
+
+  function handleClearFilters() {
+    setFilterCourseId('')
+  }
 
   async function handleDelete(student: Student) {
     if (!window.confirm(`Delete student "${student.name}"?`)) return
@@ -64,14 +89,34 @@ function StudentsPage() {
         </button>
       </div>
 
+      <section className="student-filters">
+        <label>
+          Course
+          <select value={filterCourseId} onChange={(e) => setFilterCourseId(e.target.value)}>
+            <option value="">All courses</option>
+            {courses.map((course) => (
+              <option key={course.id} value={course.id}>
+                {course.course_name}
+              </option>
+            ))}
+          </select>
+        </label>
+        {hasActiveFilters && (
+          <button type="button" className="secondary" onClick={handleClearFilters}>
+            Clear filters
+          </button>
+        )}
+      </section>
+
       <section className="student-list">
         <StudentTable
-          students={students}
+          students={filteredStudents}
           isLoading={isLoading}
           deletingId={deletingId}
           onViewDetail={(student) => navigate(`/students/${student.id}`)}
           onEdit={setEditingStudent}
           onDelete={handleDelete}
+          emptyMessage={hasActiveFilters ? 'No students match the selected filter.' : undefined}
         />
       </section>
 
