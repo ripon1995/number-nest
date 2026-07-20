@@ -17,6 +17,16 @@ client-side check, not a backend rule) until at least one student and one course
 `EnrollmentTable` renders `enrollment_fee_paid` as a checkbox per row (not read-only) — toggling
 it calls `updateEnrollmentFeePaid`, which hits the dedicated `PATCH` endpoint described below.
 
+Above the table, `EnrollmentsPage` also renders a filter bar — course and student `<select>`s —
+that narrows the full `enrollments` list client-side before handing it to `EnrollmentTable`
+(filter state lives in the page itself, not `enrollmentStore`), mirroring
+[[payment-tracking]]'s filter bar. Since `Enrollment` carries `student_id`/`course_id` directly,
+the filters match straight against those fields — no lookup-through-enrollment hop like
+payments needs. This is a pure frontend filter — there's no backend query param support on
+`GET /enrollments` to call into. A "Clear filters" button appears once either filter is active,
+and `EnrollmentTable` shows a distinct "no enrollments match the selected filters" message (via
+its `emptyMessage` prop) instead of the normal empty-state copy when filters exclude everything.
+
 ## Fields
 
 - `student_id` — FK to `students.id`, `ondelete="CASCADE"`
