@@ -32,7 +32,6 @@ function StudentTable({
           <th>Name</th>
           <th>College</th>
           <th>Contact</th>
-          <th>Email</th>
           <th>WhatsApp</th>
           <th>Action</th>
         </tr>
@@ -44,7 +43,6 @@ function StudentTable({
             <td>{student.name}</td>
             <td>{student.college ?? '—'}</td>
             <td>{student.contact}</td>
-            <td>{student.email ?? '—'}</td>
             <td>{student.whatsapp_number}</td>
             <td className="student-row-actions">
               <button
