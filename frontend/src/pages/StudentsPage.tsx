@@ -34,6 +34,7 @@ function StudentsPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const [filterCourseId, setFilterCourseId] = useState('')
+  const [filterStatus, setFilterStatus] = useState<'' | 'active' | 'inactive'>('')
 
   useEffect(() => {
     fetchStudents().catch((err) => setError(toApiError(err)))
@@ -41,18 +42,23 @@ function StudentsPage() {
     fetchCourses().catch((err) => setError(toApiError(err)))
   }, [fetchStudents, fetchEnrollments, fetchCourses])
 
-  const filteredStudents = filterCourseId
+  const hasActiveFilters = Boolean(filterCourseId || filterStatus)
+
+  const filteredStudents = hasActiveFilters
     ? students.filter((student) =>
         enrollments.some(
-          (enrollment) => enrollment.student_id === student.id && enrollment.course_id === filterCourseId,
+          (enrollment) =>
+            enrollment.student_id === student.id &&
+            (!filterCourseId || enrollment.course_id === filterCourseId) &&
+            (!filterStatus ||
+              (filterStatus === 'active' ? !enrollment.discontinued_at : Boolean(enrollment.discontinued_at))),
         ),
       )
     : students
 
-  const hasActiveFilters = Boolean(filterCourseId)
-
   function handleClearFilters() {
     setFilterCourseId('')
+    setFilterStatus('')
   }
 
   async function handleDelete(student: Student) {
@@ -101,6 +107,17 @@ function StudentsPage() {
             ))}
           </select>
         </label>
+        <label>
+          Status
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value as '' | 'active' | 'inactive')}
+          >
+            <option value="">All statuses</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </label>
         {hasActiveFilters && (
           <button type="button" className="secondary" onClick={handleClearFilters}>
             Clear filters
@@ -116,7 +133,7 @@ function StudentsPage() {
           onViewDetail={(student) => navigate(`/students/${student.id}`)}
           onEdit={setEditingStudent}
           onDelete={handleDelete}
-          emptyMessage={hasActiveFilters ? 'No students match the selected filter.' : undefined}
+          emptyMessage={hasActiveFilters ? 'No students match the selected filters.' : undefined}
         />
       </section>
 
