@@ -10,9 +10,20 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.core.database import Base
 
 
+class CourseClass(str, enum.Enum):
+    HSC = "hsc"
+    SSC = "ssc"
+    ADMISSION = "admission"
+
+
 class CourseSubject(str, enum.Enum):
     MATH = "math"
     ICT = "ict"
+
+
+class CourseBatchType(str, enum.Enum):
+    REGULAR = "regular"
+    COURSE = "course"
 
 
 class CourseDay(str, enum.Enum):
@@ -32,11 +43,14 @@ class Course(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     course_name: Mapped[str] = mapped_column(unique=True, index=True)
+    class_level: Mapped[str] = mapped_column(String)
+    subject: Mapped[str] = mapped_column(String)
+    exam_year: Mapped[int] = mapped_column()
+    class_time: Mapped[time] = mapped_column(Time)
+    batch_type: Mapped[str] = mapped_column(String)
     course_fee: Mapped[Decimal] = mapped_column(Numeric(10, 2))
     enrollment_fee: Mapped[Decimal] = mapped_column(Numeric(10, 2))
-    subject: Mapped[str] = mapped_column(String)
     course_days: Mapped[list[str]] = mapped_column(ARRAY(String))
-    class_time: Mapped[time] = mapped_column(Time)
     capacity: Mapped[int]
     course_motto: Mapped[str | None] = mapped_column(String, default=None)
     note: Mapped[str | None] = mapped_column(String, default=None)

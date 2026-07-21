@@ -28,22 +28,28 @@ class CourseRepository:
         self,
         *,
         course_name: str,
+        class_level: str,
+        subject: str,
+        exam_year: int,
+        class_time: time,
+        batch_type: str,
         course_fee: Decimal,
         enrollment_fee: Decimal,
-        subject: str,
         course_days: list[str],
-        class_time: time,
         capacity: int,
         course_motto: str | None,
         note: str | None,
     ) -> Course:
         course = Course(
             course_name=course_name,
+            class_level=class_level,
+            subject=subject,
+            exam_year=exam_year,
+            class_time=class_time,
+            batch_type=batch_type,
             course_fee=course_fee,
             enrollment_fee=enrollment_fee,
-            subject=subject,
             course_days=course_days,
-            class_time=class_time,
             capacity=capacity,
             course_motto=course_motto,
             note=note,
@@ -58,21 +64,27 @@ class CourseRepository:
         course: Course,
         *,
         course_name: str,
+        class_level: str,
+        subject: str,
+        exam_year: int,
+        class_time: time,
+        batch_type: str,
         course_fee: Decimal,
         enrollment_fee: Decimal,
-        subject: str,
         course_days: list[str],
-        class_time: time,
         capacity: int,
         course_motto: str | None,
         note: str | None,
     ) -> Course:
         course.course_name = course_name
+        course.class_level = class_level
+        course.subject = subject
+        course.exam_year = exam_year
+        course.class_time = class_time
+        course.batch_type = batch_type
         course.course_fee = course_fee
         course.enrollment_fee = enrollment_fee
-        course.subject = subject
         course.course_days = course_days
-        course.class_time = class_time
         course.capacity = capacity
         course.course_motto = course_motto
         course.note = note

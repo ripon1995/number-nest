@@ -4,7 +4,7 @@ import * as api from '../../api'
 import { ApiError } from '../../errors/api'
 import ErrorDialog from '../../components/ErrorDialog'
 import type { CourseDetail } from '../../types/course'
-import { SUBJECT_LABELS, formatDays, formatFee, formatTime } from './courseDisplay'
+import { BATCH_TYPE_LABELS, CLASS_LABELS, SUBJECT_LABELS, formatDays, formatFee, formatTime } from './courseDisplay'
 import './courses.css'
 
 function toApiError(err: unknown): ApiError {
@@ -42,8 +42,20 @@ function CourseDetailPage() {
             <h2>{course.course_name}</h2>
             <dl className="course-detail-list">
               <div>
+                <dt>Class</dt>
+                <dd>{CLASS_LABELS[course.class_level]}</dd>
+              </div>
+              <div>
                 <dt>Subject</dt>
                 <dd>{SUBJECT_LABELS[course.subject]}</dd>
+              </div>
+              <div>
+                <dt>Exam year</dt>
+                <dd>{course.exam_year}</dd>
+              </div>
+              <div>
+                <dt>Batch type</dt>
+                <dd>{BATCH_TYPE_LABELS[course.batch_type]}</dd>
               </div>
               <div>
                 <dt>Fee</dt>

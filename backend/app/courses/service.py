@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
 from app.core.exceptions import ConflictException, NotFoundException
 from app.courses.models import Course
+from app.courses.naming import build_course_name
 from app.courses.repository import CourseRepository
 from app.courses.schemas import CourseCreate, CourseUpdate
 from app.enrollments.repository import EnrollmentRepository
@@ -20,16 +21,22 @@ class CourseService:
         self.enrollment_repository = enrollment_repository
 
     async def create(self, payload: CourseCreate) -> Course:
-        if await self.repository.get_by_name(payload.course_name) is not None:
-            raise ConflictException(f"A course named '{payload.course_name}' already exists")
+        course_name = build_course_name(
+            payload.class_level, payload.subject, payload.exam_year, payload.class_time, payload.batch_type
+        )
+        if await self.repository.get_by_name(course_name) is not None:
+            raise ConflictException(f"A course named '{course_name}' already exists")
 
         return await self.repository.create(
-            course_name=payload.course_name,
+            course_name=course_name,
+            class_level=payload.class_level.value,
+            subject=payload.subject.value,
+            exam_year=payload.exam_year,
+            class_time=payload.class_time,
+            batch_type=payload.batch_type.value,
             course_fee=payload.course_fee,
             enrollment_fee=payload.enrollment_fee,
-            subject=payload.subject.value,
             course_days=[day.value for day in payload.course_days],
-            class_time=payload.class_time,
             capacity=payload.capacity,
             course_motto=payload.course_motto,
             note=payload.note,
@@ -52,19 +59,25 @@ class CourseService:
     async def update(self, course_id: uuid.UUID, payload: CourseUpdate) -> Course:
         course = await self.get_by_id(course_id)
 
-        if payload.course_name != course.course_name:
-            existing = await self.repository.get_by_name(payload.course_name)
+        course_name = build_course_name(
+            payload.class_level, payload.subject, payload.exam_year, payload.class_time, payload.batch_type
+        )
+        if course_name != course.course_name:
+            existing = await self.repository.get_by_name(course_name)
             if existing is not None:
-                raise ConflictException(f"A course named '{payload.course_name}' already exists")
+                raise ConflictException(f"A course named '{course_name}' already exists")
 
         return await self.repository.update(
             course,
-            course_name=payload.course_name,
+            course_name=course_name,
+            class_level=payload.class_level.value,
+            subject=payload.subject.value,
+            exam_year=payload.exam_year,
+            class_time=payload.class_time,
+            batch_type=payload.batch_type.value,
             course_fee=payload.course_fee,
             enrollment_fee=payload.enrollment_fee,
-            subject=payload.subject.value,
             course_days=[day.value for day in payload.course_days],
-            class_time=payload.class_time,
             capacity=payload.capacity,
             course_motto=payload.course_motto,
             note=payload.note,
