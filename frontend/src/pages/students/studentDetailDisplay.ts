@@ -51,7 +51,10 @@ export function buildDuePayments(
     )
 
     const startMonth = enrollment.start_from.slice(0, 7)
-    for (const month of monthsBetweenInclusive(startMonth, currentMonth)) {
+    const discontinuedMonth = enrollment.discontinued_at?.slice(0, 7)
+    const endMonth =
+      discontinuedMonth && discontinuedMonth < currentMonth ? discontinuedMonth : currentMonth
+    for (const month of monthsBetweenInclusive(startMonth, endMonth)) {
       if (!paidMonths.has(month)) {
         due.push({
           enrollmentId: enrollment.id,

@@ -15,6 +15,10 @@ class EnrollmentFeeUpdate(BaseModel):
     enrollment_fee_paid: bool
 
 
+class EnrollmentDiscontinueUpdate(BaseModel):
+    discontinued_at: date | None
+
+
 class EnrollmentRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -23,4 +27,5 @@ class EnrollmentRead(BaseModel):
     course_id: uuid.UUID
     start_from: date
     enrollment_fee_paid: bool
+    discontinued_at: date | None
     created_at: datetime

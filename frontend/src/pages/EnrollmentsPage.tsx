@@ -21,6 +21,7 @@ function EnrollmentsPage() {
   const fetchEnrollments = useEnrollmentStore((state) => state.fetchEnrollments)
   const deleteEnrollment = useEnrollmentStore((state) => state.deleteEnrollment)
   const updateEnrollmentFeePaid = useEnrollmentStore((state) => state.updateEnrollmentFeePaid)
+  const updateEnrollmentDiscontinued = useEnrollmentStore((state) => state.updateEnrollmentDiscontinued)
 
   const students = useStudentStore((state) => state.students)
   const fetchStudents = useStudentStore((state) => state.fetchStudents)
@@ -31,6 +32,7 @@ function EnrollmentsPage() {
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [updatingFeePaidId, setUpdatingFeePaidId] = useState<string | null>(null)
+  const [updatingDiscontinuedId, setUpdatingDiscontinuedId] = useState<string | null>(null)
 
   const [filterCourseId, setFilterCourseId] = useState('')
   const [filterStudentId, setFilterStudentId] = useState('')
@@ -81,6 +83,18 @@ function EnrollmentsPage() {
       setError(toApiError(err))
     } finally {
       setUpdatingFeePaidId(null)
+    }
+  }
+
+  async function handleDiscontinuedChange(enrollment: Enrollment, discontinuedAt: string | null) {
+    setUpdatingDiscontinuedId(enrollment.id)
+    setError(null)
+    try {
+      await updateEnrollmentDiscontinued(enrollment.id, discontinuedAt)
+    } catch (err) {
+      setError(toApiError(err))
+    } finally {
+      setUpdatingDiscontinuedId(null)
     }
   }
 
@@ -150,8 +164,10 @@ function EnrollmentsPage() {
           isLoading={isLoading}
           deletingId={deletingId}
           updatingFeePaidId={updatingFeePaidId}
+          updatingDiscontinuedId={updatingDiscontinuedId}
           onDelete={handleDelete}
           onToggleFeePaid={handleToggleFeePaid}
+          onDiscontinuedChange={handleDiscontinuedChange}
           emptyMessage={
             hasActiveFilters ? 'No enrollments match the selected filters.' : undefined
           }

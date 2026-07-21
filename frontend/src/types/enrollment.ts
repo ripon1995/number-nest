@@ -4,6 +4,7 @@ export interface Enrollment {
   course_id: string
   start_from: string
   enrollment_fee_paid: boolean
+  discontinued_at: string | null
   created_at: string
 }
 

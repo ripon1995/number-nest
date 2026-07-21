@@ -8,6 +8,7 @@ interface EnrollmentState {
   fetchEnrollments: () => Promise<void>
   createEnrollment: (input: EnrollmentInput) => Promise<Enrollment>
   updateEnrollmentFeePaid: (id: string, enrollmentFeePaid: boolean) => Promise<Enrollment>
+  updateEnrollmentDiscontinued: (id: string, discontinuedAt: string | null) => Promise<Enrollment>
   deleteEnrollment: (id: string) => Promise<void>
 }
 
@@ -34,6 +35,16 @@ export const useEnrollmentStore = create<EnrollmentState>((set, get) => ({
 
   async updateEnrollmentFeePaid(id, enrollmentFeePaid) {
     const updated = await api.updateEnrollmentFeePaid(id, enrollmentFeePaid)
+    set({
+      enrollments: get().enrollments.map((enrollment) =>
+        enrollment.id === updated.id ? updated : enrollment,
+      ),
+    })
+    return updated
+  },
+
+  async updateEnrollmentDiscontinued(id, discontinuedAt) {
+    const updated = await api.updateEnrollmentDiscontinued(id, discontinuedAt)
     set({
       enrollments: get().enrollments.map((enrollment) =>
         enrollment.id === updated.id ? updated : enrollment,

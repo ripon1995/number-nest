@@ -21,6 +21,17 @@ export function updateEnrollmentFeePaid(id: string, enrollmentFeePaid: boolean):
   })
 }
 
+export function updateEnrollmentDiscontinued(
+  id: string,
+  discontinuedAt: string | null,
+): Promise<Enrollment> {
+  return request<Enrollment>(`/enrollments/${id}/discontinue`, {
+    method: 'PATCH',
+    body: JSON.stringify({ discontinued_at: discontinuedAt }),
+    headers: authHeaders(),
+  })
+}
+
 export function deleteEnrollment(id: string): Promise<void> {
   return request<void>(`/enrollments/${id}`, {
     method: 'DELETE',

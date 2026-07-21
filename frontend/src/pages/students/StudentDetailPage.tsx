@@ -96,6 +96,7 @@ function StudentDetailPage() {
                       <th>Course</th>
                       <th>Enrollment date</th>
                       <th>Enrollment fee paid</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -104,6 +105,11 @@ function StudentDetailPage() {
                         <td>{coursesById.get(enrollment.course_id)?.course_name ?? 'Unknown course'}</td>
                         <td>{enrollment.start_from}</td>
                         <td>{enrollment.enrollment_fee_paid ? 'Yes' : 'No'}</td>
+                        <td>
+                          {enrollment.discontinued_at
+                            ? `Discontinued since ${enrollment.discontinued_at}`
+                            : 'Active'}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

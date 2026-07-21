@@ -4,7 +4,12 @@ from fastapi import APIRouter, Depends, status
 
 from app.core.dependencies import get_current_teacher
 from app.enrollments.models import Enrollment
-from app.enrollments.schemas import EnrollmentCreate, EnrollmentFeeUpdate, EnrollmentRead
+from app.enrollments.schemas import (
+    EnrollmentCreate,
+    EnrollmentDiscontinueUpdate,
+    EnrollmentFeeUpdate,
+    EnrollmentRead,
+)
 from app.enrollments.service import EnrollmentService, get_enrollment_service
 
 router = APIRouter(
@@ -36,6 +41,15 @@ async def update_enrollment_fee_paid(
         service: EnrollmentService = Depends(get_enrollment_service)
 ) -> Enrollment:
     return await service.set_fee_paid(enrollment_id, payload.enrollment_fee_paid)
+
+
+@router.patch("/{enrollment_id}/discontinue", response_model=EnrollmentRead)
+async def update_enrollment_discontinued(
+        enrollment_id: uuid.UUID,
+        payload: EnrollmentDiscontinueUpdate,
+        service: EnrollmentService = Depends(get_enrollment_service)
+) -> Enrollment:
+    return await service.set_discontinued(enrollment_id, payload.discontinued_at)
 
 
 @router.delete("/{enrollment_id}", status_code=status.HTTP_204_NO_CONTENT)

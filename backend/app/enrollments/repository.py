@@ -41,7 +41,7 @@ class EnrollmentRepository:
         result = await self.db.scalars(
             select(Student)
             .join(Enrollment, Enrollment.student_id == Student.id)
-            .where(Enrollment.course_id == course_id)
+            .where(Enrollment.course_id == course_id, Enrollment.discontinued_at.is_(None))
             .order_by(Student.id)
         )
         return list(result.all())
@@ -67,6 +67,14 @@ class EnrollmentRepository:
 
     async def update_fee_paid(self, enrollment: Enrollment, *, enrollment_fee_paid: bool) -> Enrollment:
         enrollment.enrollment_fee_paid = enrollment_fee_paid
+        await self.db.commit()
+        await self.db.refresh(enrollment)
+        return enrollment
+
+    async def update_discontinued_at(
+        self, enrollment: Enrollment, *, discontinued_at: date | None
+    ) -> Enrollment:
+        enrollment.discontinued_at = discontinued_at
         await self.db.commit()
         await self.db.refresh(enrollment)
         return enrollment

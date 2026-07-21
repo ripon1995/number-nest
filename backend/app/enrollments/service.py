@@ -1,4 +1,5 @@
 import uuid
+from datetime import date
 
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -53,6 +54,16 @@ class EnrollmentService:
             raise NotFoundException(f"Enrollment {enrollment_id} not found")
         return await self.repository.update_fee_paid(
             enrollment, enrollment_fee_paid=enrollment_fee_paid
+        )
+
+    async def set_discontinued(
+        self, enrollment_id: uuid.UUID, discontinued_at: date | None
+    ) -> Enrollment:
+        enrollment = await self.repository.get_by_id(enrollment_id)
+        if enrollment is None:
+            raise NotFoundException(f"Enrollment {enrollment_id} not found")
+        return await self.repository.update_discontinued_at(
+            enrollment, discontinued_at=discontinued_at
         )
 
     async def list_all(

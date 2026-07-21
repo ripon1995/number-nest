@@ -54,7 +54,9 @@ place a course is surfaced outside teacher auth.
   intentionally omitted from the list table — it only appears in the create/edit form and
   the read-only detail page.
 - `GET /courses/{id}` returns `CourseDetailRead` (`app/courses/schemas.py`) — the course
-  fields plus `students: StudentRead[]`, the list of currently enrolled [[students]].
+  fields plus `students: StudentRead[]`, the list of currently *actively* enrolled [[students]]
+  (`list_students_for_course` filters out any [[enrollment]] with `discontinued_at` set — a
+  discontinued student drops off the roster, though their `Enrollment` row and history remain).
   `CourseService.get_detail` builds this by calling `EnrollmentRepository.list_students_for_course`
   alongside the plain course lookup; `list`/create/update/delete still use the plain `CourseRead`
   schema without the students list.

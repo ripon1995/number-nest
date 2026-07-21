@@ -11,8 +11,10 @@ interface EnrollmentTableProps {
   isLoading: boolean
   deletingId: string | null
   updatingFeePaidId: string | null
+  updatingDiscontinuedId: string | null
   onDelete: (enrollment: Enrollment) => void
   onToggleFeePaid: (enrollment: Enrollment) => void
+  onDiscontinuedChange: (enrollment: Enrollment, discontinuedAt: string | null) => void
   emptyMessage?: string
 }
 
@@ -23,8 +25,10 @@ function EnrollmentTable({
   isLoading,
   deletingId,
   updatingFeePaidId,
+  updatingDiscontinuedId,
   onDelete,
   onToggleFeePaid,
+  onDiscontinuedChange,
   emptyMessage,
 }: EnrollmentTableProps) {
   if (isLoading) return <p>Loading enrollments…</p>
@@ -39,6 +43,7 @@ function EnrollmentTable({
           <th>Course</th>
           <th>Start date</th>
           <th>Enrollment Fee paid</th>
+          <th>Discontinued from</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -56,6 +61,15 @@ function EnrollmentTable({
                 checked={enrollment.enrollment_fee_paid}
                 onChange={() => onToggleFeePaid(enrollment)}
                 disabled={updatingFeePaidId === enrollment.id}
+              />
+            </td>
+            <td>
+              <input
+                type="date"
+                aria-label="Discontinued from"
+                value={enrollment.discontinued_at ?? ''}
+                onChange={(e) => onDiscontinuedChange(enrollment, e.target.value || null)}
+                disabled={updatingDiscontinuedId === enrollment.id}
               />
             </td>
             <td className="enrollment-row-actions">

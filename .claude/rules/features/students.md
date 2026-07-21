@@ -39,7 +39,14 @@ every calendar month from that enrollment's `start_from` through the current mon
 plus the `YYYY-MM` prefix of `payment.month`), lists it as due at that [[course]]'s
 `course_fee` — the recurring fee, not the one-time `enrollment_fee`. Whether the
 `enrollment_fee` has been paid is shown separately, via `enrollment_fee_paid` in the same
-page's enrollments table, not folded into the due-payments list.
+page's enrollments table, not folded into the due-payments list. If the enrollment carries a
+[[enrollment]] `discontinued_at`, the month walk stops there instead of at the current month
+(the discontinuation month itself still counts as due) — a discontinued student stops
+accruing new dues, while months already elapsed before discontinuation still show up if
+unpaid. The same enrollments table also gains a read-only "Status" column
+(`Active`/`Discontinued since {date}`) so it's clear why a student's dues stopped growing;
+`StudentDetailPage` never edits `discontinued_at` itself, only `EnrollmentsPage` does (see
+[[enrollment]]).
 
 ## Fields
 
