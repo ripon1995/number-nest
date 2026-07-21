@@ -84,21 +84,21 @@ function CourseDetailPage() {
               <table>
                 <thead>
                   <tr>
+                    <th>SL</th>
                     <th>Name</th>
                     <th>College</th>
                     <th>Contact</th>
                     <th>WhatsApp</th>
-                    <th>Email</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {course.students.map((student) => (
+                  {course.students.map((student, index) => (
                     <tr key={student.id}>
+                      <td>{index + 1}</td>
                       <td>{student.name}</td>
                       <td>{student.college ?? '—'}</td>
                       <td>{student.contact}</td>
                       <td>{student.whatsapp_number}</td>
-                      <td>{student.email ?? '—'}</td>
                     </tr>
                   ))}
                 </tbody>
