@@ -67,6 +67,10 @@ backend/
                      get_current_teacher dependency)
   migrations/       Alembic (async env.py)
 frontend/   React app (Vite + TypeScript)
+  public/_redirects  Render static-site SPA rewrite rule (`/*  /index.html  200`) — copied into
+                     dist/ verbatim by Vite's build, so every non-root path (e.g. /enrollments)
+                     falls back to index.html instead of 404ing on a hard refresh or direct link;
+                     see Deployment below
   src/assets/       static assets, incl. logo.svg
   src/components/   shared components: Header (responsive, wraps below 640px), NavMenu (left sidebar, collapses to a
                      horizontal scrollable top bar below 768px), NavIcons.tsx (inline SVG icon per nav link, each
@@ -184,6 +188,21 @@ Run from `frontend/`:
 - Run dev server: `npm run dev`
 - Type-check + production build: `npm run build` (runs `tsc -b && vite build`)
 - Lint: `npm run lint` (oxlint)
+
+## Deployment
+
+- Both `frontend/` and `backend/` deploy to Render (`frontend` as a static site, `backend` as a
+  web service) — the frontend is served from `number-nest-frontend.onrender.com`.
+- Render's static-site host only serves files that actually exist in the published directory
+  (`dist/`); it doesn't know about client-side routes. Since this is a React Router SPA, a hard
+  refresh or direct link to any non-root path (e.g. `/enrollments`) is a real HTTP `GET` to
+  Render for that exact path, which 404s unless told otherwise — `index.html` is the one static
+  file every route actually resolves to; React Router picks the page to render client-side based
+  on the URL once that shell has loaded. Fixed via `frontend/public/_redirects`
+  (`/*  /index.html  200`), which Vite copies into `dist/` on build and Render reads
+  automatically to rewrite every unmatched path to `index.html` instead of 404ing. This only
+  takes effect on a fresh deploy (the rule has to land in a built `dist/`), not by editing the
+  file alone.
 
 ## Features
 
