@@ -13,8 +13,8 @@ place a course is surfaced outside teacher auth.
 
 `course_name` is not teacher-entered — it's composed server-side (`app/courses/naming.py`'s
 `build_course_name`) from `class_level`, `subject`, `exam_year`, `class_time`, and `batch_type`
-on every create/update, e.g. `HSC-MATH-2026-5PM-Regular` (class/subject uppercased, batch type
-capitalized, `class_time` compacted to 12-hour with minutes only when not on the hour —
+on every create/update, e.g. `HSC-MATH-2026-5PM-REGULAR` (class/subject/batch type all uppercased,
+`class_time` compacted to 12-hour with minutes only when not on the hour —
 `format_class_time`, also in `naming.py`). `CourseCreate`/`CourseUpdate` don't accept
 `course_name` at all; only `CourseRead` returns it. `CourseFormDialog` accordingly has no
 course-name text input — it has `Class` (`class_level`), `Exam year`, and `Batch type` selects/

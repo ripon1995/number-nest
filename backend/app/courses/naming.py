@@ -25,5 +25,5 @@ def build_course_name(
 ) -> str:
     return (
         f"{class_level.value.upper()}-{subject.value.upper()}-{exam_year}-"
-        f"{format_class_time(class_time)}-{batch_type.value.capitalize()}"
+        f"{format_class_time(class_time)}-{batch_type.value.upper()}"
     )

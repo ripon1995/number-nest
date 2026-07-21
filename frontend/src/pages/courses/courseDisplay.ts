@@ -61,5 +61,5 @@ export function buildCourseName(
   batchType: CourseBatchType,
 ): string {
   if (!classTime || !examYear) return ''
-  return `${classLevel.toUpperCase()}-${subject.toUpperCase()}-${examYear}-${formatClassTimeCompact(classTime)}-${BATCH_TYPE_LABELS[batchType]}`
+  return `${classLevel.toUpperCase()}-${subject.toUpperCase()}-${examYear}-${formatClassTimeCompact(classTime)}-${batchType.toUpperCase()}`
 }
