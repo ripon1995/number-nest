@@ -12,13 +12,13 @@
 .confirm-dialog {
   position: relative;
   width: 100%;
-  max-width: 380px;
+  max-width: 494px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
   box-shadow: var(--shadow);
   padding: 28px;
-  text-align: left;
+  text-align: center;
   box-sizing: border-box;
 }
 
@@ -31,7 +31,7 @@
   border-radius: 999px;
   background: var(--danger-bg);
   color: var(--danger);
-  margin-bottom: 16px;
+  margin: 0 auto 16px;
 }
 
 .confirm-dialog h2 {
@@ -48,7 +48,7 @@
 
 .confirm-dialog-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 10px;
 }
 
