@@ -3,6 +3,7 @@ import { Navigate, useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import Loader from '../components/Loader'
 import './AuthForm.css'
 
 function RegisterPage() {
@@ -89,6 +90,11 @@ function RegisterPage() {
         <p className="hint">
           Already have an account? <Link to="/login">Log in</Link>
         </p>
+        {isSubmitting && (
+          <div className="auth-form-submitting-overlay">
+            <Loader label="Registering…" />
+          </div>
+        )}
       </form>
       <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>
