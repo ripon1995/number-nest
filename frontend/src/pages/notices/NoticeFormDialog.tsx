@@ -56,7 +56,7 @@ function NoticeFormDialog({ courses, onClose, onError }: NoticeFormDialogProps) 
   }
 
   return (
-    <Modal labelledBy="notice-dialog-title" onClose={onClose}>
+    <Modal labelledBy="notice-dialog-title" onClose={onClose} isSubmitting={isSubmitting}>
       <form className="notice-form" onSubmit={handleSubmit}>
         <h2 id="notice-dialog-title">Create notice</h2>
         <label>
@@ -101,11 +101,11 @@ function NoticeFormDialog({ courses, onClose, onError }: NoticeFormDialogProps) 
           </select>
         </label>
         <div className="notice-form-actions">
-          <button type="button" className="secondary" onClick={onClose}>
+          <button type="button" className="secondary" onClick={onClose} disabled={isSubmitting}>
             Cancel
           </button>
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving…' : 'Create notice'}
+            Create notice
           </button>
         </div>
       </form>

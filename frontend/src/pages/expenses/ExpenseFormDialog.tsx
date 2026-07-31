@@ -71,7 +71,12 @@ function ExpenseFormDialog({ onClose, onError }: ExpenseFormDialogProps) {
   }
 
   return (
-    <Modal labelledBy="expense-dialog-title" onClose={onClose} className="expense-modal">
+    <Modal
+      labelledBy="expense-dialog-title"
+      onClose={onClose}
+      className="expense-modal"
+      isSubmitting={isSubmitting}
+    >
       <form className="expense-form" onSubmit={handleSubmit}>
         <h2 id="expense-dialog-title">Record expense</h2>
         <label>
@@ -155,11 +160,11 @@ function ExpenseFormDialog({ onClose, onError }: ExpenseFormDialogProps) {
           />
         </label>
         <div className="expense-form-actions">
-          <button type="button" className="secondary" onClick={onClose}>
+          <button type="button" className="secondary" onClick={onClose} disabled={isSubmitting}>
             Cancel
           </button>
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving…' : 'Record expense'}
+            Record expense
           </button>
         </div>
       </form>

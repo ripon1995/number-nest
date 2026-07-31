@@ -58,7 +58,12 @@ function EnrollmentFormDialog({ students, courses, onClose, onError }: Enrollmen
   }
 
   return (
-    <Modal labelledBy="enrollment-dialog-title" onClose={onClose} className="enrollment-modal">
+    <Modal
+      labelledBy="enrollment-dialog-title"
+      onClose={onClose}
+      className="enrollment-modal"
+      isSubmitting={isSubmitting}
+    >
       <form className="enrollment-form" onSubmit={handleSubmit}>
         <h2 id="enrollment-dialog-title">New enrollment</h2>
         <label>
@@ -107,11 +112,11 @@ function EnrollmentFormDialog({ students, courses, onClose, onError }: Enrollmen
           Enrollment fee paid
         </label>
         <div className="enrollment-form-actions">
-          <button type="button" className="secondary" onClick={onClose}>
+          <button type="button" className="secondary" onClick={onClose} disabled={isSubmitting}>
             Cancel
           </button>
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving…' : 'Add enrollment'}
+            Add enrollment
           </button>
         </div>
       </form>

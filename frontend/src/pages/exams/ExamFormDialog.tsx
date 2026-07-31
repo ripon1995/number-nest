@@ -56,7 +56,7 @@ function ExamFormDialog({ courses, onClose, onError }: ExamFormDialogProps) {
   }
 
   return (
-    <Modal labelledBy="exam-dialog-title" onClose={onClose}>
+    <Modal labelledBy="exam-dialog-title" onClose={onClose} isSubmitting={isSubmitting}>
       <form className="exam-form" onSubmit={handleSubmit}>
         <h2 id="exam-dialog-title">Create exam</h2>
         <label>
@@ -102,11 +102,11 @@ function ExamFormDialog({ courses, onClose, onError }: ExamFormDialogProps) {
           />
         </label>
         <div className="exam-form-actions">
-          <button type="button" className="secondary" onClick={onClose}>
+          <button type="button" className="secondary" onClick={onClose} disabled={isSubmitting}>
             Cancel
           </button>
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving…' : 'Create exam'}
+            Create exam
           </button>
         </div>
       </form>

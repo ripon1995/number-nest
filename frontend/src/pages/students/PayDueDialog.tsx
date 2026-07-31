@@ -50,7 +50,12 @@ function PayDueDialog({ due, onClose, onPaid, onError }: PayDueDialogProps) {
   }
 
   return (
-    <Modal labelledBy="pay-due-dialog-title" onClose={onClose} className="payment-modal">
+    <Modal
+      labelledBy="pay-due-dialog-title"
+      onClose={onClose}
+      className="payment-modal"
+      isSubmitting={isSubmitting}
+    >
       <form className="payment-form" onSubmit={handleSubmit}>
         <h2 id="pay-due-dialog-title">Record payment</h2>
         <dl className="student-detail-list">
@@ -85,11 +90,11 @@ function PayDueDialog({ due, onClose, onPaid, onError }: PayDueDialogProps) {
           />
         </label>
         <div className="payment-form-actions">
-          <button type="button" className="secondary" onClick={onClose}>
+          <button type="button" className="secondary" onClick={onClose} disabled={isSubmitting}>
             Cancel
           </button>
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving…' : 'Save payment'}
+            Save payment
           </button>
         </div>
       </form>

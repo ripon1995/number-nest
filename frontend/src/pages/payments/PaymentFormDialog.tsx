@@ -90,7 +90,7 @@ function PaymentFormDialog({
   }
 
   return (
-    <Modal labelledBy="payment-dialog-title" onClose={onClose} className="payment-modal">
+    <Modal labelledBy="payment-dialog-title" onClose={onClose} className="payment-modal" isSubmitting={isSubmitting}>
       <form className="payment-form" onSubmit={handleSubmit}>
         <h2 id="payment-dialog-title">Record payment</h2>
         <label>
@@ -151,11 +151,11 @@ function PaymentFormDialog({
           />
         </label>
         <div className="payment-form-actions">
-          <button type="button" className="secondary" onClick={onClose}>
+          <button type="button" className="secondary" onClick={onClose} disabled={isSubmitting}>
             Cancel
           </button>
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving…' : 'Record payment'}
+            Record payment
           </button>
         </div>
       </form>

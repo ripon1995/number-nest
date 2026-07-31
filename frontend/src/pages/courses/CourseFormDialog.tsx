@@ -124,7 +124,7 @@ function CourseFormDialog({ course, onClose, onError }: CourseFormDialogProps) {
   }
 
   return (
-    <Modal labelledBy="course-dialog-title" onClose={onClose}>
+    <Modal labelledBy="course-dialog-title" onClose={onClose} isSubmitting={isSubmitting}>
       <form className="course-form" onSubmit={handleSubmit}>
         <h2 id="course-dialog-title">{course ? 'Edit course' : 'New course'}</h2>
         <label>
@@ -257,11 +257,11 @@ function CourseFormDialog({ course, onClose, onError }: CourseFormDialogProps) {
         </label>
         {formError && <p className="error">{formError}</p>}
         <div className="course-form-actions">
-          <button type="button" className="secondary" onClick={onClose}>
+          <button type="button" className="secondary" onClick={onClose} disabled={isSubmitting}>
             Cancel
           </button>
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving…' : course ? 'Save changes' : 'Add course'}
+            {course ? 'Save changes' : 'Add course'}
           </button>
         </div>
       </form>
