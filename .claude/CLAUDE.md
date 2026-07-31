@@ -96,12 +96,18 @@ frontend/   React app (Vite + TypeScript)
                      per-use width overrides; scroll lives on an inner .modal-scroll wrapper, not .modal itself, so
                      the isSubmitting overlay — position:absolute on .modal — stays pinned to the visible dialog
                      instead of scrolling away with tall form content, a real bug hit and fixed during this pass),
-                     ErrorDialog (renders ApiError via its own Modal-like backdrop, not the Modal component),
-                     ConfirmDialog (own Modal-like backdrop too, same narrow-card shape and warning icon as
-                     ErrorDialog — replaces every feature list page's old window.confirm('Delete this X?') native
-                     browser dialog; open/title/message/confirmLabel/cancelLabel/onConfirm/onCancel props, plus an
-                     isConfirming prop that renders the same Loader-overlay-over-dimmed-content treatment Modal
-                     uses while the delete request is in flight, instead of changing the confirm button's own text),
+                     ErrorDialog (renders ApiError via its own Modal-like backdrop, not the Modal component;
+                     494px-max-width narrow card, centered icon/title/detail text — text-align: center on the
+                     whole card, not just the icon), ConfirmDialog (own Modal-like backdrop too, same narrow-card
+                     shape/494px width/centered text as ErrorDialog, but a distinct trash-can icon — the same path
+                     every feature's per-row delete TrashIcon uses — rather than ErrorDialog's circle-exclamation,
+                     so the two dialogs read as visually different at a glance despite the shared shell; the
+                     Cancel/Delete button row uses justify-content: space-between rather than flex-end, pushing
+                     the two buttons to opposite edges of the card instead of clustering them together — replaces
+                     every feature list page's old window.confirm('Delete this X?') native browser dialog;
+                     open/title/message/confirmLabel/cancelLabel/onConfirm/onCancel props, plus an isConfirming
+                     prop that renders the same Loader-overlay-over-dimmed-content treatment Modal uses while the
+                     delete request is in flight, instead of changing the confirm button's own text),
                      ThemeToggle (sun/moon icon button driving themeStore, rendered in Header on every page incl. LandingPage),
                      Loader (wraps react-loader-spinner's DNA component, centered in a full-width flex wrapper;
                      takes an optional `label` prop passed through as the DNA spinner's ariaLabel — the app's one
