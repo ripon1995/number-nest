@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import ConfirmDialog from '../components/ConfirmDialog'
 import { PlusIcon } from '../components/Icons'
 import { CoursesIcon } from '../components/NavIcons'
 import CourseTable from './courses/CourseTable'
@@ -23,21 +24,23 @@ function CoursesPage() {
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [pendingDelete, setPendingDelete] = useState<Course | null>(null)
 
   useEffect(() => {
     fetchCourses().catch((err) => setError(toApiError(err)))
   }, [fetchCourses])
 
-  async function handleDelete(course: Course) {
-    if (!window.confirm(`Delete course "${course.course_name}"?`)) return
-    setDeletingId(course.id)
+  async function confirmDelete() {
+    if (!pendingDelete) return
+    setDeletingId(pendingDelete.id)
     setError(null)
     try {
-      await deleteCourse(course.id)
+      await deleteCourse(pendingDelete.id)
     } catch (err) {
       setError(toApiError(err))
     } finally {
       setDeletingId(null)
+      setPendingDelete(null)
     }
   }
 
@@ -68,11 +71,19 @@ function CoursesPage() {
           isLoading={isLoading}
           deletingId={deletingId}
           onEdit={setEditingCourse}
-          onDelete={handleDelete}
+          onDelete={setPendingDelete}
         />
       </section>
 
       {isFormOpen && <CourseFormDialog course={editingCourse} onClose={closeForm} onError={setError} />}
+
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        title={`Delete course "${pendingDelete?.course_name}"?`}
+        isConfirming={deletingId !== null}
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDelete(null)}
+      />
 
       <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>

@@ -4,6 +4,7 @@ import { useStudentStore } from '../store/studentStore'
 import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import ConfirmDialog from '../components/ConfirmDialog'
 import { PlusIcon } from '../components/Icons'
 import { EnrollmentsIcon } from '../components/NavIcons'
 import EnrollmentTable from './enrollments/EnrollmentTable'
@@ -31,6 +32,7 @@ function EnrollmentsPage() {
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [pendingDelete, setPendingDelete] = useState<Enrollment | null>(null)
   const [updatingFeePaidId, setUpdatingFeePaidId] = useState<string | null>(null)
   const [updatingDiscontinuedId, setUpdatingDiscontinuedId] = useState<string | null>(null)
 
@@ -59,18 +61,17 @@ function EnrollmentsPage() {
     setFilterStudentId('')
   }
 
-  async function handleDelete(enrollment: Enrollment) {
-    const studentName = studentsById.get(enrollment.student_id)?.name ?? 'this student'
-    const courseName = coursesById.get(enrollment.course_id)?.course_name ?? 'this course'
-    if (!window.confirm(`Remove ${studentName} from ${courseName}?`)) return
-    setDeletingId(enrollment.id)
+  async function confirmDelete() {
+    if (!pendingDelete) return
+    setDeletingId(pendingDelete.id)
     setError(null)
     try {
-      await deleteEnrollment(enrollment.id)
+      await deleteEnrollment(pendingDelete.id)
     } catch (err) {
       setError(toApiError(err))
     } finally {
       setDeletingId(null)
+      setPendingDelete(null)
     }
   }
 
@@ -165,7 +166,7 @@ function EnrollmentsPage() {
           deletingId={deletingId}
           updatingFeePaidId={updatingFeePaidId}
           updatingDiscontinuedId={updatingDiscontinuedId}
-          onDelete={handleDelete}
+          onDelete={setPendingDelete}
           onToggleFeePaid={handleToggleFeePaid}
           onDiscontinuedChange={handleDiscontinuedChange}
           emptyMessage={
@@ -182,6 +183,20 @@ function EnrollmentsPage() {
           onError={setError}
         />
       )}
+
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        title={
+          pendingDelete
+            ? `Remove ${studentsById.get(pendingDelete.student_id)?.name ?? 'this student'} from ${
+                coursesById.get(pendingDelete.course_id)?.course_name ?? 'this course'
+              }?`
+            : ''
+        }
+        isConfirming={deletingId !== null}
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDelete(null)}
+      />
 
       <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>

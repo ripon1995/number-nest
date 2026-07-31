@@ -93,8 +93,16 @@ frontend/   React app (Vite + TypeScript)
                      sidebar, collapses to a horizontal scrollable top bar below 768px), NavIcons.tsx (inline SVG icon
                      per nav link plus SunIcon/MoonIcon for ThemeToggle, each rendered in a bordered .app-nav-icon box),
                      ProtectedRoute, Modal (generic backdrop+dialog, Escape-to-close, optional className prop for
-                     per-use width overrides), ErrorDialog (renders ApiError via Modal-like backdrop), ThemeToggle
-                     (sun/moon icon button driving themeStore, rendered in Header on every page incl. LandingPage),
+                     per-use width overrides; scroll lives on an inner .modal-scroll wrapper, not .modal itself, so
+                     the isSubmitting overlay — position:absolute on .modal — stays pinned to the visible dialog
+                     instead of scrolling away with tall form content, a real bug hit and fixed during this pass),
+                     ErrorDialog (renders ApiError via its own Modal-like backdrop, not the Modal component),
+                     ConfirmDialog (own Modal-like backdrop too, same narrow-card shape and warning icon as
+                     ErrorDialog — replaces every feature list page's old window.confirm('Delete this X?') native
+                     browser dialog; open/title/message/confirmLabel/cancelLabel/onConfirm/onCancel props, plus an
+                     isConfirming prop that renders the same Loader-overlay-over-dimmed-content treatment Modal
+                     uses while the delete request is in flight, instead of changing the confirm button's own text),
+                     ThemeToggle (sun/moon icon button driving themeStore, rendered in Header on every page incl. LandingPage),
                      Loader (wraps react-loader-spinner's DNA component, centered in a full-width flex wrapper;
                      takes an optional `label` prop passed through as the DNA spinner's ariaLabel — the app's one
                      loading-state visual, replacing every prior `<p>Loading X…</p>` placeholder: list-table

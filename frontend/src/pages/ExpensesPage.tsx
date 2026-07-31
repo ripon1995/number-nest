@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useExpenseStore } from '../store/expenseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import ConfirmDialog from '../components/ConfirmDialog'
 import { PlusIcon } from '../components/Icons'
 import { ExpensesIcon } from '../components/NavIcons'
 import ExpenseTable from './expenses/ExpenseTable'
@@ -23,6 +24,7 @@ function ExpensesPage() {
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [pendingDelete, setPendingDelete] = useState<Expense | null>(null)
   const [filterCategory, setFilterCategory] = useState<ExpenseCategory | ''>('')
   const [filterMonth, setFilterMonth] = useState('')
 
@@ -43,16 +45,17 @@ function ExpensesPage() {
     setFilterMonth('')
   }
 
-  async function handleDelete(expense: Expense) {
-    if (!window.confirm('Delete this expense record?')) return
-    setDeletingId(expense.id)
+  async function confirmDelete() {
+    if (!pendingDelete) return
+    setDeletingId(pendingDelete.id)
     setError(null)
     try {
-      await deleteExpense(expense.id)
+      await deleteExpense(pendingDelete.id)
     } catch (err) {
       setError(toApiError(err))
     } finally {
       setDeletingId(null)
+      setPendingDelete(null)
     }
   }
 
@@ -105,12 +108,20 @@ function ExpensesPage() {
           expenses={filteredExpenses}
           isLoading={isLoading}
           deletingId={deletingId}
-          onDelete={handleDelete}
+          onDelete={setPendingDelete}
           emptyMessage={hasActiveFilters ? 'No expenses match the selected filters.' : undefined}
         />
       </section>
 
       {isCreating && <ExpenseFormDialog onClose={() => setIsCreating(false)} onError={setError} />}
+
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        title="Delete this expense record?"
+        isConfirming={deletingId !== null}
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDelete(null)}
+      />
 
       <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>

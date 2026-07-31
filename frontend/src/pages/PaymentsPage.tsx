@@ -5,6 +5,7 @@ import { useStudentStore } from '../store/studentStore'
 import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import ConfirmDialog from '../components/ConfirmDialog'
 import { PlusIcon } from '../components/Icons'
 import { PaymentsIcon } from '../components/NavIcons'
 import PaymentTable from './payments/PaymentTable'
@@ -32,6 +33,7 @@ function PaymentsPage() {
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [pendingDelete, setPendingDelete] = useState<Payment | null>(null)
 
   const [filterCourseId, setFilterCourseId] = useState('')
   const [filterStudentId, setFilterStudentId] = useState('')
@@ -67,16 +69,17 @@ function PaymentsPage() {
     setFilterDay('')
   }
 
-  async function handleDelete(payment: Payment) {
-    if (!window.confirm('Delete this payment record?')) return
-    setDeletingId(payment.id)
+  async function confirmDelete() {
+    if (!pendingDelete) return
+    setDeletingId(pendingDelete.id)
     setError(null)
     try {
-      await deletePayment(payment.id)
+      await deletePayment(pendingDelete.id)
     } catch (err) {
       setError(toApiError(err))
     } finally {
       setDeletingId(null)
+      setPendingDelete(null)
     }
   }
 
@@ -158,7 +161,7 @@ function PaymentsPage() {
           coursesById={coursesById}
           isLoading={isLoading}
           deletingId={deletingId}
-          onDelete={handleDelete}
+          onDelete={setPendingDelete}
           emptyMessage={
             hasActiveFilters ? 'No payments match the selected filters.' : undefined
           }
@@ -174,6 +177,14 @@ function PaymentsPage() {
           onError={setError}
         />
       )}
+
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        title="Delete this payment record?"
+        isConfirming={deletingId !== null}
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDelete(null)}
+      />
 
       <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>

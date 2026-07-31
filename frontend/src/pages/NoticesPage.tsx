@@ -3,6 +3,7 @@ import { useNoticeStore } from '../store/noticeStore'
 import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import ConfirmDialog from '../components/ConfirmDialog'
 import { PlusIcon } from '../components/Icons'
 import { NoticesIcon } from '../components/NavIcons'
 import NoticeTable from './notices/NoticeTable'
@@ -26,6 +27,7 @@ function NoticesPage() {
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [pendingDelete, setPendingDelete] = useState<Notice | null>(null)
 
   useEffect(() => {
     fetchNotices().catch((err) => setError(toApiError(err)))
@@ -34,16 +36,17 @@ function NoticesPage() {
 
   const coursesById = new Map(courses.map((course) => [course.id, course]))
 
-  async function handleDelete(notice: Notice) {
-    if (!window.confirm('Delete this notice?')) return
-    setDeletingId(notice.id)
+  async function confirmDelete() {
+    if (!pendingDelete) return
+    setDeletingId(pendingDelete.id)
     setError(null)
     try {
-      await deleteNotice(notice.id)
+      await deleteNotice(pendingDelete.id)
     } catch (err) {
       setError(toApiError(err))
     } finally {
       setDeletingId(null)
+      setPendingDelete(null)
     }
   }
 
@@ -75,13 +78,21 @@ function NoticesPage() {
           coursesById={coursesById}
           isLoading={isLoading}
           deletingId={deletingId}
-          onDelete={handleDelete}
+          onDelete={setPendingDelete}
         />
       </section>
 
       {isCreating && (
         <NoticeFormDialog courses={courses} onClose={() => setIsCreating(false)} onError={setError} />
       )}
+
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        title="Delete this notice?"
+        isConfirming={deletingId !== null}
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDelete(null)}
+      />
 
       <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>

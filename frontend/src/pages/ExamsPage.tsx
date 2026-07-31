@@ -3,6 +3,7 @@ import { useExamStore } from '../store/examStore'
 import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import ConfirmDialog from '../components/ConfirmDialog'
 import { PlusIcon } from '../components/Icons'
 import { ExamsIcon } from '../components/NavIcons'
 import ExamTable from './exams/ExamTable'
@@ -26,6 +27,7 @@ function ExamsPage() {
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [pendingDelete, setPendingDelete] = useState<Exam | null>(null)
 
   useEffect(() => {
     fetchExams().catch((err) => setError(toApiError(err)))
@@ -34,16 +36,17 @@ function ExamsPage() {
 
   const coursesById = new Map(courses.map((course) => [course.id, course]))
 
-  async function handleDelete(exam: Exam) {
-    if (!window.confirm('Delete this exam?')) return
-    setDeletingId(exam.id)
+  async function confirmDelete() {
+    if (!pendingDelete) return
+    setDeletingId(pendingDelete.id)
     setError(null)
     try {
-      await deleteExam(exam.id)
+      await deleteExam(pendingDelete.id)
     } catch (err) {
       setError(toApiError(err))
     } finally {
       setDeletingId(null)
+      setPendingDelete(null)
     }
   }
 
@@ -75,13 +78,21 @@ function ExamsPage() {
           coursesById={coursesById}
           isLoading={isLoading}
           deletingId={deletingId}
-          onDelete={handleDelete}
+          onDelete={setPendingDelete}
         />
       </section>
 
       {isCreating && (
         <ExamFormDialog courses={courses} onClose={() => setIsCreating(false)} onError={setError} />
       )}
+
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        title="Delete this exam?"
+        isConfirming={deletingId !== null}
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDelete(null)}
+      />
 
       <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>

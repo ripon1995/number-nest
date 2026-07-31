@@ -5,6 +5,7 @@ import { useEnrollmentStore } from '../store/enrollmentStore'
 import { useCourseStore } from '../store/courseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import ConfirmDialog from '../components/ConfirmDialog'
 import { PlusIcon } from '../components/Icons'
 import { StudentsIcon } from '../components/NavIcons'
 import StudentTable from './students/StudentTable'
@@ -32,6 +33,7 @@ function StudentsPage() {
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [pendingDelete, setPendingDelete] = useState<Student | null>(null)
 
   const [filterCourseId, setFilterCourseId] = useState('')
   const [filterStatus, setFilterStatus] = useState<'' | 'active' | 'inactive'>('')
@@ -61,16 +63,17 @@ function StudentsPage() {
     setFilterStatus('')
   }
 
-  async function handleDelete(student: Student) {
-    if (!window.confirm(`Delete student "${student.name}"?`)) return
-    setDeletingId(student.id)
+  async function confirmDelete() {
+    if (!pendingDelete) return
+    setDeletingId(pendingDelete.id)
     setError(null)
     try {
-      await deleteStudent(student.id)
+      await deleteStudent(pendingDelete.id)
     } catch (err) {
       setError(toApiError(err))
     } finally {
       setDeletingId(null)
+      setPendingDelete(null)
     }
   }
 
@@ -132,12 +135,20 @@ function StudentsPage() {
           deletingId={deletingId}
           onViewDetail={(student) => navigate(`/students/${student.id}`)}
           onEdit={setEditingStudent}
-          onDelete={handleDelete}
+          onDelete={setPendingDelete}
           emptyMessage={hasActiveFilters ? 'No students match the selected filters.' : undefined}
         />
       </section>
 
       {isFormOpen && <StudentFormDialog student={editingStudent} onClose={closeForm} onError={setError} />}
+
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        title={`Delete student "${pendingDelete?.name}"?`}
+        isConfirming={deletingId !== null}
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDelete(null)}
+      />
 
       <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>
