@@ -1,22 +1,6 @@
 .attendance-page {
   align-items: center;
   width: 100%;
-  color-scheme: light;
-  --text: #5b6472;
-  --text-h: #101828;
-  --bg: #f5f6f8;
-  --surface: #fff;
-  --border: #e3e6eb;
-  --code-bg: #eef0f3;
-  --accent: #3454d1;
-  --accent-bg: rgba(52, 84, 209, 0.08);
-  --accent-border: rgba(52, 84, 209, 0.45);
-  --shadow-card:
-    rgba(16, 24, 40, 0.12) 0 20px 25px -5px, rgba(16, 24, 40, 0.08) 0 8px 10px -6px;
-  --shadow-card-hover:
-    rgba(16, 24, 40, 0.18) 0 12px 20px -6px, rgba(16, 24, 40, 0.1) 0 4px 8px -2px;
-  color: var(--text);
-  background: var(--bg);
 }
 
 .attendance-page-header {
