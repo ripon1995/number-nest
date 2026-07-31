@@ -24,6 +24,7 @@ function ExpensesPage() {
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [filterCategory, setFilterCategory] = useState<ExpenseCategory | ''>('')
+  const [filterMonth, setFilterMonth] = useState('')
 
   useEffect(() => {
     fetchExpenses().catch((err) => setError(toApiError(err)))
@@ -31,13 +32,15 @@ function ExpensesPage() {
 
   const filteredExpenses = expenses.filter((expense) => {
     if (filterCategory && expense.category !== filterCategory) return false
+    if (filterMonth && expense.expense_date.slice(0, 7) !== filterMonth) return false
     return true
   })
 
-  const hasActiveFilters = Boolean(filterCategory)
+  const hasActiveFilters = Boolean(filterCategory || filterMonth)
 
   function handleClearFilters() {
     setFilterCategory('')
+    setFilterMonth('')
   }
 
   async function handleDelete(expense: Expense) {
@@ -82,6 +85,14 @@ function ExpensesPage() {
             ))}
           </select>
         </label>
+        <label>
+          Month
+          <input
+            type="month"
+            value={filterMonth}
+            onChange={(e) => setFilterMonth(e.target.value)}
+          />
+        </label>
         {hasActiveFilters && (
           <button type="button" className="secondary" onClick={handleClearFilters}>
             Clear filters
@@ -95,7 +106,7 @@ function ExpensesPage() {
           isLoading={isLoading}
           deletingId={deletingId}
           onDelete={handleDelete}
-          emptyMessage={hasActiveFilters ? 'No expenses match the selected filter.' : undefined}
+          emptyMessage={hasActiveFilters ? 'No expenses match the selected filters.' : undefined}
         />
       </section>
 
