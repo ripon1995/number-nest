@@ -11,7 +11,7 @@ This file documents the intended stack and feature scope so implementation stays
 ## Stack
 
 - **Backend**: Python 3.14, FastAPI, SQLAlchemy (async) + `asyncpg`, Alembic for migrations, JWT (`pyjwt`) + `bcrypt` for teacher auth
-- **Frontend**: Node 24, React (Vite), TypeScript, Zustand for state management, `react-loader-spinner` (the `DNA` loader) for every loading state
+- **Frontend**: Node 24, React (Vite), TypeScript, Zustand for state management, `react-spinners` (the `HashLoader`) for every loading state
 - **Database**: PostgreSQL via Supabase, connected through the transaction pooler (port 6543) — requires `statement_cache_size=0` in `connect_args` (both in `app/core/database.py` and `migrations/env.py`) since pgbouncer transaction mode doesn't support asyncpg's server-side prepared statements
 - **Primary keys**: every table uses a UUID primary key (`Mapped[uuid.UUID]`, Python-side `default=uuid.uuid4`, DB-side `server_default=gen_random_uuid()` — requires the `pgcrypto` extension, created via migration), not an integer/serial id
 - **Payments**: manual/offline tracking only — no payment gateway integration
@@ -109,16 +109,17 @@ frontend/   React app (Vite + TypeScript)
                      prop that renders the same Loader-overlay-over-dimmed-content treatment Modal uses while the
                      delete request is in flight, instead of changing the confirm button's own text),
                      ThemeToggle (sun/moon icon button driving themeStore, rendered in Header on every page incl. LandingPage),
-                     Loader (wraps react-loader-spinner's DNA component, centered in a full-width flex wrapper;
-                     takes an optional `label` prop passed through as the DNA spinner's ariaLabel — the app's one
-                     loading-state visual, replacing every prior `<p>Loading X…</p>` placeholder: list-table
-                     "loading the list" states (CourseTable/StudentTable/PaymentTable/EnrollmentTable/NoticeTable/
-                     ExpenseTable/ExamTable), AttendanceSheet/MarkSheet's "loading students" state, the three
-                     detail pages' initial fetch (CourseDetailPage/StudentDetailPage/ExamDetailPage),
-                     DashboardPage's "loading analytics" and MonthlyAttendance's "loading attendance" states,
-                     LandingPage's public notices/courses fetches, and ProtectedRoute's initial auth-check screen
-                     (previously a blank `return null`) — inline button "Saving…" text on form-dialog submit
-                     buttons was deliberately left alone, since a full DNA animation doesn't fit inside a button)
+                     Loader (wraps react-spinners' HashLoader component, centered in a full-width flex wrapper
+                     with a role="status"/aria-label pair carrying the label instead of a component prop;
+                     takes an optional `label` prop — the app's one loading-state visual, replacing every prior
+                     `<p>Loading X…</p>` placeholder: list-table "loading the list" states (CourseTable/
+                     StudentTable/PaymentTable/EnrollmentTable/NoticeTable/ExpenseTable/ExamTable),
+                     AttendanceSheet/MarkSheet's "loading students" state, the three detail pages' initial fetch
+                     (CourseDetailPage/StudentDetailPage/ExamDetailPage), DashboardPage's "loading analytics" and
+                     MonthlyAttendance's "loading attendance" states, LandingPage's public notices/courses
+                     fetches, and ProtectedRoute's initial auth-check screen (previously a blank `return null`)
+                     — inline button "Saving…" text on form-dialog submit buttons was deliberately left alone,
+                     since a full HashLoader animation doesn't fit inside a button)
   src/components/charts/  chart primitives used by DashboardPage: AttendanceDonut (2-slice present/absent donut,
                      CSS conic-gradient, status-good/status-critical colors), BarChart (single-series column chart,
                      fixed-pixel-spacer layout so bars/gridlines/axis stay aligned regardless of label length),
