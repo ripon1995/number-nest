@@ -160,6 +160,21 @@ export function NoticesIcon() {
   )
 }
 
+export function RevenueIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path
+        d="M4 18l5-6 4 3 7-8"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M15 7h5v5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 export function ProfileIcon() {
   return (
     <svg {...iconProps()}>

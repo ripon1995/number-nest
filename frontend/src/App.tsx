@@ -19,6 +19,7 @@ import AttendancePage from './pages/AttendancePage'
 import ExamsPage from './pages/ExamsPage'
 import ExamDetailPage from './pages/exams/ExamDetailPage'
 import NoticesPage from './pages/NoticesPage'
+import RevenuePage from './pages/RevenuePage'
 import './App.css'
 
 function AppNav() {
@@ -130,6 +131,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <NoticesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/revenue"
+              element={
+                <ProtectedRoute>
+                  <RevenuePage />
                 </ProtectedRoute>
               }
             />

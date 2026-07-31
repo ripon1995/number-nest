@@ -9,6 +9,7 @@ import {
   HomeIcon,
   NoticesIcon,
   PaymentsIcon,
+  RevenueIcon,
   StudentsIcon,
 } from './NavIcons'
 import './NavMenu.css'
@@ -24,6 +25,7 @@ const links = [
   { to: '/attendance', label: 'Attendance', Icon: AttendanceIcon },
   { to: '/exams', label: 'Exams', Icon: ExamsIcon },
   { to: '/notices', label: 'Notices', Icon: NoticesIcon },
+  { to: '/revenue', label: 'Revenue', Icon: RevenueIcon },
 ]
 
 function NavMenu() {
