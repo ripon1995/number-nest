@@ -14,6 +14,7 @@ import CoursesPage from './pages/CoursesPage'
 import CourseDetailPage from './pages/courses/CourseDetailPage'
 import EnrollmentsPage from './pages/EnrollmentsPage'
 import PaymentsPage from './pages/PaymentsPage'
+import ExpensesPage from './pages/ExpensesPage'
 import AttendancePage from './pages/AttendancePage'
 import ExamsPage from './pages/ExamsPage'
 import ExamDetailPage from './pages/exams/ExamDetailPage'
@@ -89,6 +90,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <PaymentsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/expenses"
+              element={
+                <ProtectedRoute>
+                  <ExpensesPage />
                 </ProtectedRoute>
               }
             />

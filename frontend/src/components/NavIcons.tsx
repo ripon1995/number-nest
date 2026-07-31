@@ -97,6 +97,21 @@ export function PaymentsIcon() {
   )
 }
 
+export function ExpensesIcon() {
+  return (
+    <svg {...iconProps()}>
+      <path
+        d="M6 3h12v18l-2.5-1.5L13 21l-2.5-1.5L8 21l-2-1.5V3Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M9 8h6M9 12h6M9 16h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 export function AttendanceIcon() {
   return (
     <svg {...iconProps()}>
