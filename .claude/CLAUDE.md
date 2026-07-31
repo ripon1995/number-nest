@@ -109,17 +109,29 @@ frontend/   React app (Vite + TypeScript)
                      prop that renders the same Loader-overlay-over-dimmed-content treatment Modal uses while the
                      delete request is in flight, instead of changing the confirm button's own text),
                      ThemeToggle (sun/moon icon button driving themeStore, rendered in Header on every page incl. LandingPage),
-                     Loader (wraps react-spinners' HashLoader component, centered in a full-width flex wrapper
-                     with a role="status"/aria-label pair carrying the label instead of a component prop;
-                     takes an optional `label` prop — the app's one loading-state visual, replacing every prior
+                     Loader (wraps react-spinners' HashLoader component, centered in a full-width flex wrapper,
+                     color picked from a local `ACCENT_BY_THEME` map keyed off `useThemeStore`'s `theme` rather
+                     than passed as `var(--accent)` directly — HashLoader resolves half its dots' color via its
+                     own JS-side hex/rgb parser (`calculateRgba`, to derive a translucent variant), which can't
+                     read a live CSS custom property and silently drops that half of the shape when given one, a
+                     real bug hit and fixed during this pass; `ACCENT_BY_THEME`'s two hex values are hand-kept in
+                     sync with `index.css`'s `--accent` tokens; takes an optional `label` prop passed straight
+                     through as HashLoader's own `aria-label`, matching the sibling `car-management` project's
+                     `Loader` implementation — the app's one loading-state visual, replacing every prior
                      `<p>Loading X…</p>` placeholder: list-table "loading the list" states (CourseTable/
                      StudentTable/PaymentTable/EnrollmentTable/NoticeTable/ExpenseTable/ExamTable),
                      AttendanceSheet/MarkSheet's "loading students" state, the three detail pages' initial fetch
                      (CourseDetailPage/StudentDetailPage/ExamDetailPage), DashboardPage's "loading analytics" and
                      MonthlyAttendance's "loading attendance" states, LandingPage's public notices/courses
-                     fetches, and ProtectedRoute's initial auth-check screen (previously a blank `return null`)
-                     — inline button "Saving…" text on form-dialog submit buttons was deliberately left alone,
-                     since a full HashLoader animation doesn't fit inside a button)
+                     fetches, ProtectedRoute's initial auth-check screen (previously a blank `return null`), and
+                     LoginPage/RegisterPage's submit-in-flight state — the latter two render it in an
+                     `.auth-form-submitting-overlay` (`AuthForm.css`, same dim-content-and-center-a-Loader
+                     treatment as `Modal`'s `.modal-submitting-overlay`/`ConfirmDialog`'s `.confirm-dialog-overlay`)
+                     stacked over the form via `position: relative` on `.auth-form`, rather than only swapping the
+                     submit button's own text — inline button "Saving…"/"Logging in…"-style text on every other
+                     form-dialog's submit button was deliberately left alone, since a full HashLoader animation
+                     doesn't fit inside a button; LoginPage/RegisterPage keep their own button text too, the
+                     overlay is additive, not a replacement)
   src/components/charts/  chart primitives used by DashboardPage: AttendanceDonut (2-slice present/absent donut,
                      CSS conic-gradient, status-good/status-critical colors), BarChart (single-series column chart,
                      fixed-pixel-spacer layout so bars/gridlines/axis stay aligned regardless of label length),
