@@ -290,6 +290,21 @@
   text-align: right;
 }
 
+.student-due-pay-button {
+  font: inherit;
+  font-size: 14px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.student-due-pay-button:hover {
+  opacity: 0.9;
+}
+
 .student-enrollments {
   margin-top: 20px;
 }

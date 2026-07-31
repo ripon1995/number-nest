@@ -8,7 +8,8 @@ import { ApiError } from '../../errors/api'
 import ErrorDialog from '../../components/ErrorDialog'
 import type { Student } from '../../types/student'
 import { formatAmount, formatMonth } from '../payments/paymentDisplay'
-import { buildDuePayments } from './studentDetailDisplay'
+import { buildDuePayments, type DuePaymentEntry } from './studentDetailDisplay'
+import PayDueDialog from './PayDueDialog'
 import './students.css'
 
 function toApiError(err: unknown): ApiError {
@@ -20,6 +21,7 @@ function StudentDetailPage() {
   const [student, setStudent] = useState<Student | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<ApiError | null>(null)
+  const [selectedDue, setSelectedDue] = useState<DuePaymentEntry | null>(null)
 
   const enrollments = useEnrollmentStore((state) => state.enrollments)
   const fetchEnrollments = useEnrollmentStore((state) => state.fetchEnrollments)
@@ -130,6 +132,7 @@ function StudentDetailPage() {
                     <th>Course</th>
                     <th>Month</th>
                     <th>Amount</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -139,6 +142,15 @@ function StudentDetailPage() {
                       <td>{due.courseName}</td>
                       <td>{formatMonth(due.month)}</td>
                       <td>{formatAmount(due.amount)}</td>
+                      <td>
+                        <button
+                          type="button"
+                          className="student-due-pay-button"
+                          onClick={() => setSelectedDue(due)}
+                        >
+                          Pay
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -179,6 +191,18 @@ function StudentDetailPage() {
             )}
           </div>
         </section>
+      )}
+
+      {selectedDue && (
+        <PayDueDialog
+          due={selectedDue}
+          onClose={() => setSelectedDue(null)}
+          onPaid={() => setSelectedDue(null)}
+          onError={(err) => {
+            setSelectedDue(null)
+            setError(err)
+          }}
+        />
       )}
 
       <ErrorDialog error={error} onClose={() => setError(null)} />

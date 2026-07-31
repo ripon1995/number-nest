@@ -14,7 +14,10 @@ in `PaymentFormDialog` — a single enrollment `<select>` (labelled `"{student} 
 built from those same lookups) plus `month` (`<input type="month">`, converted to the
 first-of-month date `YYYY-MM-01` on submit), `payment_date`, and `amount` inputs, rendered in
 a `Modal`. The "Add payment" action is disabled (via a client-side check, not a backend rule)
-until at least one enrollment exists.
+until at least one enrollment exists. `paymentStore.createPayment` has a second caller besides
+`PaymentFormDialog`: [[students]]' `StudentDetailPage` due-payments card, whose "Pay" button
+opens `PayDueDialog` — a narrower form (amount + payment date only, enrollment/month fixed
+from the due entry) that calls the same store action rather than duplicating it.
 
 Above the table, `PaymentsPage` also renders a filter bar — course and student `<select>`s plus
 `month` and `payment_date` inputs — that narrows the full `payments` list client-side before

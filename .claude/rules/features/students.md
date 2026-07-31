@@ -13,9 +13,9 @@ not a modal, fetched via `api.getStudent(id)` (`GET /students/{id}`; the backend
 already existed but had no frontend caller before this page). It renders three cards: a
 student-information card (contact fields plus an inline table of the student's [[enrollment]]s
 — course name, `start_from`, `enrollment_fee_paid` — resolved via `enrollmentStore`/
-`courseStore` lookup maps, same technique `EnrollmentTable` uses); a due-payments card; and a
-payment-history card listing the student's actual [[payment-tracking]] records across all
-their enrollments, newest month first.
+`courseStore` lookup maps, same technique `EnrollmentTable` uses); a due-payments card, whose
+rows each carry a "Pay" button (see below); and a payment-history card listing the student's
+actual [[payment-tracking]] records across all their enrollments, newest month first.
 
 Above the table, `StudentsPage` also renders a filter bar — a course `<select>` plus a status
 `<select>` (`All statuses`/`Active`/`Inactive`) — that narrows the full `students` list
@@ -55,6 +55,19 @@ unpaid. The same enrollments table also gains a read-only "Status" column
 `StudentDetailPage` never edits `discontinued_at` itself, only `EnrollmentsPage` does (see
 [[enrollment]]).
 
+Each due-payments row's "Pay" button opens `PayDueDialog`
+(`frontend/src/pages/students/PayDueDialog.tsx`), rendered in the shared `Modal` component —
+the one mutation `StudentDetailPage` performs. It shows the due entry's course and month
+read-only, plus an editable `amount` input (pre-filled from the due entry's `course_fee`) and
+an editable `payment_date` input (defaulted to today, since [[payment-tracking]]'s `Payment`
+model requires one), rather than making the teacher retype the enrollment/month by hand in the
+general `PaymentFormDialog`. Saving calls `paymentStore.createPayment` with that due entry's
+`enrollmentId`/`month` fixed and the entered `amount`/`payment_date` — the same store action
+[[payment-tracking]]'s `PaymentsPage` uses, so it's a real `Payment` record, not a
+students-specific write path. Once the store's `payments` list updates, `buildDuePayments`
+recomputes and the paid row drops off the due-payments card on its own — there's no separate
+"mark as paid" state or manual removal.
+
 ## Fields
 
 - `name` — string, required
@@ -70,6 +83,8 @@ unpaid. The same enrollments table also gains a read-only "Status" column
 - Payments ([[payment-tracking]]) and attendance ([[attendance]]) hang off the student-course enrollment, not the student directly.
 - Students are also visible read-only, embedded in a course's enrolled-student list on [[course]]'s detail page, and
   selectable by name in [[enrollment]]'s create form.
-- `StudentDetailPage` is entirely read-only — nothing on it edits/creates/deletes a student, enrollment, or payment;
-  it's a view built from data already owned by [[enrollment]] and [[payment-tracking]], same as [[course]]'s detail
-  page is read-only over enrollment data.
+- `StudentDetailPage` is otherwise read-only — nothing on it edits/deletes a student or enrollment, or edits an
+  existing payment; the one exception is the due-payments card's "Pay" button, which *creates* a new
+  [[payment-tracking]] record via `PayDueDialog` (see above). The student info and payment-history cards, and the
+  enrollments table within the student info card, remain pure views built from data already owned by [[enrollment]]
+  and [[payment-tracking]], same as [[course]]'s detail page is read-only over enrollment data.
