@@ -4,6 +4,7 @@ import type { Student } from '../../types/student'
 import type { Course } from '../../types/course'
 import { TrashIcon } from './PaymentIcons'
 import { formatMonth, formatAmount } from './paymentDisplay'
+import Loader from '../../components/Loader'
 import './payments.css'
 
 interface PaymentTableProps {
@@ -27,7 +28,7 @@ function PaymentTable({
   onDelete,
   emptyMessage = 'No payments recorded yet.',
 }: PaymentTableProps) {
-  if (isLoading) return <p>Loading payments…</p>
+  if (isLoading) return <Loader label="Loading payments…" />
   if (payments.length === 0) return <p>{emptyMessage}</p>
 
   function studentName(payment: Payment): string {

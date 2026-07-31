@@ -2,6 +2,7 @@ import type { Notice } from '../../types/notice'
 import type { Course } from '../../types/course'
 import { TrashIcon } from './NoticeIcons'
 import { formatDateTime } from './noticeDisplay'
+import Loader from '../../components/Loader'
 import './notices.css'
 
 interface NoticeTableProps {
@@ -13,7 +14,7 @@ interface NoticeTableProps {
 }
 
 function NoticeTable({ notices, coursesById, isLoading, deletingId, onDelete }: NoticeTableProps) {
-  if (isLoading) return <p>Loading notices…</p>
+  if (isLoading) return <Loader label="Loading notices…" />
   if (notices.length === 0) return <p>No notices posted yet.</p>
 
   return (

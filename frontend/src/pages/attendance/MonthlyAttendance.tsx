@@ -4,6 +4,7 @@ import type { Student } from '../../types/student'
 import type { AttendanceRecord } from '../../types/attendance'
 import { ApiError } from '../../errors/api'
 import ErrorDialog from '../../components/ErrorDialog'
+import Loader from '../../components/Loader'
 import { formatSessionDate, currentMonth } from './attendanceDisplay'
 import './attendance.css'
 
@@ -73,7 +74,7 @@ function MonthlyAttendance({ courseId, students }: MonthlyAttendanceProps) {
         </label>
       </div>
 
-      {isLoading && <p>Loading attendance…</p>}
+      {isLoading && <Loader label="Loading attendance…" />}
 
       {!isLoading && students.length === 0 && <p>This course has no enrolled students yet.</p>}
 

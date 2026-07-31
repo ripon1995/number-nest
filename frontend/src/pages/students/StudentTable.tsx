@@ -1,5 +1,6 @@
 import type { Student } from '../../types/student'
 import { EyeIcon, PencilIcon, TrashIcon } from './StudentIcons'
+import Loader from '../../components/Loader'
 import './students.css'
 
 interface StudentTableProps {
@@ -21,7 +22,7 @@ function StudentTable({
   onDelete,
   emptyMessage = 'No students yet.',
 }: StudentTableProps) {
-  if (isLoading) return <p>Loading students…</p>
+  if (isLoading) return <Loader label="Loading students…" />
   if (students.length === 0) return <p>{emptyMessage}</p>
 
   return (

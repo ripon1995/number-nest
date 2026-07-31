@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import type { Course } from '../../types/course'
 import { DAY_LABELS, SUBJECT_LABELS, formatFee } from './courseDisplay'
 import { PencilIcon, TrashIcon } from './CourseIcons'
+import Loader from '../../components/Loader'
 import './courses.css'
 
 interface CourseTableProps {
@@ -15,7 +16,7 @@ interface CourseTableProps {
 function CourseTable({ courses, isLoading, deletingId, onEdit, onDelete }: CourseTableProps) {
   const navigate = useNavigate()
 
-  if (isLoading) return <p>Loading courses…</p>
+  if (isLoading) return <Loader label="Loading courses…" />
   if (courses.length === 0) return <p>No courses yet.</p>
 
   return (

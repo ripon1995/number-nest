@@ -3,6 +3,7 @@ import type { Exam } from '../../types/exam'
 import type { Course } from '../../types/course'
 import { TrashIcon } from './ExamIcons'
 import { formatDateTime } from './examDisplay'
+import Loader from '../../components/Loader'
 import './exams.css'
 
 interface ExamTableProps {
@@ -16,7 +17,7 @@ interface ExamTableProps {
 function ExamTable({ exams, coursesById, isLoading, deletingId, onDelete }: ExamTableProps) {
   const navigate = useNavigate()
 
-  if (isLoading) return <p>Loading exams…</p>
+  if (isLoading) return <Loader label="Loading exams…" />
   if (exams.length === 0) return <p>No exams scheduled yet.</p>
 
   return (

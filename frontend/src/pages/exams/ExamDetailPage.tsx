@@ -4,6 +4,7 @@ import * as api from '../../api'
 import { useMarkStore } from '../../store/markStore'
 import { ApiError } from '../../errors/api'
 import ErrorDialog from '../../components/ErrorDialog'
+import Loader from '../../components/Loader'
 import MarkSheet from './MarkSheet'
 import type { Exam } from '../../types/exam'
 import type { CourseDetail } from '../../types/course'
@@ -67,7 +68,7 @@ function ExamDetailPage() {
         <Link to="/exams">Back to exams</Link>
       </div>
 
-      {isLoading && <p>Loading exam…</p>}
+      {isLoading && <Loader label="Loading exam…" />}
 
       {exam && (
         <section className="exam-detail-page">

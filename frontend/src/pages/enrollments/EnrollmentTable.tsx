@@ -2,6 +2,7 @@ import type { Enrollment } from '../../types/enrollment'
 import type { Student } from '../../types/student'
 import type { Course } from '../../types/course'
 import { TrashIcon } from './EnrollmentIcons'
+import Loader from '../../components/Loader'
 import './enrollments.css'
 
 interface EnrollmentTableProps {
@@ -31,7 +32,7 @@ function EnrollmentTable({
   onDiscontinuedChange,
   emptyMessage,
 }: EnrollmentTableProps) {
-  if (isLoading) return <p>Loading enrollments…</p>
+  if (isLoading) return <Loader label="Loading enrollments…" />
   if (enrollments.length === 0) return <p>{emptyMessage ?? 'No enrollments yet.'}</p>
 
   return (

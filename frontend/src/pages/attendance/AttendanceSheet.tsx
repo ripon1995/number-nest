@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { Student } from '../../types/student'
 import type { AttendanceRecord, AttendanceEntryInput } from '../../types/attendance'
+import Loader from '../../components/Loader'
 import './attendance.css'
 
 interface AttendanceSheetProps {
@@ -31,7 +32,7 @@ function AttendanceSheet({ students, records, isLoading, isSubmitting, onSubmit 
     onSubmit(students.map((student) => ({ student_id: student.id, present: presentByStudentId[student.id] ?? true })))
   }
 
-  if (isLoading) return <p>Loading students…</p>
+  if (isLoading) return <Loader label="Loading students…" />
   if (students.length === 0) return <p>This course has no enrolled students yet.</p>
 
   return (

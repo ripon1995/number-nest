@@ -1,6 +1,7 @@
 import type { Expense } from '../../types/expense'
 import { TrashIcon } from './ExpenseIcons'
 import { formatCategory, formatAmount, expenseDetails } from './expenseDisplay'
+import Loader from '../../components/Loader'
 import './expenses.css'
 
 interface ExpenseTableProps {
@@ -18,7 +19,7 @@ function ExpenseTable({
   onDelete,
   emptyMessage = 'No expenses recorded yet.',
 }: ExpenseTableProps) {
-  if (isLoading) return <p>Loading expenses…</p>
+  if (isLoading) return <Loader label="Loading expenses…" />
   if (expenses.length === 0) return <p>{emptyMessage}</p>
 
   return (

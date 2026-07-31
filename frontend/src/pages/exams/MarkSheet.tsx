@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { Student } from '../../types/student'
 import type { MarkRecord, MarkEntryInput } from '../../types/mark'
+import Loader from '../../components/Loader'
 import './exams.css'
 
 interface MarkSheetProps {
@@ -37,7 +38,7 @@ function MarkSheet({ students, records, isLoading, isSubmitting, onSubmit }: Mar
     )
   }
 
-  if (isLoading) return <p>Loading students…</p>
+  if (isLoading) return <Loader label="Loading students…" />
   if (students.length === 0) return <p>This course has no enrolled students yet.</p>
 
   return (

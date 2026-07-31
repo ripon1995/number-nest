@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { usePublicStore } from '../store/publicStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import Loader from '../components/Loader'
 import NoticeCard from './landing/NoticeCard'
 import RoutineTable from './landing/RoutineTable'
 import './landing/landing.css'
@@ -37,7 +38,7 @@ function LandingPage() {
       <section className="landing-section">
         <h2>Notices</h2>
         {isLoadingNotices ? (
-          <p className="landing-hint">Loading notices…</p>
+          <Loader label="Loading notices…" />
         ) : notices.length === 0 ? (
           <p className="landing-hint">No upcoming notices right now.</p>
         ) : (
@@ -68,7 +69,7 @@ function LandingPage() {
             </select>
           </label>
 
-          {isLoadingCourses && <p className="landing-hint">Loading courses…</p>}
+          {isLoadingCourses && <Loader label="Loading courses…" />}
           {!isLoadingCourses && courses.length === 0 && (
             <p className="landing-hint">No courses have been added yet.</p>
           )}

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import * as api from '../../api'
 import { ApiError } from '../../errors/api'
 import ErrorDialog from '../../components/ErrorDialog'
+import Loader from '../../components/Loader'
 import type { CourseDetail } from '../../types/course'
 import { BATCH_TYPE_LABELS, CLASS_LABELS, SUBJECT_LABELS, formatDays, formatFee, formatTime } from './courseDisplay'
 import './courses.css'
@@ -34,7 +35,7 @@ function CourseDetailPage() {
         <Link to="/courses">Back to courses</Link>
       </div>
 
-      {isLoading && <p>Loading course…</p>}
+      {isLoading && <Loader label="Loading course…" />}
 
       {course && (
         <section className="course-detail-page">

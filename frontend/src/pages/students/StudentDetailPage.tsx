@@ -6,6 +6,7 @@ import { useCourseStore } from '../../store/courseStore'
 import { usePaymentStore } from '../../store/paymentStore'
 import { ApiError } from '../../errors/api'
 import ErrorDialog from '../../components/ErrorDialog'
+import Loader from '../../components/Loader'
 import type { Student } from '../../types/student'
 import { formatAmount, formatMonth } from '../payments/paymentDisplay'
 import { buildDuePayments, type DuePaymentEntry } from './studentDetailDisplay'
@@ -62,7 +63,7 @@ function StudentDetailPage() {
         <Link to="/students">Back to students</Link>
       </div>
 
-      {isLoading && <p>Loading student…</p>}
+      {isLoading && <Loader label="Loading student…" />}
 
       {student && (
         <section className="student-detail-page">

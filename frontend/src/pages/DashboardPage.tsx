@@ -4,6 +4,7 @@ import { useCourseStore } from '../store/courseStore'
 import * as api from '../api'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
+import Loader from '../components/Loader'
 import AttendanceDonut from '../components/charts/AttendanceDonut'
 import BarChart, { type BarDatum } from '../components/charts/BarChart'
 import type { CourseDetail } from '../types/course'
@@ -168,7 +169,7 @@ function DashboardPage() {
 
           {!selectedCourseId && <p className="dashboard-hint">Select a course to see attendance and exam analytics.</p>}
 
-          {isLoading && <p className="dashboard-hint">Loading analytics…</p>}
+          {isLoading && <Loader label="Loading analytics…" />}
 
           {courseDetail && !isLoading && (
             <section className="dashboard-section">
