@@ -1,7 +1,7 @@
 .error-dialog-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(16, 24, 40, 0.45);
+  background: var(--backdrop);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,8 +28,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: rgba(229, 72, 77, 0.1);
-  color: #e5484d;
+  background: var(--danger-bg);
+  color: var(--danger);
   margin-bottom: 16px;
 }
 

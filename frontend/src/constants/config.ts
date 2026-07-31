@@ -2,3 +2,4 @@ export const API_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:8000/a
 
 export const TOKEN_STORAGE_KEY = 'number-nest.token'
 export const REFRESH_TOKEN_STORAGE_KEY = 'number-nest.refreshToken'
+export const THEME_STORAGE_KEY = 'number-nest.theme'
