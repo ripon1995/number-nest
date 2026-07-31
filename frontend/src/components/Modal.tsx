@@ -28,7 +28,7 @@ function Modal({ labelledBy, onClose, children, className, isSubmitting = false 
         aria-labelledby={labelledBy}
         onClick={(event) => event.stopPropagation()}
       >
-        {children}
+        <div className="modal-scroll">{children}</div>
         {isSubmitting && (
           <div className="modal-submitting-overlay">
             <Loader label="Saving…" />
