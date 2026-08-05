@@ -17,24 +17,28 @@ student-information card (contact fields plus an inline table of the student's [
 rows each carry a "Pay" button (see below); and a payment-history card listing the student's
 actual [[payment-tracking]] records across all their enrollments, newest month first.
 
-Above the table, `StudentsPage` also renders a filter bar — a course `<select>` plus a status
-`<select>` (`All statuses`/`Active`/`Inactive`) — that narrows the full `students` list
-client-side before handing it to `StudentTable` (filter state lives in the page itself, not
-`studentStore`), mirroring [[enrollment]]'s and [[payment-tracking]]'s filter bars. Since
-`Student` carries no `course_id` or status of its own, both filters check the student's
-`enrollmentStore` entries — a lookup-through-enrollment, same as [[payment-tracking]]'s filter
-needs (unlike [[enrollment]]'s, which matches directly): a student passes if at least one of
-their enrollments satisfies *both* the course condition (if set) and the status condition (if
-set) — `Active` means that enrollment's `discontinued_at` is `NULL`, `Inactive` means it's set.
-Requiring both on the same enrollment (rather than checking each filter against the student's
-enrollments independently) means picking a course *and* a status answers "who is
-actively/inactively enrolled in this specific course," not "who has any active enrollment
-somewhere and is in this course via some other enrollment." This is a pure frontend filter —
-there's no backend query param support on `GET /students` to call into. A "Clear filters"
-button appears once either filter is active, and `StudentTable` shows a distinct "no students
-match the selected filters" message (via its `emptyMessage` prop, defaulting to
-`'No students yet.'`) instead of the normal empty-state copy when the filters exclude
-everything.
+Above the table, `StudentsPage` also renders a filter bar — a course `<select>`, a status
+`<select>` (`All statuses`/`Active`/`Inactive`), and a free-text search input — that narrows
+the full `students` list client-side before handing it to `StudentTable` (filter state lives
+in the page itself, not `studentStore`), mirroring [[enrollment]]'s and
+[[payment-tracking]]'s filter bars. Since `Student` carries no `course_id` or status of its
+own, the course/status filters check the student's `enrollmentStore` entries — a
+lookup-through-enrollment, same as [[payment-tracking]]'s filter needs (unlike
+[[enrollment]]'s, which matches directly): a student passes the course/status check if at
+least one of their enrollments satisfies *both* the course condition (if set) and the status
+condition (if set) — `Active` means that enrollment's `discontinued_at` is `NULL`, `Inactive`
+means it's set. Requiring both on the same enrollment (rather than checking each filter
+against the student's enrollments independently) means picking a course *and* a status
+answers "who is actively/inactively enrolled in this specific course," not "who has any
+active enrollment somewhere and is in this course via some other enrollment." The search
+input is independent of that enrollment lookup — it does a case-insensitive substring match
+against the student's own `name`/`contact`/`whatsapp_number`/`email`/`college` fields joined
+together, applied on top of whichever students already passed the course/status check. This
+is a pure frontend filter — there's no backend query param support on `GET /students` to call
+into. A "Clear filters" button appears once any of the three is active, and `StudentTable`
+shows a distinct "no students match the selected filters" message (via its `emptyMessage`
+prop, defaulting to `'No students yet.'`) instead of the normal empty-state copy when the
+filters exclude everything.
 
 ## Detail page due calculation
 

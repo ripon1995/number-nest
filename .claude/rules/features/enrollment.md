@@ -22,14 +22,18 @@ active) — changing it calls `updateEnrollmentDiscontinued`, hitting `PATCH
 This is the only place in the app that sets or clears `discontinued_at` — `StudentDetailPage`
 shows the resulting status read-only (see [[students]]) but never edits it.
 
-Above the table, `EnrollmentsPage` also renders a filter bar — course and student `<select>`s —
-that narrows the full `enrollments` list client-side before handing it to `EnrollmentTable`
-(filter state lives in the page itself, not `enrollmentStore`), mirroring
-[[payment-tracking]]'s filter bar. Since `Enrollment` carries `student_id`/`course_id` directly,
-the filters match straight against those fields — no lookup-through-enrollment hop like
-payments needs. This is a pure frontend filter — there's no backend query param support on
-`GET /enrollments` to call into. A "Clear filters" button appears once either filter is active,
-and `EnrollmentTable` shows a distinct "no enrollments match the selected filters" message (via
+Above the table, `EnrollmentsPage` also renders a filter bar — course and student `<select>`s
+plus a free-text search input (placeholder "Student name…") — that narrows the full
+`enrollments` list client-side before handing it to `EnrollmentTable` (filter state lives in
+the page itself, not `enrollmentStore`), mirroring [[payment-tracking]]'s filter bar. Since
+`Enrollment` carries `student_id`/`course_id` directly, the course/student selects match
+straight against those fields — no lookup-through-enrollment hop like payments needs. The
+search input does need that hop: it resolves each enrollment's `student_id` through the same
+`studentsById` lookup map `EnrollmentTable` already uses for display, then does a
+case-insensitive substring match against the resolved student's `name`. This is a pure
+frontend filter — there's no backend query param support on `GET /enrollments` to call into.
+A "Clear filters" button appears once any of the three is active, and `EnrollmentTable` shows
+a distinct "no enrollments match the selected filters" message (via
 its `emptyMessage` prop) instead of the normal empty-state copy when filters exclude everything.
 
 ## Fields
