@@ -10,7 +10,8 @@ from app.core.database import Base
 class Exam(Base):
     """An exam scheduled for a course. See .claude/rules/features/exam.md.
 
-    Add/delete only, no edit-in-place - matching every other feature besides courses.
+    Add/edit/delete - course_id is fixed after creation (delete/re-add to change
+    it), since marks are recorded against the exam's course roster.
     """
 
     __tablename__ = "exams"

@@ -2,11 +2,12 @@ import { useState, type FormEvent } from 'react'
 import Modal from '../../components/Modal'
 import { useExamStore } from '../../store/examStore'
 import { ApiError } from '../../errors/api'
-import type { ExamInput } from '../../types/exam'
+import type { Exam, ExamInput, ExamUpdateInput } from '../../types/exam'
 import type { Course } from '../../types/course'
 import './exams.css'
 
 interface ExamFormDialogProps {
+  exam?: Exam | null
   courses: Course[]
   onClose: () => void
   onError: (err: ApiError) => void
@@ -19,30 +20,52 @@ interface FormState {
   exam_mark: string
 }
 
-function ExamFormDialog({ courses, onClose, onError }: ExamFormDialogProps) {
-  const createExam = useExamStore((state) => state.createExam)
+function initialFormState(exam: Exam | null | undefined, courses: Course[]): FormState {
+  if (!exam) {
+    return {
+      course_id: courses[0]?.id ?? '',
+      exam_datetime: '',
+      description: '',
+      exam_mark: '',
+    }
+  }
+  return {
+    course_id: exam.course_id,
+    exam_datetime: exam.exam_datetime.slice(0, 16),
+    description: exam.description ?? '',
+    exam_mark: String(exam.exam_mark),
+  }
+}
 
-  const [form, setForm] = useState<FormState>({
-    course_id: courses[0]?.id ?? '',
-    exam_datetime: '',
-    description: '',
-    exam_mark: '',
-  })
+function ExamFormDialog({ exam, courses, onClose, onError }: ExamFormDialogProps) {
+  const createExam = useExamStore((state) => state.createExam)
+  const updateExam = useExamStore((state) => state.updateExam)
+  const isEditing = exam != null
+
+  const [form, setForm] = useState<FormState>(() => initialFormState(exam, courses))
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
-    const payload: ExamInput = {
-      course_id: form.course_id,
-      exam_datetime: form.exam_datetime,
-      description: form.description || null,
-      exam_mark: Number(form.exam_mark),
-    }
-
     setIsSubmitting(true)
     try {
-      await createExam(payload)
+      if (isEditing) {
+        const payload: ExamUpdateInput = {
+          exam_datetime: form.exam_datetime,
+          description: form.description || null,
+          exam_mark: Number(form.exam_mark),
+        }
+        await updateExam(exam.id, payload)
+      } else {
+        const payload: ExamInput = {
+          course_id: form.course_id,
+          exam_datetime: form.exam_datetime,
+          description: form.description || null,
+          exam_mark: Number(form.exam_mark),
+        }
+        await createExam(payload)
+      }
       onClose()
     } catch (err) {
       onError(
@@ -58,12 +81,13 @@ function ExamFormDialog({ courses, onClose, onError }: ExamFormDialogProps) {
   return (
     <Modal labelledBy="exam-dialog-title" onClose={onClose} isSubmitting={isSubmitting}>
       <form className="exam-form" onSubmit={handleSubmit}>
-        <h2 id="exam-dialog-title">Create exam</h2>
+        <h2 id="exam-dialog-title">{isEditing ? 'Edit exam' : 'Create exam'}</h2>
         <label>
           Course
           <select
             value={form.course_id}
             onChange={(e) => setForm({ ...form, course_id: e.target.value })}
+            disabled={isEditing}
             required
           >
             {courses.map((course) => (
@@ -106,7 +130,7 @@ function ExamFormDialog({ courses, onClose, onError }: ExamFormDialogProps) {
             Cancel
           </button>
           <button type="submit" disabled={isSubmitting}>
-            Create exam
+            {isEditing ? 'Save changes' : 'Create exam'}
           </button>
         </div>
       </form>

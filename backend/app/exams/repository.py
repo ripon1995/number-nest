@@ -42,6 +42,21 @@ class ExamRepository:
         await self.db.refresh(exam)
         return exam
 
+    async def update(
+        self,
+        exam: Exam,
+        *,
+        exam_datetime: datetime,
+        description: str | None,
+        exam_mark: int,
+    ) -> Exam:
+        exam.exam_datetime = exam_datetime
+        exam.description = description
+        exam.exam_mark = exam_mark
+        await self.db.commit()
+        await self.db.refresh(exam)
+        return exam
+
     async def delete(self, exam: Exam) -> None:
         await self.db.delete(exam)
         await self.db.commit()

@@ -13,3 +13,9 @@ export interface ExamInput {
   description: string | null
   exam_mark: number
 }
+
+export interface ExamUpdateInput {
+  exam_datetime: string
+  description: string | null
+  exam_mark: number
+}

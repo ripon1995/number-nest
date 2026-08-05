@@ -1,5 +1,5 @@
 import { request, authHeaders } from './client'
-import type { Exam, ExamInput } from '../types/exam'
+import type { Exam, ExamInput, ExamUpdateInput } from '../types/exam'
 
 export function getExams(courseId?: string): Promise<Exam[]> {
   const params = courseId ? `?${new URLSearchParams({ course_id: courseId }).toString()}` : ''
@@ -13,6 +13,14 @@ export function getExam(id: string): Promise<Exam> {
 export function createExam(input: ExamInput): Promise<Exam> {
   return request<Exam>('/exams', {
     method: 'POST',
+    body: JSON.stringify(input),
+    headers: authHeaders(),
+  })
+}
+
+export function updateExam(id: string, input: ExamUpdateInput): Promise<Exam> {
+  return request<Exam>(`/exams/${id}`, {
+    method: 'PUT',
     body: JSON.stringify(input),
     headers: authHeaders(),
   })

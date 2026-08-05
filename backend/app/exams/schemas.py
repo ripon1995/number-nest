@@ -11,6 +11,19 @@ class ExamCreate(BaseModel):
     exam_mark: int = Field(gt=0)
 
 
+class ExamUpdate(BaseModel):
+    """No `course_id` - an exam's course is fixed after creation (delete/re-add
+
+    to change it), since marks are recorded against the exam's course roster and
+    reassigning the course after marks exist would leave old marks pointing at
+    students who no longer show up on the mark sheet.
+    """
+
+    exam_datetime: datetime
+    description: str | None = None
+    exam_mark: int = Field(gt=0)
+
+
 class ExamRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

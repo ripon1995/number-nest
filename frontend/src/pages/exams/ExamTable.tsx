@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import type { Exam } from '../../types/exam'
 import type { Course } from '../../types/course'
-import { TrashIcon } from './ExamIcons'
+import { PencilIcon, TrashIcon } from './ExamIcons'
 import { formatDateTime } from './examDisplay'
 import Loader from '../../components/Loader'
 import './exams.css'
@@ -11,10 +11,11 @@ interface ExamTableProps {
   coursesById: Map<string, Course>
   isLoading: boolean
   deletingId: string | null
+  onEdit: (exam: Exam) => void
   onDelete: (exam: Exam) => void
 }
 
-function ExamTable({ exams, coursesById, isLoading, deletingId, onDelete }: ExamTableProps) {
+function ExamTable({ exams, coursesById, isLoading, deletingId, onEdit, onDelete }: ExamTableProps) {
   const navigate = useNavigate()
 
   if (isLoading) return <Loader label="Loading exams…" />
@@ -41,6 +42,17 @@ function ExamTable({ exams, coursesById, isLoading, deletingId, onDelete }: Exam
             <td>{exam.description ?? '—'}</td>
             <td>{exam.exam_mark}</td>
             <td className="exam-row-actions">
+              <button
+                type="button"
+                aria-label="Edit exam"
+                title="Edit"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  onEdit(exam)
+                }}
+              >
+                <PencilIcon />
+              </button>
               <button
                 type="button"
                 className="secondary"

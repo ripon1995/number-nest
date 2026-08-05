@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 
 from app.core.dependencies import get_current_teacher
 from app.exams.models import Exam
-from app.exams.schemas import ExamCreate, ExamRead
+from app.exams.schemas import ExamCreate, ExamRead, ExamUpdate
 from app.exams.service import ExamService, get_exam_service
 
 router = APIRouter(
@@ -34,6 +34,15 @@ async def get_exam(
         service: ExamService = Depends(get_exam_service)
 ) -> Exam:
     return await service.get_detail(exam_id)
+
+
+@router.put("/{exam_id}", response_model=ExamRead)
+async def update_exam(
+        exam_id: uuid.UUID,
+        payload: ExamUpdate,
+        service: ExamService = Depends(get_exam_service)
+) -> Exam:
+    return await service.update(exam_id, payload)
 
 
 @router.delete("/{exam_id}", status_code=status.HTTP_204_NO_CONTENT)

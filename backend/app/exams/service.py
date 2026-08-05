@@ -8,12 +8,13 @@ from app.core.exceptions import NotFoundException
 from app.courses.repository import CourseRepository
 from app.exams.models import Exam
 from app.exams.repository import ExamRepository
-from app.exams.schemas import ExamCreate
+from app.exams.schemas import ExamCreate, ExamUpdate
 
 
 class ExamService:
-    """Business logic for scheduling/listing exams. Add/delete only - no
-    edit-in-place; see .claude/rules/features/exam.md.
+    """Business logic for scheduling/listing exams. Add/edit/delete - the course
+
+    is fixed after creation; see .claude/rules/features/exam.md.
     """
 
     def __init__(
@@ -43,6 +44,15 @@ class ExamService:
         if exam is None:
             raise NotFoundException(f"Exam {exam_id} not found")
         return exam
+
+    async def update(self, exam_id: uuid.UUID, payload: ExamUpdate) -> Exam:
+        exam = await self.get_detail(exam_id)
+        return await self.repository.update(
+            exam,
+            exam_datetime=payload.exam_datetime,
+            description=payload.description,
+            exam_mark=payload.exam_mark,
+        )
 
     async def delete_exam(self, exam_id: uuid.UUID) -> None:
         exam = await self.repository.get_by_id(exam_id)

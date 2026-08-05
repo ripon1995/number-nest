@@ -24,6 +24,7 @@ function ExamsPage() {
   const courses = useCourseStore((state) => state.courses)
   const fetchCourses = useCourseStore((state) => state.fetchCourses)
 
+  const [editingExam, setEditingExam] = useState<Exam | null>(null)
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -58,6 +59,13 @@ function ExamsPage() {
     setIsCreating(true)
   }
 
+  const isFormOpen = isCreating || editingExam !== null
+
+  function closeForm() {
+    setIsCreating(false)
+    setEditingExam(null)
+  }
+
   return (
     <main id="content" className="exams-page">
       <div className="exams-page-header">
@@ -78,12 +86,13 @@ function ExamsPage() {
           coursesById={coursesById}
           isLoading={isLoading}
           deletingId={deletingId}
+          onEdit={setEditingExam}
           onDelete={setPendingDelete}
         />
       </section>
 
-      {isCreating && (
-        <ExamFormDialog courses={courses} onClose={() => setIsCreating(false)} onError={setError} />
+      {isFormOpen && (
+        <ExamFormDialog exam={editingExam} courses={courses} onClose={closeForm} onError={setError} />
       )}
 
       <ConfirmDialog
