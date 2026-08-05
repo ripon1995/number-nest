@@ -126,7 +126,8 @@
   color: var(--text-h);
 }
 
-.enrollment-filters select {
+.enrollment-filters select,
+.enrollment-filters input[type='text'] {
   font: inherit;
   padding: 8px 10px;
   border: 1px solid var(--border);
@@ -136,7 +137,8 @@
   min-width: 160px;
 }
 
-.enrollment-filters select:focus {
+.enrollment-filters select:focus,
+.enrollment-filters input[type='text']:focus {
   outline: 2px solid var(--accent-border);
   outline-offset: 1px;
 }

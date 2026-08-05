@@ -38,6 +38,7 @@ function EnrollmentsPage() {
 
   const [filterCourseId, setFilterCourseId] = useState('')
   const [filterStudentId, setFilterStudentId] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     fetchEnrollments().catch((err) => setError(toApiError(err)))
@@ -48,17 +49,24 @@ function EnrollmentsPage() {
   const studentsById = new Map(students.map((student) => [student.id, student]))
   const coursesById = new Map(courses.map((course) => [course.id, course]))
 
+  const trimmedSearch = searchQuery.trim().toLowerCase()
+
   const filteredEnrollments = enrollments.filter((enrollment) => {
     if (filterCourseId && enrollment.course_id !== filterCourseId) return false
     if (filterStudentId && enrollment.student_id !== filterStudentId) return false
+    if (trimmedSearch) {
+      const studentName = studentsById.get(enrollment.student_id)?.name ?? ''
+      if (!studentName.toLowerCase().includes(trimmedSearch)) return false
+    }
     return true
   })
 
-  const hasActiveFilters = Boolean(filterCourseId || filterStudentId)
+  const hasActiveFilters = Boolean(filterCourseId || filterStudentId || trimmedSearch)
 
   function handleClearFilters() {
     setFilterCourseId('')
     setFilterStudentId('')
+    setSearchQuery('')
   }
 
   async function confirmDelete() {
@@ -128,6 +136,15 @@ function EnrollmentsPage() {
       </div>
 
       <section className="enrollment-filters">
+        <label>
+          Search
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Student name…"
+          />
+        </label>
         <label>
           Course
           <select value={filterCourseId} onChange={(e) => setFilterCourseId(e.target.value)}>
