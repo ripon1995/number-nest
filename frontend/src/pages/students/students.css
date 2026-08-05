@@ -52,7 +52,8 @@
   color: var(--text-h);
 }
 
-.student-filters select {
+.student-filters select,
+.student-filters input[type='text'] {
   font: inherit;
   padding: 8px 10px;
   border: 1px solid var(--border);
@@ -62,7 +63,8 @@
   min-width: 160px;
 }
 
-.student-filters select:focus {
+.student-filters select:focus,
+.student-filters input[type='text']:focus {
   outline: 2px solid var(--accent-border);
   outline-offset: 1px;
 }

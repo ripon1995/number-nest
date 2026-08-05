@@ -37,6 +37,7 @@ function StudentsPage() {
 
   const [filterCourseId, setFilterCourseId] = useState('')
   const [filterStatus, setFilterStatus] = useState<'' | 'active' | 'inactive'>('')
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     fetchStudents().catch((err) => setError(toApiError(err)))
@@ -44,23 +45,36 @@ function StudentsPage() {
     fetchCourses().catch((err) => setError(toApiError(err)))
   }, [fetchStudents, fetchEnrollments, fetchCourses])
 
-  const hasActiveFilters = Boolean(filterCourseId || filterStatus)
+  const trimmedSearch = searchQuery.trim().toLowerCase()
+  const hasActiveFilters = Boolean(filterCourseId || filterStatus || trimmedSearch)
 
-  const filteredStudents = hasActiveFilters
-    ? students.filter((student) =>
-        enrollments.some(
-          (enrollment) =>
-            enrollment.student_id === student.id &&
-            (!filterCourseId || enrollment.course_id === filterCourseId) &&
-            (!filterStatus ||
-              (filterStatus === 'active' ? !enrollment.discontinued_at : Boolean(enrollment.discontinued_at))),
-        ),
+  const filteredStudents = students.filter((student) => {
+    if (filterCourseId || filterStatus) {
+      const matchesEnrollment = enrollments.some(
+        (enrollment) =>
+          enrollment.student_id === student.id &&
+          (!filterCourseId || enrollment.course_id === filterCourseId) &&
+          (!filterStatus ||
+            (filterStatus === 'active' ? !enrollment.discontinued_at : Boolean(enrollment.discontinued_at))),
       )
-    : students
+      if (!matchesEnrollment) return false
+    }
+
+    if (trimmedSearch) {
+      const haystack = [student.name, student.contact, student.whatsapp_number, student.email, student.college]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase()
+      if (!haystack.includes(trimmedSearch)) return false
+    }
+
+    return true
+  })
 
   function handleClearFilters() {
     setFilterCourseId('')
     setFilterStatus('')
+    setSearchQuery('')
   }
 
   async function confirmDelete() {
@@ -99,6 +113,15 @@ function StudentsPage() {
       </div>
 
       <section className="student-filters">
+        <label>
+          Search
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Name, contact, email…"
+          />
+        </label>
         <label>
           Course
           <select value={filterCourseId} onChange={(e) => setFilterCourseId(e.target.value)}>
