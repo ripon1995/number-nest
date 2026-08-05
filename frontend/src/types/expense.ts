@@ -1,6 +1,11 @@
-export type ExpenseCategory = 'house_rent' | 'asset' | 'salary' | 'utility' | 'other'
+export type ExpenseCategory = 'house_rent' | 'asset' | 'salary' | 'electricity' | 'internet' | 'other'
 export type AssetDirection = 'purchase' | 'sell'
-export type PaymentMethod = 'cash' | 'bank_transfer'
+export type PaymentMethod =
+  | 'cash'
+  | 'bank_transfer'
+  | 'dbbl_credit_card'
+  | 'ebl_credit_card'
+  | 'ucb_credit_card'
 
 export interface Expense {
   id: string

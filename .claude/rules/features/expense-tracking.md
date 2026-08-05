@@ -7,22 +7,29 @@ student/enrollment side of the domain. Implemented in `app/expenses/` (see
 + `frontend/src/pages/expenses/`) follows the same list-table + `Modal` create/edit-form
 pattern as [[course]]/[[students]]: a Zustand `expenseStore`
 (`fetchExpenses`/`createExpense`/`updateExpense`/`deleteExpense`) backs a list table
-(`ExpenseTable`). Unlike every other feature, a single `Expense` row covers one of **five**
-cost categories via a `category` field rather than five separate tables/pages —
-`house_rent`, `asset`, `salary`, `utility`, `other` — since one table + a category enum
-keeps the CRUD surface, list page, and store to this one feature. `house_rent` was
-originally named `contract_fare`; it was renamed backend-and-frontend (model enum, column
-data, partial-unique-index name/condition) via `migrations/versions/
+(`ExpenseTable`). Unlike every other feature, a single `Expense` row covers one of **six**
+cost categories via a `category` field rather than six separate tables/pages —
+`house_rent`, `asset`, `salary`, `electricity`, `internet`, `other` — since one table + a
+category enum keeps the CRUD surface, list page, and store to this one feature. `house_rent`
+was originally named `contract_fare`; it was renamed backend-and-frontend (model enum,
+column data, partial-unique-index name/condition) via `migrations/versions/
 f7e5966ac126_rename_expense_date_and_house_rent_....py`, the same migration that renamed
-`expense_date` to `payment_date` and added `paid_to`/`paid_by` (see Fields below).
+`expense_date` to `payment_date` and added `paid_to`/`paid_by` (see Fields below). A single
+`utility` category originally covered `electricity`/`internet` together; it was split into
+the two via `migrations/versions/e68207ebe0d0_split_utility_into_electricity_and_....py`,
+which data-migrates existing `utility` rows to `electricity` (the only rows that existed at
+split time were electric-bill entries, so the mapping was unambiguous — a DB with mixed
+utility rows wouldn't have this guarantee, which is why this was a one-off data decision, not
+a generic rule).
 
 Above the table, `ExpensesPage` renders a filter bar — a category `<select>` plus a `month`
 `<input type="month">` — that narrows the full `expenses` list client-side (filter state
 lives in the page itself, not `expenseStore`), mirroring every other feature's filter bar.
 The month filter matches against `payment_date` (the one field every category always sets),
 **not** the category-specific `month` field, which only `house_rent`/`salary` ever
-populate — filtering on `month` directly would silently exclude every `asset`/`utility`/
-`other` row. A "Clear filters" button appears once either filter is active, and
+populate — filtering on `month` directly would silently exclude every
+`asset`/`electricity`/`internet`/`other` row. A "Clear filters" button appears once either
+filter is active, and
 `ExpenseTable` shows a distinct "no expenses match the selected filters" message (via its
 `emptyMessage` prop) instead of the normal empty-state copy when filters exclude everything.
 
@@ -34,8 +41,9 @@ that render conditionally based on the chosen category, mirroring the backend va
 below field-for-field: `month` (`<input type="month">`) for `house_rent`/`salary`;
 `staff_name` (text) for `salary`; `direction` (Purchase/Sell `<select>`) + `description`
 (labelled "Asset / item") for `asset`; `description` (labelled "Description") for
-`utility`/`other`. Rendered in the shared `Modal` via an `expense-modal` className override,
-same technique [[enrollment]]/[[payment-tracking]] use for their own dialogs.
+`electricity`/`internet`/`other`. Rendered in the shared `Modal` via an `expense-modal`
+className override, same technique [[enrollment]]/[[payment-tracking]] use for their own
+dialogs.
 
 `ExpenseTable` rows carry detail/edit/delete icon actions (`EyeIcon`/`PencilIcon`/`TrashIcon`
 in `ExpenseIcons.tsx`, same three-icon pattern [[students]]' `StudentTable` uses). The detail
@@ -49,24 +57,25 @@ points" split [[course]]/[[students]] use.
 
 ## Fields
 
-- `category` — enum: `house_rent`, `asset`, `salary`, `utility`, `other`. Validated by a
-  Pydantic enum (`ExpenseCategory` in `app/expenses/models.py`); stored as a plain string
-  column, same non-native-enum choice as [[course]]'s `subject`/`class_level`/`batch_type`.
-  Immutable after creation — see Rules below.
+- `category` — enum: `house_rent`, `asset`, `salary`, `electricity`, `internet`, `other`.
+  Validated by a Pydantic enum (`ExpenseCategory` in `app/expenses/models.py`); stored as a
+  plain string column, same non-native-enum choice as [[course]]'s
+  `subject`/`class_level`/`batch_type`. Immutable after creation — see Rules below.
 - `amount` — decimal (`Numeric(10, 2)`), must be >= 0
 - `payment_date` — date, required — when the cost was actually paid. The one date field
   every category sets; used for sorting (`ExpenseRepository.list_all` orders by this,
   descending) and for the frontend's month filter (see above). Named `expense_date` before
   the rename described above.
 - `paid_to` — free-text string — who or what the payment went to (e.g. a landlord's name, a
-  vendor, a utility company). Applies to every category, unlike `staff_name`/`description`
+  vendor, a utility provider). Applies to every category, unlike `staff_name`/`description`
   below which are category-specific. Nullable at the DB (existing rows predate this column)
   but required by Pydantic on every create/update — same "DB permissive, Pydantic enforces"
   approach the category-specific fields below use.
-- `paid_by` — enum (`PaymentMethod`: `cash`/`bank_transfer`) — how the payment was made.
-  Applies to every category, same nullable-at-DB/required-by-Pydantic treatment as `paid_to`.
+- `paid_by` — enum (`PaymentMethod`: `cash`/`bank_transfer`/`dbbl_credit_card`/
+  `ebl_credit_card`/`ucb_credit_card`) — how the payment was made. Applies to every category,
+  same nullable-at-DB/required-by-Pydantic treatment as `paid_to`.
 - `month` — nullable date (first-of-month, same shape as [[payment-tracking]]'s `month`) —
-  required only for `house_rent` and `salary`; must be absent for the other three
+  required only for `house_rent` and `salary`; must be absent for the other four
   categories. Which calendar month the recurring cost/salary covers.
 - `staff_name` — nullable free-text string — required only for `salary`. No dedicated Staff
   model exists in this system (single-teacher app, no other staff records anywhere) — this
@@ -75,8 +84,9 @@ points" split [[course]]/[[students]] use.
   `asset`, must be absent otherwise. Distinguishes buying an asset (a cost) from selling one
   (money coming back) within the same category.
 - `description` — nullable free-text string — required for `asset` (what the asset/item is),
-  `utility` (e.g. "Electricity", "Internet"), and `other` (freeform); optional/unused for
-  `house_rent`/`salary`, which already have `month`/`staff_name` for identity.
+  `electricity`/`internet` (e.g. which provider, or freeform notes), and `other` (freeform);
+  optional/unused for `house_rent`/`salary`, which already have `month`/`staff_name` for
+  identity.
 
 Field presence per category is enforced by a Pydantic `model_validator(mode="after")` on a
 shared `ExpenseFields` base class (`app/expenses/schemas.py`), inherited by both
@@ -112,5 +122,6 @@ fields apply depends on `category`, not something a plain column constraint can 
     (renamed from `uq_expenses_contract_fare_month` in the same migration as the category
     rename)
   - `uq_expenses_salary_staff_month` — unique `(staff_name, month)` where `category = 'salary'`
-- `asset`, `utility`, and `other` have no such cap — any number of records per month.
+- `asset`, `electricity`, `internet`, and `other` have no such cap — any number of records
+  per month.
 - No cascading deletes involved — `Expense` has no foreign keys to cascade from or to.

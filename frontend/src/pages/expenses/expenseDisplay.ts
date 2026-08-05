@@ -6,7 +6,8 @@ export const CATEGORY_OPTIONS: { value: ExpenseCategory; label: string }[] = [
   { value: 'house_rent', label: 'House rent' },
   { value: 'asset', label: 'Asset' },
   { value: 'salary', label: 'Salary' },
-  { value: 'utility', label: 'Utility' },
+  { value: 'electricity', label: 'Electricity' },
+  { value: 'internet', label: 'Internet' },
   { value: 'other', label: 'Other' },
 ]
 
@@ -14,18 +15,25 @@ const CATEGORY_LABELS: Record<ExpenseCategory, string> = {
   house_rent: 'House rent',
   asset: 'Asset',
   salary: 'Salary',
-  utility: 'Utility',
+  electricity: 'Electricity',
+  internet: 'Internet',
   other: 'Other',
 }
 
 export const PAID_BY_OPTIONS: { value: PaymentMethod; label: string }[] = [
   { value: 'cash', label: 'Cash' },
   { value: 'bank_transfer', label: 'Bank transfer' },
+  { value: 'dbbl_credit_card', label: 'DBBL Credit card' },
+  { value: 'ebl_credit_card', label: 'EBL Credit card' },
+  { value: 'ucb_credit_card', label: 'UCB Credit card' },
 ]
 
 const PAID_BY_LABELS: Record<PaymentMethod, string> = {
   cash: 'Cash',
   bank_transfer: 'Bank transfer',
+  dbbl_credit_card: 'DBBL Credit card',
+  ebl_credit_card: 'EBL Credit card',
+  ucb_credit_card: 'UCB Credit card',
 }
 
 export function formatCategory(category: ExpenseCategory): string {

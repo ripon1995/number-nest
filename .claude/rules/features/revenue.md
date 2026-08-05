@@ -37,8 +37,8 @@ A single `<input type="month">` (default empty = all-time) narrows both totals a
   always has one).
 - `filterExpensesByMonth` matches against `Expense.payment_date`'s `YYYY-MM` prefix — **not**
   `Expense.month`, which only the `house_rent`/`salary` categories ever set; filtering on
-  that field would silently drop every `asset`/`utility`/`other` expense from the total. This
-  is the same choice [[expense-tracking]]'s own `ExpensesPage` filter makes.
+  that field would silently drop every `asset`/`electricity`/`internet`/`other` expense from
+  the total. This is the same choice [[expense-tracking]]'s own `ExpensesPage` filter makes.
 
 A "Clear filter" button appears once a month is selected, resetting to the all-time view —
 same pattern as every other feature's filter bar, just with one field instead of several.

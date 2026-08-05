@@ -63,7 +63,10 @@ function ExpenseFormDialog({ expense, onClose, onError }: ExpenseFormDialogProps
   const needsStaffName = form.category === 'salary'
   const needsDirection = form.category === 'asset'
   const needsDescription =
-    form.category === 'asset' || form.category === 'utility' || form.category === 'other'
+    form.category === 'asset' ||
+    form.category === 'electricity' ||
+    form.category === 'internet' ||
+    form.category === 'other'
   const descriptionLabel = form.category === 'asset' ? 'Asset / item' : 'Description'
 
   async function handleSubmit(event: FormEvent) {

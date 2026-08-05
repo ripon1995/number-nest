@@ -36,7 +36,7 @@ class ExpenseFields(BaseModel):
                 raise ValueError("direction and description are required for an asset expense")
             if self.month is not None or self.staff_name is not None:
                 raise ValueError("month/staff_name do not apply to an asset expense")
-        else:  # UTILITY, OTHER
+        else:  # ELECTRICITY, INTERNET, OTHER
             if not self.description:
                 raise ValueError("description is required for this expense category")
             if self.month is not None or self.staff_name is not None or self.direction is not None:

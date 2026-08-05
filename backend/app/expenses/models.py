@@ -13,7 +13,8 @@ class ExpenseCategory(str, enum.Enum):
     HOUSE_RENT = "house_rent"
     ASSET = "asset"
     SALARY = "salary"
-    UTILITY = "utility"
+    ELECTRICITY = "electricity"
+    INTERNET = "internet"
     OTHER = "other"
 
 
@@ -25,6 +26,9 @@ class AssetDirection(str, enum.Enum):
 class PaymentMethod(str, enum.Enum):
     CASH = "cash"
     BANK_TRANSFER = "bank_transfer"
+    DBBL_CREDIT_CARD = "dbbl_credit_card"
+    EBL_CREDIT_CARD = "ebl_credit_card"
+    UCB_CREDIT_CARD = "ucb_credit_card"
 
 
 class Expense(Base):
