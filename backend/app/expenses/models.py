@@ -10,7 +10,7 @@ from app.core.database import Base
 
 
 class ExpenseCategory(str, enum.Enum):
-    CONTRACT_FARE = "contract_fare"
+    HOUSE_RENT = "house_rent"
     ASSET = "asset"
     SALARY = "salary"
     UTILITY = "utility"
@@ -22,14 +22,23 @@ class AssetDirection(str, enum.Enum):
     SELL = "sell"
 
 
+class PaymentMethod(str, enum.Enum):
+    CASH = "cash"
+    BANK_TRANSFER = "bank_transfer"
+
+
 class Expense(Base):
     """An institutional cost record. See .claude/rules/features/expense-tracking.md.
 
-    Add/delete only. `month`/`staff_name`/`direction` are only meaningful for
-    specific categories (enforced by ExpenseCreate's validator, not here) -
-    `month` is unique within `contract_fare` and `(staff_name, month)` is
-    unique within `salary`, each via a partial unique index rather than a
-    plain column constraint, since the same columns serve every category.
+    Add/edit/delete - category is fixed after creation (delete/re-add to change
+    it). `month`/`staff_name`/`direction` are only meaningful for specific
+    categories (enforced by ExpenseCreate/ExpenseUpdate's validator, not here) -
+    `month` is unique within `house_rent` and `(staff_name, month)` is unique
+    within `salary`, each via a partial unique index rather than a plain column
+    constraint, since the same columns serve every category. `paid_to`/`paid_by`
+    apply to every category and are nullable at the DB (required-ness enforced
+    by Pydantic, matching the category-specific fields' approach) so existing
+    rows created before these columns existed don't need a backfill.
     """
 
     __tablename__ = "expenses"
@@ -37,7 +46,9 @@ class Expense(Base):
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     category: Mapped[str] = mapped_column(String)
     amount: Mapped[Decimal] = mapped_column(Numeric(10, 2))
-    expense_date: Mapped[date] = mapped_column(Date)
+    payment_date: Mapped[date] = mapped_column(Date)
+    paid_to: Mapped[str | None] = mapped_column(String, default=None)
+    paid_by: Mapped[str | None] = mapped_column(String, default=None)
     month: Mapped[date | None] = mapped_column(Date, default=None)
     staff_name: Mapped[str | None] = mapped_column(String, default=None)
     direction: Mapped[str | None] = mapped_column(String, default=None)

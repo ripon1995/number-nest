@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useExpenseStore } from '../store/expenseStore'
 import { ApiError } from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
@@ -16,11 +17,13 @@ function toApiError(err: unknown): ApiError {
 }
 
 function ExpensesPage() {
+  const navigate = useNavigate()
   const expenses = useExpenseStore((state) => state.expenses)
   const isLoading = useExpenseStore((state) => state.isLoading)
   const fetchExpenses = useExpenseStore((state) => state.fetchExpenses)
   const deleteExpense = useExpenseStore((state) => state.deleteExpense)
 
+  const [editingExpense, setEditingExpense] = useState<Expense | null>(null)
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -34,7 +37,7 @@ function ExpensesPage() {
 
   const filteredExpenses = expenses.filter((expense) => {
     if (filterCategory && expense.category !== filterCategory) return false
-    if (filterMonth && expense.expense_date.slice(0, 7) !== filterMonth) return false
+    if (filterMonth && expense.payment_date.slice(0, 7) !== filterMonth) return false
     return true
   })
 
@@ -57,6 +60,13 @@ function ExpensesPage() {
       setDeletingId(null)
       setPendingDelete(null)
     }
+  }
+
+  const isFormOpen = isCreating || editingExpense !== null
+
+  function closeForm() {
+    setIsCreating(false)
+    setEditingExpense(null)
   }
 
   return (
@@ -108,12 +118,16 @@ function ExpensesPage() {
           expenses={filteredExpenses}
           isLoading={isLoading}
           deletingId={deletingId}
+          onViewDetail={(expense) => navigate(`/expenses/${expense.id}`)}
+          onEdit={setEditingExpense}
           onDelete={setPendingDelete}
           emptyMessage={hasActiveFilters ? 'No expenses match the selected filters.' : undefined}
         />
       </section>
 
-      {isCreating && <ExpenseFormDialog onClose={() => setIsCreating(false)} onError={setError} />}
+      {isFormOpen && (
+        <ExpenseFormDialog expense={editingExpense} onClose={closeForm} onError={setError} />
+      )}
 
       <ConfirmDialog
         open={pendingDelete !== null}

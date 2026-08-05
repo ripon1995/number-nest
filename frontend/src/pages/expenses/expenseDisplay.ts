@@ -1,9 +1,9 @@
-import type { Expense, ExpenseCategory } from '../../types/expense'
+import type { Expense, ExpenseCategory, PaymentMethod } from '../../types/expense'
 
 const MONTH_FORMATTER = new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' })
 
 export const CATEGORY_OPTIONS: { value: ExpenseCategory; label: string }[] = [
-  { value: 'contract_fare', label: 'Contract fare' },
+  { value: 'house_rent', label: 'House rent' },
   { value: 'asset', label: 'Asset' },
   { value: 'salary', label: 'Salary' },
   { value: 'utility', label: 'Utility' },
@@ -11,15 +11,29 @@ export const CATEGORY_OPTIONS: { value: ExpenseCategory; label: string }[] = [
 ]
 
 const CATEGORY_LABELS: Record<ExpenseCategory, string> = {
-  contract_fare: 'Contract fare',
+  house_rent: 'House rent',
   asset: 'Asset',
   salary: 'Salary',
   utility: 'Utility',
   other: 'Other',
 }
 
+export const PAID_BY_OPTIONS: { value: PaymentMethod; label: string }[] = [
+  { value: 'cash', label: 'Cash' },
+  { value: 'bank_transfer', label: 'Bank transfer' },
+]
+
+const PAID_BY_LABELS: Record<PaymentMethod, string> = {
+  cash: 'Cash',
+  bank_transfer: 'Bank transfer',
+}
+
 export function formatCategory(category: ExpenseCategory): string {
   return CATEGORY_LABELS[category]
+}
+
+export function formatPaidBy(method: PaymentMethod): string {
+  return PAID_BY_LABELS[method]
 }
 
 export function formatMonth(month: string): string {
@@ -36,7 +50,7 @@ export function monthInputToApi(value: string): string {
 
 export function expenseDetails(expense: Expense): string {
   switch (expense.category) {
-    case 'contract_fare':
+    case 'house_rent':
       return expense.month ? formatMonth(expense.month) : '—'
     case 'salary':
       return [expense.staff_name, expense.month ? formatMonth(expense.month) : null]

@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 
 from app.core.dependencies import get_current_teacher
 from app.expenses.models import Expense, ExpenseCategory
-from app.expenses.schemas import ExpenseCreate, ExpenseRead
+from app.expenses.schemas import ExpenseCreate, ExpenseRead, ExpenseUpdate
 from app.expenses.service import ExpenseService, get_expense_service
 
 router = APIRouter(
@@ -26,6 +26,23 @@ async def list_expenses(
         service: ExpenseService = Depends(get_expense_service)
 ) -> list[Expense]:
     return await service.list_all(category=category)
+
+
+@router.get("/{expense_id}", response_model=ExpenseRead)
+async def get_expense(
+        expense_id: uuid.UUID,
+        service: ExpenseService = Depends(get_expense_service)
+) -> Expense:
+    return await service.get_by_id(expense_id)
+
+
+@router.put("/{expense_id}", response_model=ExpenseRead)
+async def update_expense(
+        expense_id: uuid.UUID,
+        payload: ExpenseUpdate,
+        service: ExpenseService = Depends(get_expense_service)
+) -> Expense:
+    return await service.update(expense_id, payload)
 
 
 @router.delete("/{expense_id}", status_code=status.HTTP_204_NO_CONTENT)

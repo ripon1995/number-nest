@@ -12,7 +12,7 @@ export function filterPaymentsByMonth(payments: Payment[], month: string): Payme
 
 export function filterExpensesByMonth(expenses: Expense[], month: string): Expense[] {
   if (!month) return expenses
-  return expenses.filter((expense) => expense.expense_date.slice(0, 7) === month)
+  return expenses.filter((expense) => expense.payment_date.slice(0, 7) === month)
 }
 
 export function formatCurrency(value: number): string {

@@ -2,11 +2,12 @@ import { useState, type FormEvent } from 'react'
 import Modal from '../../components/Modal'
 import { useExpenseStore } from '../../store/expenseStore'
 import { ApiError } from '../../errors/api'
-import type { AssetDirection, ExpenseCategory, ExpenseInput } from '../../types/expense'
-import { CATEGORY_OPTIONS, monthInputToApi } from './expenseDisplay'
+import type { AssetDirection, Expense, ExpenseCategory, ExpenseInput, PaymentMethod } from '../../types/expense'
+import { CATEGORY_OPTIONS, PAID_BY_OPTIONS, monthInputToApi } from './expenseDisplay'
 import './expenses.css'
 
 interface ExpenseFormDialogProps {
+  expense?: Expense | null
   onClose: () => void
   onError: (err: ApiError) => void
 }
@@ -14,28 +15,51 @@ interface ExpenseFormDialogProps {
 interface FormState {
   category: ExpenseCategory
   amount: string
-  expense_date: string
+  payment_date: string
+  paid_to: string
+  paid_by: PaymentMethod
   month: string
   staff_name: string
   direction: AssetDirection
   description: string
 }
 
-function ExpenseFormDialog({ onClose, onError }: ExpenseFormDialogProps) {
-  const createExpense = useExpenseStore((state) => state.createExpense)
+function initialFormState(expense: Expense | null | undefined): FormState {
+  if (!expense) {
+    return {
+      category: 'house_rent',
+      amount: '',
+      payment_date: '',
+      paid_to: '',
+      paid_by: 'cash',
+      month: '',
+      staff_name: '',
+      direction: 'purchase',
+      description: '',
+    }
+  }
+  return {
+    category: expense.category,
+    amount: expense.amount,
+    payment_date: expense.payment_date,
+    paid_to: expense.paid_to ?? '',
+    paid_by: expense.paid_by ?? 'cash',
+    month: expense.month ? expense.month.slice(0, 7) : '',
+    staff_name: expense.staff_name ?? '',
+    direction: expense.direction ?? 'purchase',
+    description: expense.description ?? '',
+  }
+}
 
-  const [form, setForm] = useState<FormState>({
-    category: 'contract_fare',
-    amount: '',
-    expense_date: '',
-    month: '',
-    staff_name: '',
-    direction: 'purchase',
-    description: '',
-  })
+function ExpenseFormDialog({ expense, onClose, onError }: ExpenseFormDialogProps) {
+  const createExpense = useExpenseStore((state) => state.createExpense)
+  const updateExpense = useExpenseStore((state) => state.updateExpense)
+  const isEditing = expense != null
+
+  const [form, setForm] = useState<FormState>(() => initialFormState(expense))
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const needsMonth = form.category === 'contract_fare' || form.category === 'salary'
+  const needsMonth = form.category === 'house_rent' || form.category === 'salary'
   const needsStaffName = form.category === 'salary'
   const needsDirection = form.category === 'asset'
   const needsDescription =
@@ -48,7 +72,9 @@ function ExpenseFormDialog({ onClose, onError }: ExpenseFormDialogProps) {
     const payload: ExpenseInput = {
       category: form.category,
       amount: form.amount,
-      expense_date: form.expense_date,
+      payment_date: form.payment_date,
+      paid_to: form.paid_to,
+      paid_by: form.paid_by,
       month: needsMonth ? monthInputToApi(form.month) : null,
       staff_name: needsStaffName ? form.staff_name : null,
       direction: needsDirection ? form.direction : null,
@@ -57,7 +83,11 @@ function ExpenseFormDialog({ onClose, onError }: ExpenseFormDialogProps) {
 
     setIsSubmitting(true)
     try {
-      await createExpense(payload)
+      if (isEditing) {
+        await updateExpense(expense.id, payload)
+      } else {
+        await createExpense(payload)
+      }
       onClose()
     } catch (err) {
       onError(
@@ -78,12 +108,13 @@ function ExpenseFormDialog({ onClose, onError }: ExpenseFormDialogProps) {
       isSubmitting={isSubmitting}
     >
       <form className="expense-form" onSubmit={handleSubmit}>
-        <h2 id="expense-dialog-title">Record expense</h2>
+        <h2 id="expense-dialog-title">{isEditing ? 'Edit expense' : 'Record expense'}</h2>
         <label>
           Category
           <select
             value={form.category}
             onChange={(e) => setForm({ ...form, category: e.target.value as ExpenseCategory })}
+            disabled={isEditing}
             required
           >
             {CATEGORY_OPTIONS.map((option) => (
@@ -140,13 +171,36 @@ function ExpenseFormDialog({ onClose, onError }: ExpenseFormDialogProps) {
           </label>
         )}
         <label>
-          Expense date
+          Payment date
           <input
             type="date"
-            value={form.expense_date}
-            onChange={(e) => setForm({ ...form, expense_date: e.target.value })}
+            value={form.payment_date}
+            onChange={(e) => setForm({ ...form, payment_date: e.target.value })}
             required
           />
+        </label>
+        <label>
+          Paid to
+          <input
+            type="text"
+            value={form.paid_to}
+            onChange={(e) => setForm({ ...form, paid_to: e.target.value })}
+            required
+          />
+        </label>
+        <label>
+          Paid by
+          <select
+            value={form.paid_by}
+            onChange={(e) => setForm({ ...form, paid_by: e.target.value as PaymentMethod })}
+            required
+          >
+            {PAID_BY_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </label>
         <label>
           Amount
@@ -164,7 +218,7 @@ function ExpenseFormDialog({ onClose, onError }: ExpenseFormDialogProps) {
             Cancel
           </button>
           <button type="submit" disabled={isSubmitting}>
-            Record expense
+            {isEditing ? 'Save changes' : 'Record expense'}
           </button>
         </div>
       </form>

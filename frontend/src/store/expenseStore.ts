@@ -7,6 +7,7 @@ interface ExpenseState {
   isLoading: boolean
   fetchExpenses: () => Promise<void>
   createExpense: (input: ExpenseInput) => Promise<Expense>
+  updateExpense: (id: string, input: ExpenseInput) => Promise<Expense>
   deleteExpense: (id: string) => Promise<void>
 }
 
@@ -29,6 +30,12 @@ export const useExpenseStore = create<ExpenseState>((set, get) => ({
     const created = await api.createExpense(input)
     set({ expenses: [...get().expenses, created] })
     return created
+  },
+
+  async updateExpense(id, input) {
+    const updated = await api.updateExpense(id, input)
+    set({ expenses: get().expenses.map((expense) => (expense.id === id ? updated : expense)) })
+    return updated
   },
 
   async deleteExpense(id) {

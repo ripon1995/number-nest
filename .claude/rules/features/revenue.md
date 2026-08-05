@@ -35,8 +35,8 @@ A single `<input type="month">` (default empty = all-time) narrows both totals a
 
 - `filterPaymentsByMonth` matches against `Payment.month`'s `YYYY-MM` prefix (every payment
   always has one).
-- `filterExpensesByMonth` matches against `Expense.expense_date`'s `YYYY-MM` prefix — **not**
-  `Expense.month`, which only the `contract_fare`/`salary` categories ever set; filtering on
+- `filterExpensesByMonth` matches against `Expense.payment_date`'s `YYYY-MM` prefix — **not**
+  `Expense.month`, which only the `house_rent`/`salary` categories ever set; filtering on
   that field would silently drop every `asset`/`utility`/`other` expense from the total. This
   is the same choice [[expense-tracking]]'s own `ExpensesPage` filter makes.
 
