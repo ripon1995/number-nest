@@ -39,6 +39,7 @@ function PaymentsPage() {
   const [filterStudentId, setFilterStudentId] = useState('')
   const [filterMonth, setFilterMonth] = useState('')
   const [filterDay, setFilterDay] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     fetchPayments().catch((err) => setError(toApiError(err)))
@@ -51,22 +52,29 @@ function PaymentsPage() {
   const studentsById = new Map(students.map((student) => [student.id, student]))
   const coursesById = new Map(courses.map((course) => [course.id, course]))
 
+  const trimmedSearch = searchQuery.trim().toLowerCase()
+
   const filteredPayments = payments.filter((payment) => {
     const enrollment = enrollmentsById.get(payment.enrollment_id)
     if (filterCourseId && enrollment?.course_id !== filterCourseId) return false
     if (filterStudentId && enrollment?.student_id !== filterStudentId) return false
     if (filterMonth && payment.month.slice(0, 7) !== filterMonth) return false
     if (filterDay && payment.payment_date !== filterDay) return false
+    if (trimmedSearch) {
+      const studentName = enrollment ? (studentsById.get(enrollment.student_id)?.name ?? '') : ''
+      if (!studentName.toLowerCase().includes(trimmedSearch)) return false
+    }
     return true
   })
 
-  const hasActiveFilters = Boolean(filterCourseId || filterStudentId || filterMonth || filterDay)
+  const hasActiveFilters = Boolean(filterCourseId || filterStudentId || filterMonth || filterDay || trimmedSearch)
 
   function handleClearFilters() {
     setFilterCourseId('')
     setFilterStudentId('')
     setFilterMonth('')
     setFilterDay('')
+    setSearchQuery('')
   }
 
   async function confirmDelete() {
@@ -112,6 +120,15 @@ function PaymentsPage() {
       </div>
 
       <section className="payment-filters">
+        <label>
+          Search
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Student name…"
+          />
+        </label>
         <label>
           Course
           <select value={filterCourseId} onChange={(e) => setFilterCourseId(e.target.value)}>
