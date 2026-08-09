@@ -10,15 +10,15 @@
   flex-wrap: wrap;
   gap: 12px;
   width: 100%;
-  max-width: 480px;
+  max-width: 680px;
   margin: 0 auto;
 }
 
 .profile-detail.card {
   width: 100%;
-  max-width: 480px;
+  max-width: 680px;
   margin: 12px auto 0;
-  padding: 24px;
+  padding: 32px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -57,10 +57,40 @@
   text-align: right;
 }
 
-.profile-section-title {
-  margin: 0 0 4px;
-  font-size: 16px;
-  color: var(--text-h);
+.profile-divider {
+  width: 100%;
+  max-width: 680px;
+  margin: 24px auto 0;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+.profile-admin-actions {
+  width: 100%;
+  max-width: 680px;
+  margin: 20px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.profile-admin-actions-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-admin-actions-buttons > button {
+  font: inherit;
+  font-size: 17px;
+  padding: 16px 28px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
 }
 
 .profile-section-hint {
@@ -72,15 +102,58 @@
 .reset-password-form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
 }
 
 .reset-password-form label {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-size: 14px;
-  color: var(--text);
+  gap: 8px;
+  font-size: 15px;
+  color: var(--text-h);
+}
+
+.reset-password-form input {
+  font: inherit;
+  font-size: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-h);
+}
+
+.reset-password-form input:focus {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 1px;
+}
+
+.reset-password-form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.reset-password-form-actions button {
+  font: inherit;
+  font-size: 16px;
+  padding: 14px 22px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.reset-password-form-actions button.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-h);
+}
+
+.reset-password-form-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .reset-password-success {

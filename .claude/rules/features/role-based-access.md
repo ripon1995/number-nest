@@ -145,6 +145,43 @@ never a script and never wired into the frontend:
   new account can subsequently log in as `role=admin`; a student's token gets the standard 403
   `PermissionDeniedException` from `require_admin` when attempting the same call.
 
+## Admin password reset
+
+Added after the initial role-based-access rollout, once it became clear an admin needed a way
+to help a student (or another admin) who forgot their password — this is **not** the
+self-service "forgot password" flow flagged as out-of-scope below; it's an admin manually
+setting a new password for an account they already know the email of. Same admin-gated shape as
+account creation above, but — unlike `register-admin` — this one *is* wired into the frontend,
+since resetting a locked-out user's password is an ordinary admin task, not a rare
+bootstrap-only operation:
+
+- `app/users/router.py`: `PATCH /auth/reset-password`, `response_model=UserRead`, gated by
+  `Depends(require_admin)`. Body is `PasswordResetRequest` (`email` + `new_password`) —
+  deliberately not `UserRegister`, since no `name` is needed and creating a new account isn't
+  the point. `UserService.reset_password` looks the account up by email (`NotFoundException`,
+  404, if none exists — there's no ambiguity about "which account" the way there could be with
+  an id, since `email` is unique), hashes and sets `new_password` via a new
+  `UserRepository.update_password`, then calls a new `RefreshTokenRepository.revoke_all_for_user`
+  to revoke every refresh token already issued to that account. That revocation matters: without
+  it, a session started under the old password would keep working via `/auth/refresh` until its
+  refresh token naturally expired, which would defeat the point of a reset (e.g. if the account
+  was compromised, not just forgotten).
+- No restriction on the target account's role — the same endpoint resets a student's password or
+  another admin's, since both are just rows in `users` looked up by email. The restriction is
+  entirely on the caller (`require_admin`), not the target.
+- Unlike `register-admin`, this **is** exposed in the frontend: `frontend/src/api/auth.ts` gets a
+  `resetPassword` helper, and `ProfilePage` renders an admin-only section (`useIsAdmin()`-gated,
+  below a divider separating it from the account-details card) containing a
+  `.profile-admin-actions-buttons` row — intentionally a generic container, not a single
+  bespoke button wrapper, so future admin-only actions have a place to go — currently holding one
+  button, "Reset a user's password", that opens `ResetPasswordDialog`
+  (`frontend/src/pages/profile/ResetPasswordDialog.tsx`, rendered in the shared `Modal`, same
+  create-form shape as every other feature's form dialog: email + new-password inputs,
+  Cancel/submit buttons). On success the dialog closes and `ProfilePage` shows an inline
+  "Password reset for {email}." confirmation; on error the dialog stays open and the error
+  surfaces through the same page-level `ErrorDialog` every other mutating page uses — no new
+  error-handling pattern needed.
+
 ## Frontend changes
 
 - `src/types/auth.ts`: rename `Teacher` → `User`, add `role: 'admin' | 'student'`.
@@ -230,7 +267,11 @@ never a script and never wired into the frontend:
   just a UI nicety.
 - No admin-facing UI to list/manage/deactivate student accounts is planned here — out of scope
   unless requested separately.
-- No password-reset/account-recovery flow is planned here — out of scope, matches today's
-  teacher-auth scope (none exists for the admin either).
+- **Admin-driven password reset shipped** (see "Admin password reset" above), but a true
+  **self-service "forgot password" flow is still out of scope** — a student who forgets their
+  password still has to ask an admin, there's no unauthenticated `/auth/forgot-password` +
+  emailed reset-token path. That would need email-sending infrastructure this project doesn't
+  have yet, plus expiring/single-use reset tokens (unlike the admin flow, which needs neither
+  since the admin is already authenticated and picks the new password directly).
 - `ProfilePage` (routed today, not inspected for this plan) may need a look — confirm it
   doesn't assume `role === 'admin'` implicitly anywhere.

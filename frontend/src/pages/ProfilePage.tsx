@@ -1,11 +1,28 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthStore, useIsAdmin } from '../store/authStore'
-import ResetPasswordForm from './profile/ResetPasswordForm'
+import { ApiError } from '../errors/api'
+import ErrorDialog from '../components/ErrorDialog'
+import ResetPasswordDialog from './profile/ResetPasswordDialog'
 import './ProfilePage.css'
 
 function ProfilePage() {
   const user = useAuthStore((state) => state.user)
   const isAdmin = useIsAdmin()
+
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false)
+  const [error, setError] = useState<ApiError | null>(null)
+  const [resetEmail, setResetEmail] = useState<string | null>(null)
+
+  function openResetDialog() {
+    setResetEmail(null)
+    setIsResetDialogOpen(true)
+  }
+
+  function handleResetSuccess(email: string) {
+    setIsResetDialogOpen(false)
+    setResetEmail(email)
+  }
 
   return (
     <main id="content" className="profile-page">
@@ -33,7 +50,31 @@ function ProfilePage() {
         </div>
       )}
 
-      {isAdmin && <ResetPasswordForm />}
+      {isAdmin && (
+        <>
+          <hr className="profile-divider" />
+          <div className="profile-admin-actions">
+            <div className="profile-admin-actions-buttons">
+              <button type="button" onClick={openResetDialog}>
+                Reset a user's password
+              </button>
+            </div>
+            {resetEmail && (
+              <p className="reset-password-success">Password reset for {resetEmail}.</p>
+            )}
+          </div>
+        </>
+      )}
+
+      {isResetDialogOpen && (
+        <ResetPasswordDialog
+          onClose={() => setIsResetDialogOpen(false)}
+          onError={setError}
+          onSuccess={handleResetSuccess}
+        />
+      )}
+
+      <ErrorDialog error={error} onClose={() => setError(null)} />
     </main>
   )
 }

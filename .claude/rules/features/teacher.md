@@ -19,6 +19,15 @@ This file covers the admin side of that (the original single-teacher rules, upda
   add/manage [[students]] and [[course]] records, and everything else. Every mutating route in
   every feature module is gated behind a `require_admin` dependency (`app/core/dependencies.py`)
   layered on top of the same authentication every logged-in account gets.
+- An admin can also reset any account's password (admin or student) via `PATCH
+  /auth/reset-password`, also `require_admin`-gated — unlike `register-admin`, this one has a
+  frontend surface: an admin-only section on `ProfilePage` (below a divider, `useIsAdmin()`-gated)
+  with a "Reset a user's password" button that opens a form dialog for the target email + new
+  password. Resetting a password revokes every refresh token already issued to that account, so
+  it also ends any session started under the old password. This is an admin manually setting a
+  password for an account it already knows the email of, not a self-service "forgot password"
+  flow — a student who forgets their password still has to ask the admin. See
+  [[role-based-access]]'s "Admin password reset" section for the full writeup.
 - Students *can* now log in — self-registration is open and unlimited (`POST /auth/register`,
   route `/register`) — but a student account is read-only everywhere: every `GET` route across
   the app stays reachable, but every mutating route (create/update/delete, plus the inline
