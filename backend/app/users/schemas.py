@@ -16,6 +16,11 @@ class UserLogin(BaseModel):
     password: str
 
 
+class PasswordResetRequest(BaseModel):
+    email: EmailStr
+    new_password: str
+
+
 class RefreshTokenRequest(BaseModel):
     refresh_token: str
 

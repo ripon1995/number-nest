@@ -28,6 +28,12 @@ class UserRepository:
         await self.db.refresh(user)
         return user
 
+    async def update_password(self, user: User, hashed_password: str) -> User:
+        user.hashed_password = hashed_password
+        await self.db.commit()
+        await self.db.refresh(user)
+        return user
+
 
 class RefreshTokenRepository:
     """Data access for the RefreshToken model. No query logic belongs above this layer."""
@@ -65,3 +71,14 @@ class RefreshTokenRepository:
         )
         if refresh_token is not None and refresh_token.revoked_at is None:
             await self.revoke(refresh_token)
+
+    async def revoke_all_for_user(self, user_id: uuid.UUID) -> None:
+        result = await self.db.scalars(
+            select(RefreshToken).where(
+                RefreshToken.user_id == user_id, RefreshToken.revoked_at.is_(None)
+            )
+        )
+        now = datetime.now(timezone.utc)
+        for refresh_token in result:
+            refresh_token.revoked_at = now
+        await self.db.commit()

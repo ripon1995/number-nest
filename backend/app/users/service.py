@@ -6,10 +6,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.database import get_db
-from app.core.exceptions import AuthenticationException, ConflictException
+from app.core.exceptions import AuthenticationException, ConflictException, NotFoundException
 from app.users.models import User, UserRole
 from app.users.repository import RefreshTokenRepository, UserRepository
-from app.users.schemas import UserLogin, UserRegister, Token
+from app.users.schemas import PasswordResetRequest, UserLogin, UserRegister, Token
 from app.users.security import (
     create_access_token,
     generate_refresh_token,
@@ -55,6 +55,23 @@ class UserService:
             hashed_password=hash_password(payload.password),
             role=UserRole.ADMIN,
         )
+
+    async def reset_password(self, payload: PasswordResetRequest) -> User:
+        """Admin-only route target (see require_admin) - sets a new password for
+        any existing account (admin or student), identified by email. Also
+        revokes every refresh token already issued to that account, so a
+        password reset actually ends any session started under the old
+        password rather than leaving it valid until it naturally expires.
+        """
+        user = await self.repository.get_by_email(payload.email)
+        if user is None:
+            raise NotFoundException(f"No account found for {payload.email}")
+
+        updated = await self.repository.update_password(
+            user, hash_password(payload.new_password)
+        )
+        await self.refresh_token_repository.revoke_all_for_user(user.id)
+        return updated
 
     async def _check_email_available(self, email: str) -> None:
         # A friendly 409 before the DB's unique constraint on email would

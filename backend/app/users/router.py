@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, status
 from app.core.dependencies import get_current_user, require_admin
 from app.users.models import User
 from app.users.schemas import (
+    PasswordResetRequest,
     RefreshTokenRequest,
     UserLogin,
     UserRead,
@@ -37,6 +38,24 @@ async def register_admin(
     See .claude/rules/features/role-based-access.md.
     """
     return await service.register_admin(payload)
+
+
+@router.patch(
+    "/reset-password",
+    response_model=UserRead,
+    dependencies=[Depends(require_admin)],
+)
+async def reset_password(
+        payload: PasswordResetRequest,
+        service: UserService = Depends(get_user_service)
+) -> User:
+    """Admin-only: sets a new password for an existing account (admin or
+    student), identified by email. Not called from any frontend UI - meant
+    to be hit directly (curl/Postman/etc.) by an existing admin, same
+    operational trust level as register-admin.
+    See .claude/rules/features/role-based-access.md.
+    """
+    return await service.reset_password(payload)
 
 
 @router.post("/login", response_model=Token)
