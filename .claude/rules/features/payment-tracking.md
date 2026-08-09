@@ -2,7 +2,8 @@
 
 Manually record payments against a student's course enrollment. Implemented in
 `app/payments/` (see [Backend architecture](../../CLAUDE.md#backend-architecture)) — routes
-require `get_current_teacher`. The frontend `PaymentsPage` (`frontend/src/pages/PaymentsPage.tsx`
+require `get_current_user`, with mutating routes additionally requiring `require_admin` (see
+[[teacher]]/[[role-based-access]]). The frontend `PaymentsPage` (`frontend/src/pages/PaymentsPage.tsx`
 + `frontend/src/pages/payments/`) consumes this end-to-end, mirroring [[enrollment]]'s
 list-table + `Modal` create-form pattern: a Zustand `paymentStore`
 (`fetchPayments`/`createPayment`/`deletePayment` — add/delete only, matching the

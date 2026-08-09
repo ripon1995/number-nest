@@ -2,7 +2,8 @@
 
 Create and manage student records. Implemented as full CRUD in `app/students/` (see
 [Backend architecture](../../CLAUDE.md#backend-architecture)) — routes require
-`get_current_teacher`. The frontend `StudentsPage` (`frontend/src/pages/StudentsPage.tsx`
+`get_current_user`, with mutating routes additionally requiring `require_admin` (see
+[[teacher]]/[[role-based-access]]). The frontend `StudentsPage` (`frontend/src/pages/StudentsPage.tsx`
 + `frontend/src/pages/students/`) consumes this end-to-end, mirroring [[course]]'s
 list-table + `Modal` create/edit-form pattern: list/create/update/delete go through a
 Zustand `studentStore`, and creating/editing a student happens in a `Modal` dialog

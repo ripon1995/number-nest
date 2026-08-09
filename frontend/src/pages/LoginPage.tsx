@@ -1,5 +1,5 @@
 import {useState, type FormEvent} from 'react'
-import {Navigate, useNavigate} from 'react-router-dom'
+import {Link, Navigate, useNavigate} from 'react-router-dom'
 import {useAuthStore} from '../store/authStore'
 import {ApiError} from '../errors/api'
 import ErrorDialog from '../components/ErrorDialog'
@@ -7,7 +7,7 @@ import Loader from '../components/Loader'
 import './AuthForm.css'
 
 function LoginPage() {
-    const teacher = useAuthStore((state) => state.teacher)
+    const user = useAuthStore((state) => state.user)
     const isLoading = useAuthStore((state) => state.isLoading)
     const login = useAuthStore((state) => state.login)
     const navigate = useNavigate()
@@ -16,7 +16,7 @@ function LoginPage() {
     const [error, setError] = useState<ApiError | null>(null)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    if (!isLoading && teacher) {
+    if (!isLoading && user) {
         return <Navigate to="/dashboard" replace/>
     }
 
@@ -65,10 +65,9 @@ function LoginPage() {
                 <button type="submit" disabled={isSubmitting}>
                     {isSubmitting ? 'Logging in…' : 'Log in'}
                 </button>
-                {/*TODO: Will be added later*/}
-                {/*<p className="hint">*/}
-                {/*  No account yet? <Link to="/register">Register</Link>*/}
-                {/*</p>*/}
+                <p className="hint">
+                    No account yet? <Link to="/register">Sign up</Link>
+                </p>
                 {isSubmitting && (
                     <div className="auth-form-submitting-overlay">
                         <Loader label="Logging in…"/>

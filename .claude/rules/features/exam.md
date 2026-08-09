@@ -2,7 +2,8 @@
 
 Schedule exams for a course. Implemented in `app/exams/` (see
 [Backend architecture](../../CLAUDE.md#backend-architecture)) — routes require
-`get_current_teacher`. The frontend `ExamsPage` (`frontend/src/pages/ExamsPage.tsx` +
+`get_current_user`, with mutating routes additionally requiring `require_admin` (see
+[[teacher]]/[[role-based-access]]). The frontend `ExamsPage` (`frontend/src/pages/ExamsPage.tsx` +
 `frontend/src/pages/exams/`) follows the same list-table + `Modal` create/edit-form pattern
 as [[course]]: a Zustand `examStore` (`fetchExams`/`createExam`/`updateExam`/`deleteExam`)
 backs a list table (`ExamTable`) that resolves each exam's `course_id` to a course name via

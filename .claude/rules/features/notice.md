@@ -2,7 +2,8 @@
 
 Post event notices tied to a course. Implemented in `app/notices/` (see
 [Backend architecture](../../CLAUDE.md#backend-architecture)) — routes require
-`get_current_teacher`. The frontend `NoticesPage` (`frontend/src/pages/NoticesPage.tsx` +
+`get_current_user`, with mutating routes additionally requiring `require_admin` (see
+[[teacher]]/[[role-based-access]]). The frontend `NoticesPage` (`frontend/src/pages/NoticesPage.tsx` +
 `frontend/src/pages/notices/`) follows the same list-table + `Modal` create-form pattern as
 [[exam]]: a Zustand `noticeStore` (`fetchNotices`/`createNotice`/`deleteNotice` — add/delete
 only, no edit-in-place) backs a list table (`NoticeTable`) that resolves each notice's

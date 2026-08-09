@@ -1,10 +1,9 @@
 # Role-based access (Admin / Student)
 
-**Status: Planned — not yet implemented.** This document is an implementation plan, unlike
-its sibling docs in `.claude/rules/features/` which describe already-shipped behavior. Once
-built, fold the relevant parts back into [[teacher]] (which currently asserts "single teacher
-only... students have no login/portal" — both statements become false) and into
-`CLAUDE.md`'s Status narrative, then either update this file to past tense or delete it.
+**Status: Implemented**, both backend and frontend, per this plan. [[teacher]] and
+`CLAUDE.md`'s Status narrative have been updated to reflect the shipped behavior. This document
+is kept as the implementation record/rationale rather than retired — [[teacher]] carries the
+current living rules, this file explains the decisions and sequencing behind them.
 
 ## Summary
 

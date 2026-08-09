@@ -3,7 +3,8 @@
 A public, unauthenticated page for visitors to browse upcoming [[notice]]s and look up a
 [[course]]'s weekly routine (schedule) — no login required, and nothing on it is editable.
 This is the only public-facing surface in the system; every other feature stays gated behind
-`get_current_teacher` as before (see [[teacher]]).
+`get_current_user` (mutating routes additionally behind `require_admin`) as before (see
+[[teacher]]).
 
 ## Routing
 
@@ -22,7 +23,7 @@ distinct.
 
 ## Backend
 
-`app/public/` — read-only, **no** `get_current_teacher` dependency anywhere in this module
+`app/public/` — read-only, **no** `get_current_user` dependency anywhere in this module
 (the one deliberate exception to every other router requiring it). Rather than duplicating
 query logic, its `PublicService` wraps `CourseRepository` and `NoticeRepository` directly
 (the same repositories [[course]]'s `CourseService` and [[notice]]'s `NoticeService` use) —

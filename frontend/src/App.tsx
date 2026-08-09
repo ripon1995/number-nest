@@ -4,7 +4,7 @@ import NavMenu from './components/NavMenu'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { useAuthStore } from './store/authStore'
 import LoginPage from './pages/LoginPage'
-// import RegisterPage from './pages/RegisterPage'
+import RegisterPage from './pages/RegisterPage'
 import LandingPage from './pages/LandingPage'
 import DashboardPage from './pages/DashboardPage'
 import ProfilePage from './pages/ProfilePage'
@@ -24,8 +24,8 @@ import RevenuePage from './pages/RevenuePage'
 import './App.css'
 
 function AppNav() {
-  const teacher = useAuthStore((state) => state.teacher)
-  return teacher ? <NavMenu /> : null
+  const user = useAuthStore((state) => state.user)
+  return user ? <NavMenu /> : null
 }
 
 function App() {
@@ -37,7 +37,7 @@ function App() {
         <div className="app-main">
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            {/*<Route path="/register" element={<RegisterPage />} />*/}
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/" element={<LandingPage />} />
             <Route
               path="/dashboard"

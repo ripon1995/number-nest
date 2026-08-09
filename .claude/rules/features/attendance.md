@@ -2,7 +2,8 @@
 
 Record attendance per student per course session. Implemented in `app/attendance/` (see
 [Backend architecture](../../CLAUDE.md#backend-architecture)) — routes require
-`get_current_teacher`. Unlike every other feature, there is no manual single-record add
+`get_current_user`, with mutating routes additionally requiring `require_admin` (see
+[[teacher]]/[[role-based-access]]). Unlike every other feature, there is no manual single-record add
 form — attendance is always recorded a whole course session at a time via an "attendance
 sheet": the frontend `AttendancePage` (`frontend/src/pages/AttendancePage.tsx` +
 `frontend/src/pages/attendance/`) has a course `<select>` (from `courseStore`) and a

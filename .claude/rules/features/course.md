@@ -2,7 +2,8 @@
 
 Create and manage courses. Implemented as full CRUD in `app/courses/` (see
 [Backend architecture](../../CLAUDE.md#backend-architecture)) — routes require
-`get_current_teacher`. The frontend `CoursesPage` (`frontend/src/pages/CoursesPage.tsx`
+`get_current_user`, with mutating routes additionally requiring `require_admin` (see
+[[teacher]]/[[role-based-access]]). The frontend `CoursesPage` (`frontend/src/pages/CoursesPage.tsx`
 + `frontend/src/pages/courses/`) consumes this end-to-end: list/create/update/delete
 go through a Zustand `courseStore`, and creating/editing a course happens in a `Modal`
 dialog. Viewing a course is not a modal — clicking a row in `CourseTable` navigates to

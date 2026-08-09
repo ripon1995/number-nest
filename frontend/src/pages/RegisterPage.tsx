@@ -7,7 +7,7 @@ import Loader from '../components/Loader'
 import './AuthForm.css'
 
 function RegisterPage() {
-  const teacher = useAuthStore((state) => state.teacher)
+  const user = useAuthStore((state) => state.user)
   const isLoading = useAuthStore((state) => state.isLoading)
   const register = useAuthStore((state) => state.register)
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ function RegisterPage() {
   const [accountExists, setAccountExists] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  if (!isLoading && teacher) {
+  if (!isLoading && user) {
     return <Navigate to="/dashboard" replace />
   }
 
@@ -47,7 +47,7 @@ function RegisterPage() {
 
   return (
     <main id="content">
-      <h1>Register</h1>
+      <h1>Student sign up</h1>
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
           Name
@@ -81,18 +81,18 @@ function RegisterPage() {
         </label>
         {accountExists && (
           <p className="error">
-            A teacher account already exists. <Link to="/login">Log in instead</Link>.
+            An account with this email already exists. <Link to="/login">Log in instead</Link>.
           </p>
         )}
         <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Registering…' : 'Register'}
+          {isSubmitting ? 'Signing up…' : 'Sign up'}
         </button>
         <p className="hint">
           Already have an account? <Link to="/login">Log in</Link>
         </p>
         {isSubmitting && (
           <div className="auth-form-submitting-overlay">
-            <Loader label="Registering…" />
+            <Loader label="Signing up…" />
           </div>
         )}
       </form>

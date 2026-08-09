@@ -1,7 +1,10 @@
-export interface Teacher {
-  id: number
+export type UserRole = 'admin' | 'student'
+
+export interface User {
+  id: string
   email: string
   name: string
+  role: UserRole
 }
 
 export interface Token {

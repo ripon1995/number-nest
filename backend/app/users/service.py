@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.database import get_db
-from app.core.exceptions import AuthenticationException
+from app.core.exceptions import AuthenticationException, ConflictException
 from app.users.models import User, UserRole
 from app.users.repository import RefreshTokenRepository, UserRepository
 from app.users.schemas import UserLogin, UserRegister, Token
@@ -34,6 +34,7 @@ class UserService:
         """Public self-registration - always creates a student account. There is
         no way to request role=admin through this method or its payload.
         """
+        await self._check_email_available(payload.email)
         return await self.repository.create(
             email=payload.email,
             name=payload.name,
@@ -47,12 +48,19 @@ class UserService:
         parameter on it, so the public self-registration path can never be
         pointed at admin creation by a future refactor.
         """
+        await self._check_email_available(payload.email)
         return await self.repository.create(
             email=payload.email,
             name=payload.name,
             hashed_password=hash_password(payload.password),
             role=UserRole.ADMIN,
         )
+
+    async def _check_email_available(self, email: str) -> None:
+        # A friendly 409 before the DB's unique constraint on email would
+        # otherwise surface as an unhandled IntegrityError.
+        if await self.repository.get_by_email(email) is not None:
+            raise ConflictException("An account with this email already exists")
 
     async def login(self, payload: UserLogin) -> Token:
         user = await self.repository.get_by_email(payload.email)

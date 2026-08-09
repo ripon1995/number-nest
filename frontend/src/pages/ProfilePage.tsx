@@ -3,7 +3,7 @@ import { useAuthStore } from '../store/authStore'
 import './ProfilePage.css'
 
 function ProfilePage() {
-  const teacher = useAuthStore((state) => state.teacher)
+  const user = useAuthStore((state) => state.user)
 
   return (
     <main id="content" className="profile-page">
@@ -12,16 +12,20 @@ function ProfilePage() {
         <Link to="/dashboard">Back to dashboard</Link>
       </div>
 
-      {teacher && (
+      {user && (
         <div className="profile-detail card">
           <dl className="profile-detail-list">
             <div>
               <dt>Name</dt>
-              <dd>{teacher.name}</dd>
+              <dd>{user.name}</dd>
             </div>
             <div>
               <dt>Email</dt>
-              <dd>{teacher.email}</dd>
+              <dd>{user.email}</dd>
+            </div>
+            <div>
+              <dt>Role</dt>
+              <dd>{user.role === 'admin' ? 'Admin' : 'Student'}</dd>
             </div>
           </dl>
         </div>

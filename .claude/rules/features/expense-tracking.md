@@ -3,7 +3,8 @@
 Records institutional costs the teacher has to maintain, separate from anything on the
 student/enrollment side of the domain. Implemented in `app/expenses/` (see
 [Backend architecture](../../CLAUDE.md#backend-architecture)) — routes require
-`get_current_teacher`. The frontend `ExpensesPage` (`frontend/src/pages/ExpensesPage.tsx`
+`get_current_user`, with mutating routes additionally requiring `require_admin` (see
+[[teacher]]/[[role-based-access]]). The frontend `ExpensesPage` (`frontend/src/pages/ExpensesPage.tsx`
 + `frontend/src/pages/expenses/`) follows the same list-table + `Modal` create/edit-form
 pattern as [[course]]/[[students]]: a Zustand `expenseStore`
 (`fetchExpenses`/`createExpense`/`updateExpense`/`deleteExpense`) backs a list table

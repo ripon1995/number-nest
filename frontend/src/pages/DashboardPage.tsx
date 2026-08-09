@@ -55,7 +55,7 @@ function buildStudentMarksData(exams: Exam[], marksByExam: Record<string, MarkRe
 }
 
 function DashboardPage() {
-  const teacher = useAuthStore((state) => state.teacher)
+  const user = useAuthStore((state) => state.user)
   const courses = useCourseStore((state) => state.courses)
   const fetchCourses = useCourseStore((state) => state.fetchCourses)
 
@@ -131,7 +131,7 @@ function DashboardPage() {
   return (
     <main id="content" className="dashboard-page">
       <h1>Number Nest</h1>
-      <p>Welcome back, {teacher?.name}.</p>
+      <p>Welcome back, {user?.name}.</p>
 
       {courses.length === 0 ? (
         <p className="dashboard-hint">Add a course to see attendance and exam analytics.</p>

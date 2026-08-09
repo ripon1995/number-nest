@@ -2,7 +2,8 @@
 
 Records a student's obtained mark for one exam. Implemented in `app/marks/` (see
 [Backend architecture](../../CLAUDE.md#backend-architecture)) — routes require
-`get_current_teacher`. Unlike [[exam]] and [[notice]], there is no manual single-record add
+`get_current_user`, with mutating routes additionally requiring `require_admin` (see
+[[teacher]]/[[role-based-access]]). Unlike [[exam]] and [[notice]], there is no manual single-record add
 form — marks are always recorded a whole exam's mark sheet at a time, mirroring
 [[attendance]]'s bulk-upsert pattern exactly: the frontend `ExamDetailPage`
 (`frontend/src/pages/exams/ExamDetailPage.tsx`, route `/exams/:id`, reached by clicking a row

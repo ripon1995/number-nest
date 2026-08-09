@@ -6,7 +6,7 @@ import ThemeToggle from './ThemeToggle'
 import './Header.css'
 
 function Header() {
-  const teacher = useAuthStore((state) => state.teacher)
+  const user = useAuthStore((state) => state.user)
   const logout = useAuthStore((state) => state.logout)
   const location = useLocation()
 
@@ -15,9 +15,9 @@ function Header() {
       <img src={logo} className="app-logo" alt="Number Nest" />
       <div className="app-header-account">
         <ThemeToggle />
-        {teacher && (
+        {user && (
           <>
-            <Link to="/profile" className="app-header-profile" aria-label="Profile" title={teacher.name}>
+            <Link to="/profile" className="app-header-profile" aria-label="Profile" title={user.name}>
               <ProfileIcon />
             </Link>
             <button type="button" className="app-header-logout" aria-label="Log out" title="Log out" onClick={logout}>
@@ -25,9 +25,14 @@ function Header() {
             </button>
           </>
         )}
-        {!teacher && location.pathname !== '/login' && (
+        {!user && location.pathname !== '/login' && (
           <Link to="/login" className="app-header-login">
-            Teacher login
+            Log in
+          </Link>
+        )}
+        {!user && location.pathname !== '/register' && (
+          <Link to="/register" className="app-header-login">
+            Sign up
           </Link>
         )}
       </div>

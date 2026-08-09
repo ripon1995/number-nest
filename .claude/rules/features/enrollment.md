@@ -2,7 +2,9 @@
 
 The join between a student and a course. Implemented in `app/enrollments/` (see
 [Backend architecture](../../CLAUDE.md#backend-architecture)) — routes require
-`get_current_teacher`. The frontend `EnrollmentsPage` (`frontend/src/pages/EnrollmentsPage.tsx`
+`get_current_user`, with mutating routes (including the fee-paid/discontinue PATCH carve-outs
+below) additionally requiring `require_admin` (see [[teacher]]/[[role-based-access]]). The
+frontend `EnrollmentsPage` (`frontend/src/pages/EnrollmentsPage.tsx`
 + `frontend/src/pages/enrollments/`) consumes this end-to-end: a Zustand `enrollmentStore`
 (`fetchEnrollments`/`createEnrollment`/`updateEnrollmentFeePaid`/`updateEnrollmentDiscontinued`/
 `deleteEnrollment` — no general update, matching the add/delete-only API, aside from the two

@@ -4,14 +4,14 @@ import { useAuthStore } from '../store/authStore'
 import Loader from './Loader'
 
 export function ProtectedRoute({ children }: { children: ReactNode }) {
-  const teacher = useAuthStore((state) => state.teacher)
+  const user = useAuthStore((state) => state.user)
   const isLoading = useAuthStore((state) => state.isLoading)
 
   if (isLoading) {
     return <Loader label="Loading" />
   }
 
-  if (!teacher) {
+  if (!user) {
     return <Navigate to="/login" replace />
   }
 
