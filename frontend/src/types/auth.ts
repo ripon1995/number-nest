@@ -23,3 +23,8 @@ export interface RegisterInput {
   name: string
   password: string
 }
+
+export interface PasswordResetInput {
+  email: string
+  new_password: string
+}

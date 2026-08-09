@@ -56,3 +56,35 @@
   font-weight: 500;
   text-align: right;
 }
+
+.profile-section-title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  color: var(--text-h);
+}
+
+.profile-section-hint {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.reset-password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.reset-password-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.reset-password-success {
+  margin: 0;
+  color: var(--status-good);
+  font-size: 14px;
+}

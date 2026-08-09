@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
-import { useAuthStore } from '../store/authStore'
+import { useAuthStore, useIsAdmin } from '../store/authStore'
+import ResetPasswordForm from './profile/ResetPasswordForm'
 import './ProfilePage.css'
 
 function ProfilePage() {
   const user = useAuthStore((state) => state.user)
+  const isAdmin = useIsAdmin()
 
   return (
     <main id="content" className="profile-page">
@@ -30,6 +32,8 @@ function ProfilePage() {
           </dl>
         </div>
       )}
+
+      {isAdmin && <ResetPasswordForm />}
     </main>
   )
 }
