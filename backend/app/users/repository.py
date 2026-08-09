@@ -4,30 +4,29 @@ from datetime import datetime, timezone
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.teacher.models import RefreshToken, Teacher
+from app.users.models import RefreshToken, User, UserRole
 
 
-class TeacherRepository:
-    """Data access for the Teacher model. No query logic belongs above this layer."""
+class UserRepository:
+    """Data access for the User model. No query logic belongs above this layer."""
 
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 
-    async def get_by_id(self, teacher_id: uuid.UUID) -> Teacher | None:
-        return await self.db.get(Teacher, teacher_id)
+    async def get_by_id(self, user_id: uuid.UUID) -> User | None:
+        return await self.db.get(User, user_id)
 
-    async def get_by_email(self, email: str) -> Teacher | None:
-        return await self.db.scalar(select(Teacher).where(Teacher.email == email))
+    async def get_by_email(self, email: str) -> User | None:
+        return await self.db.scalar(select(User).where(User.email == email))
 
-    async def exists_any(self) -> bool:
-        return await self.db.scalar(select(Teacher)) is not None
-
-    async def create(self, *, email: str, name: str, hashed_password: str) -> Teacher:
-        teacher = Teacher(email=email, name=name, hashed_password=hashed_password)
-        self.db.add(teacher)
+    async def create(
+        self, *, email: str, name: str, hashed_password: str, role: UserRole
+    ) -> User:
+        user = User(email=email, name=name, hashed_password=hashed_password, role=role.value)
+        self.db.add(user)
         await self.db.commit()
-        await self.db.refresh(teacher)
-        return teacher
+        await self.db.refresh(user)
+        return user
 
 
 class RefreshTokenRepository:
@@ -37,10 +36,10 @@ class RefreshTokenRepository:
         self.db = db
 
     async def create(
-        self, *, teacher_id: uuid.UUID, token_hash: str, expires_at: datetime
+        self, *, user_id: uuid.UUID, token_hash: str, expires_at: datetime
     ) -> RefreshToken:
         refresh_token = RefreshToken(
-            teacher_id=teacher_id, token_hash=token_hash, expires_at=expires_at
+            user_id=user_id, token_hash=token_hash, expires_at=expires_at
         )
         self.db.add(refresh_token)
         await self.db.commit()

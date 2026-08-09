@@ -14,7 +14,7 @@ from app.notices.router import router as notices_router
 from app.payments.router import router as payments_router
 from app.public.router import router as public_router
 from app.students.router import router as students_router
-from app.teacher.router import router as teacher_router
+from app.users.router import router as users_router
 
 setup_logging()
 
@@ -44,7 +44,7 @@ app.add_middleware(
 app.add_middleware(RequestLoggerMiddleware, env_name=settings.environment)
 
 api_router = APIRouter()
-api_router.include_router(teacher_router)
+api_router.include_router(users_router)
 api_router.include_router(courses_router)
 api_router.include_router(students_router)
 api_router.include_router(enrollments_router)

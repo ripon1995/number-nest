@@ -2,14 +2,16 @@ import uuid
 
 from pydantic import BaseModel, ConfigDict, EmailStr
 
+from app.users.models import UserRole
 
-class TeacherRegister(BaseModel):
+
+class UserRegister(BaseModel):
     email: EmailStr
     name: str
     password: str
 
 
-class TeacherLogin(BaseModel):
+class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
@@ -18,12 +20,13 @@ class RefreshTokenRequest(BaseModel):
     refresh_token: str
 
 
-class TeacherRead(BaseModel):
+class UserRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: uuid.UUID
     email: EmailStr
     name: str
+    role: UserRole
 
 
 class Token(BaseModel):

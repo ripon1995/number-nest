@@ -2,17 +2,22 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from app.core.dependencies import get_current_teacher
+from app.core.dependencies import get_current_user, require_admin
 from app.payments.models import Payment
 from app.payments.schemas import PaymentCreate, PaymentRead
 from app.payments.service import PaymentService, get_payment_service
 
 router = APIRouter(
-    prefix="/payments", tags=["payments"], dependencies=[Depends(get_current_teacher)]
+    prefix="/payments", tags=["payments"], dependencies=[Depends(get_current_user)]
 )
 
 
-@router.post("", response_model=PaymentRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=PaymentRead,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_admin)],
+)
 async def create_payment(
         payload: PaymentCreate,
         service: PaymentService = Depends(get_payment_service)
@@ -28,7 +33,9 @@ async def list_payments(
     return await service.list_all(enrollment_id=enrollment_id)
 
 
-@router.delete("/{payment_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{payment_id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(require_admin)]
+)
 async def delete_payment(
         payment_id: uuid.UUID,
         service: PaymentService = Depends(get_payment_service)

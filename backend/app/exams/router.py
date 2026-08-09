@@ -2,17 +2,22 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from app.core.dependencies import get_current_teacher
+from app.core.dependencies import get_current_user, require_admin
 from app.exams.models import Exam
 from app.exams.schemas import ExamCreate, ExamRead, ExamUpdate
 from app.exams.service import ExamService, get_exam_service
 
 router = APIRouter(
-    prefix="/exams", tags=["exams"], dependencies=[Depends(get_current_teacher)]
+    prefix="/exams", tags=["exams"], dependencies=[Depends(get_current_user)]
 )
 
 
-@router.post("", response_model=ExamRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=ExamRead,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_admin)],
+)
 async def create_exam(
         payload: ExamCreate,
         service: ExamService = Depends(get_exam_service)
@@ -36,7 +41,7 @@ async def get_exam(
     return await service.get_detail(exam_id)
 
 
-@router.put("/{exam_id}", response_model=ExamRead)
+@router.put("/{exam_id}", response_model=ExamRead, dependencies=[Depends(require_admin)])
 async def update_exam(
         exam_id: uuid.UUID,
         payload: ExamUpdate,
@@ -45,7 +50,9 @@ async def update_exam(
     return await service.update(exam_id, payload)
 
 
-@router.delete("/{exam_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{exam_id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(require_admin)]
+)
 async def delete_exam(
         exam_id: uuid.UUID,
         service: ExamService = Depends(get_exam_service)

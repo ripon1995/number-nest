@@ -2,16 +2,21 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from app.core.dependencies import get_current_teacher
+from app.core.dependencies import get_current_user, require_admin
 from app.marks.schemas import MarkBulkCreate, MarkRead
 from app.marks.service import MarkService, get_mark_service
 
 router = APIRouter(
-    prefix="/marks", tags=["marks"], dependencies=[Depends(get_current_teacher)]
+    prefix="/marks", tags=["marks"], dependencies=[Depends(get_current_user)]
 )
 
 
-@router.post("/bulk", response_model=list[MarkRead], status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/bulk",
+    response_model=list[MarkRead],
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_admin)],
+)
 async def submit_marks(
         payload: MarkBulkCreate,
         service: MarkService = Depends(get_mark_service)
@@ -27,7 +32,9 @@ async def list_marks(
     return await service.list_for_exam(exam_id)
 
 
-@router.delete("/{mark_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{mark_id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(require_admin)]
+)
 async def delete_mark(
         mark_id: uuid.UUID,
         service: MarkService = Depends(get_mark_service)

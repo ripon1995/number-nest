@@ -33,6 +33,17 @@ class AuthorizationException(AppException):
     message = "You are not authorized to perform this action"
 
 
+class PermissionDeniedException(AuthorizationException):
+    """Raised by require_admin when a non-admin user calls an admin-only route.
+
+    A dedicated subclass (rather than raising AuthorizationException directly)
+    so the frontend ErrorDialog's title reads exactly "Permission denied" -
+    the copy the student-facing UI is expected to show.
+    """
+
+    message = "Permission denied"
+
+
 class NotFoundException(AppException):
     error_code = "not_found"
     error_status = status.HTTP_404_NOT_FOUND

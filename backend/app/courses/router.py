@@ -2,17 +2,22 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from app.core.dependencies import get_current_teacher
+from app.core.dependencies import get_current_user, require_admin
 from app.courses.models import Course
 from app.courses.schemas import CourseCreate, CourseDetailRead, CourseRead, CourseUpdate
 from app.courses.service import CourseService, get_course_service
 
 router = APIRouter(
-    prefix="/courses", tags=["courses"], dependencies=[Depends(get_current_teacher)]
+    prefix="/courses", tags=["courses"], dependencies=[Depends(get_current_user)]
 )
 
 
-@router.post("", response_model=CourseRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=CourseRead,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_admin)],
+)
 async def create_course(
         payload: CourseCreate,
         service: CourseService = Depends(get_course_service)
@@ -34,7 +39,7 @@ async def get_course(
     return CourseDetailRead(**CourseRead.model_validate(course).model_dump(), students=students)
 
 
-@router.put("/{course_id}", response_model=CourseRead)
+@router.put("/{course_id}", response_model=CourseRead, dependencies=[Depends(require_admin)])
 async def update_course(
         course_id: uuid.UUID,
         payload: CourseUpdate,
@@ -43,7 +48,9 @@ async def update_course(
     return await service.update(course_id, payload)
 
 
-@router.delete("/{course_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{course_id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(require_admin)]
+)
 async def delete_course(
         course_id: uuid.UUID,
         service: CourseService = Depends(get_course_service)

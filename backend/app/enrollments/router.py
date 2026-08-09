@@ -2,7 +2,7 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from app.core.dependencies import get_current_teacher
+from app.core.dependencies import get_current_user, require_admin
 from app.enrollments.models import Enrollment
 from app.enrollments.schemas import (
     EnrollmentCreate,
@@ -13,11 +13,16 @@ from app.enrollments.schemas import (
 from app.enrollments.service import EnrollmentService, get_enrollment_service
 
 router = APIRouter(
-    prefix="/enrollments", tags=["enrollments"], dependencies=[Depends(get_current_teacher)]
+    prefix="/enrollments", tags=["enrollments"], dependencies=[Depends(get_current_user)]
 )
 
 
-@router.post("", response_model=EnrollmentRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=EnrollmentRead,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_admin)],
+)
 async def create_enrollment(
         payload: EnrollmentCreate,
         service: EnrollmentService = Depends(get_enrollment_service)
@@ -34,7 +39,11 @@ async def list_enrollments(
     return await service.list_all(student_id=student_id, course_id=course_id)
 
 
-@router.patch("/{enrollment_id}/fee-paid", response_model=EnrollmentRead)
+@router.patch(
+    "/{enrollment_id}/fee-paid",
+    response_model=EnrollmentRead,
+    dependencies=[Depends(require_admin)],
+)
 async def update_enrollment_fee_paid(
         enrollment_id: uuid.UUID,
         payload: EnrollmentFeeUpdate,
@@ -43,7 +52,11 @@ async def update_enrollment_fee_paid(
     return await service.set_fee_paid(enrollment_id, payload.enrollment_fee_paid)
 
 
-@router.patch("/{enrollment_id}/discontinue", response_model=EnrollmentRead)
+@router.patch(
+    "/{enrollment_id}/discontinue",
+    response_model=EnrollmentRead,
+    dependencies=[Depends(require_admin)],
+)
 async def update_enrollment_discontinued(
         enrollment_id: uuid.UUID,
         payload: EnrollmentDiscontinueUpdate,
@@ -52,7 +65,11 @@ async def update_enrollment_discontinued(
     return await service.set_discontinued(enrollment_id, payload.discontinued_at)
 
 
-@router.delete("/{enrollment_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{enrollment_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(require_admin)],
+)
 async def delete_enrollment(
         enrollment_id: uuid.UUID,
         service: EnrollmentService = Depends(get_enrollment_service)

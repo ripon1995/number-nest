@@ -2,17 +2,22 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from app.core.dependencies import get_current_teacher
+from app.core.dependencies import get_current_user, require_admin
 from app.notices.models import Notice
 from app.notices.schemas import NoticeCreate, NoticeRead
 from app.notices.service import NoticeService, get_notice_service
 
 router = APIRouter(
-    prefix="/notices", tags=["notices"], dependencies=[Depends(get_current_teacher)]
+    prefix="/notices", tags=["notices"], dependencies=[Depends(get_current_user)]
 )
 
 
-@router.post("", response_model=NoticeRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=NoticeRead,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_admin)],
+)
 async def create_notice(
         payload: NoticeCreate,
         service: NoticeService = Depends(get_notice_service)
@@ -28,7 +33,9 @@ async def list_notices(
     return await service.list_all(course_id=course_id)
 
 
-@router.delete("/{notice_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{notice_id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(require_admin)]
+)
 async def delete_notice(
         notice_id: uuid.UUID,
         service: NoticeService = Depends(get_notice_service)

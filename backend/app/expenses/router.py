@@ -2,17 +2,22 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from app.core.dependencies import get_current_teacher
+from app.core.dependencies import get_current_user, require_admin
 from app.expenses.models import Expense, ExpenseCategory
 from app.expenses.schemas import ExpenseCreate, ExpenseRead, ExpenseUpdate
 from app.expenses.service import ExpenseService, get_expense_service
 
 router = APIRouter(
-    prefix="/expenses", tags=["expenses"], dependencies=[Depends(get_current_teacher)]
+    prefix="/expenses", tags=["expenses"], dependencies=[Depends(get_current_user)]
 )
 
 
-@router.post("", response_model=ExpenseRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=ExpenseRead,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_admin)],
+)
 async def create_expense(
         payload: ExpenseCreate,
         service: ExpenseService = Depends(get_expense_service)
@@ -36,7 +41,7 @@ async def get_expense(
     return await service.get_by_id(expense_id)
 
 
-@router.put("/{expense_id}", response_model=ExpenseRead)
+@router.put("/{expense_id}", response_model=ExpenseRead, dependencies=[Depends(require_admin)])
 async def update_expense(
         expense_id: uuid.UUID,
         payload: ExpenseUpdate,
@@ -45,7 +50,9 @@ async def update_expense(
     return await service.update(expense_id, payload)
 
 
-@router.delete("/{expense_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{expense_id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(require_admin)]
+)
 async def delete_expense(
         expense_id: uuid.UUID,
         service: ExpenseService = Depends(get_expense_service)

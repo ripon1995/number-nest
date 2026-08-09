@@ -2,17 +2,22 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from app.core.dependencies import get_current_teacher
+from app.core.dependencies import get_current_user, require_admin
 from app.students.models import Student
 from app.students.schemas import StudentCreate, StudentRead, StudentUpdate
 from app.students.service import StudentService, get_student_service
 
 router = APIRouter(
-    prefix="/students", tags=["students"], dependencies=[Depends(get_current_teacher)]
+    prefix="/students", tags=["students"], dependencies=[Depends(get_current_user)]
 )
 
 
-@router.post("", response_model=StudentRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=StudentRead,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_admin)],
+)
 async def create_student(
         payload: StudentCreate,
         service: StudentService = Depends(get_student_service)
@@ -33,7 +38,7 @@ async def get_student(
     return await service.get_by_id(student_id)
 
 
-@router.put("/{student_id}", response_model=StudentRead)
+@router.put("/{student_id}", response_model=StudentRead, dependencies=[Depends(require_admin)])
 async def update_student(
         student_id: uuid.UUID,
         payload: StudentUpdate,
@@ -42,7 +47,9 @@ async def update_student(
     return await service.update(student_id, payload)
 
 
-@router.delete("/{student_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{student_id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(require_admin)]
+)
 async def delete_student(
         student_id: uuid.UUID,
         service: StudentService = Depends(get_student_service)

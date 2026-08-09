@@ -4,10 +4,10 @@ import jwt
 from fastapi import Depends, HTTPException, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from app.core.exceptions import AuthenticationException
-from app.teacher.models import Teacher
-from app.teacher.security import decode_access_token
-from app.teacher.service import TeacherService, get_teacher_service
+from app.core.exceptions import AuthenticationException, PermissionDeniedException
+from app.users.models import User, UserRole
+from app.users.security import decode_access_token
+from app.users.service import UserService, get_user_service
 
 
 class BearerAuth(HTTPBearer):
@@ -26,19 +26,25 @@ class BearerAuth(HTTPBearer):
 bearer_scheme = BearerAuth()
 
 
-async def get_current_teacher(
+async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
-    service: TeacherService = Depends(get_teacher_service),
-) -> Teacher:
+    service: UserService = Depends(get_user_service),
+) -> User:
     try:
-        teacher_id = decode_access_token(credentials.credentials)
+        user_id = decode_access_token(credentials.credentials)
     except jwt.InvalidTokenError as exc:
         raise AuthenticationException() from exc
 
     try:
-        teacher = await service.get_by_id(uuid.UUID(teacher_id))
+        user = await service.get_by_id(uuid.UUID(user_id))
     except ValueError as exc:
         raise AuthenticationException() from exc
-    if teacher is None:
+    if user is None:
         raise AuthenticationException()
-    return teacher
+    return user
+
+
+async def require_admin(current_user: User = Depends(get_current_user)) -> User:
+    if current_user.role != UserRole.ADMIN:
+        raise PermissionDeniedException()
+    return current_user

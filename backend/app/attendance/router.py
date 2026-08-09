@@ -5,14 +5,19 @@ from fastapi import APIRouter, Depends, status
 
 from app.attendance.schemas import AttendanceBulkCreate, AttendanceRead
 from app.attendance.service import AttendanceService, get_attendance_service
-from app.core.dependencies import get_current_teacher
+from app.core.dependencies import get_current_user, require_admin
 
 router = APIRouter(
-    prefix="/attendance", tags=["attendance"], dependencies=[Depends(get_current_teacher)]
+    prefix="/attendance", tags=["attendance"], dependencies=[Depends(get_current_user)]
 )
 
 
-@router.post("/bulk", response_model=list[AttendanceRead], status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/bulk",
+    response_model=list[AttendanceRead],
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_admin)],
+)
 async def submit_attendance(
         payload: AttendanceBulkCreate,
         service: AttendanceService = Depends(get_attendance_service)
@@ -29,7 +34,11 @@ async def list_attendance(
     return await service.list_for_course(course_id, session_date)
 
 
-@router.delete("/{attendance_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{attendance_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(require_admin)],
+)
 async def delete_attendance(
         attendance_id: uuid.UUID,
         service: AttendanceService = Depends(get_attendance_service)
