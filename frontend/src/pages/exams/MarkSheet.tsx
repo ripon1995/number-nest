@@ -50,6 +50,11 @@ function MarkSheet({ students, records, isLoading, isSubmitting, onSubmit }: Mar
     )
   }
 
+  function getTotal(studentId: string) {
+    const marks = marksByStudentId[studentId]
+    return Number(marks?.cq || 0) + Number(marks?.mcq || 0)
+  }
+
   if (isLoading) return <Loader label="Loading students…" />
   if (students.length === 0) return <p>This course has no enrolled students yet.</p>
 
@@ -62,6 +67,7 @@ function MarkSheet({ students, records, isLoading, isSubmitting, onSubmit }: Mar
             <th>Student</th>
             <th>CQ</th>
             <th>MCQ</th>
+            <th>Total marks</th>
           </tr>
         </thead>
         <tbody>
@@ -88,6 +94,9 @@ function MarkSheet({ students, records, isLoading, isSubmitting, onSubmit }: Mar
                   onChange={(e) => setMark(student.id, 'mcq', e.target.value)}
                   aria-label={`${student.name} MCQ mark`}
                 />
+              </td>
+              <td className="mark-sheet-total">
+                <strong>{getTotal(student.id)}</strong>
               </td>
             </tr>
           ))}
