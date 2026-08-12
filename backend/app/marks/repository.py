@@ -36,16 +36,17 @@ class MarkRepository:
         return [(row[0], row[1]) for row in result.all()]
 
     async def create(
-        self, *, enrollment_id: uuid.UUID, exam_id: uuid.UUID, mark: int
+        self, *, enrollment_id: uuid.UUID, exam_id: uuid.UUID, cq: int, mcq: int
     ) -> Mark:
-        mark_row = Mark(enrollment_id=enrollment_id, exam_id=exam_id, mark=mark)
+        mark_row = Mark(enrollment_id=enrollment_id, exam_id=exam_id, cq=cq, mcq=mcq)
         self.db.add(mark_row)
         await self.db.commit()
         await self.db.refresh(mark_row)
         return mark_row
 
-    async def update_mark(self, mark_row: Mark, mark: int) -> Mark:
-        mark_row.mark = mark
+    async def update_mark(self, mark_row: Mark, cq: int, mcq: int) -> Mark:
+        mark_row.cq = cq
+        mark_row.mcq = mcq
         await self.db.commit()
         await self.db.refresh(mark_row)
         return mark_row

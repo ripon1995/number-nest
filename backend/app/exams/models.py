@@ -22,7 +22,8 @@ class Exam(Base):
     )
     exam_datetime: Mapped[datetime] = mapped_column(DateTime(timezone=False))
     description: Mapped[str | None] = mapped_column(String, default=None)
-    exam_mark: Mapped[int] = mapped_column(Integer)
+    cq_mark: Mapped[int] = mapped_column(Integer)
+    mcq_mark: Mapped[int] = mapped_column(Integer)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

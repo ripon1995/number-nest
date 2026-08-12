@@ -3,7 +3,8 @@ export interface Exam {
   course_id: string
   exam_datetime: string
   description: string | null
-  exam_mark: number
+  cq_mark: number
+  mcq_mark: number
   created_at: string
 }
 
@@ -11,11 +12,13 @@ export interface ExamInput {
   course_id: string
   exam_datetime: string
   description: string | null
-  exam_mark: number
+  cq_mark: number
+  mcq_mark: number
 }
 
 export interface ExamUpdateInput {
   exam_datetime: string
   description: string | null
-  exam_mark: number
+  cq_mark: number
+  mcq_mark: number
 }

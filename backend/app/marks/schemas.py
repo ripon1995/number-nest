@@ -6,7 +6,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class MarkEntry(BaseModel):
     student_id: uuid.UUID
-    mark: int = Field(ge=0)
+    cq: int = Field(ge=0)
+    mcq: int = Field(ge=0)
 
 
 class MarkBulkCreate(BaseModel):
@@ -21,5 +22,6 @@ class MarkRead(BaseModel):
     enrollment_id: uuid.UUID
     student_id: uuid.UUID
     exam_id: uuid.UUID
-    mark: int
+    cq: int
+    mcq: int
     created_at: datetime

@@ -10,10 +10,11 @@ form — marks are always recorded a whole exam's mark sheet at a time, mirrorin
 in `ExamTable`) fetches the exam via `api.getExam(id)`, then the exam's course (and its
 enrolled students) via `api.getCourse(exam.course_id)` — the same `CourseDetailRead.students`
 source [[attendance]] uses, not a separate `Mark`-specific student list. It renders a `MarkSheet`
-— a table of those students with a numeric mark input per row, prefilled from any existing
-marks for that exam via the Zustand `markStore`'s `fetchMarks`, and submitted as one
+— a table of those students with a CQ and an MCQ numeric mark input per row (split from a
+single mark input — see Fields below), prefilled from any existing marks for that exam via
+the Zustand `markStore`'s `fetchMarks`, and submitted as one
 `POST /marks/bulk` call via `submitMarks` (`MarkBulkCreate`: `exam_id` and a list of
-`{student_id, mark}` entries) — resubmitting for the same exam upserts each row rather than
+`{student_id, cq, mcq}` entries) — resubmitting for the same exam upserts each row rather than
 erroring, so revisiting the exam's detail page doubles as a way to correct previously entered
 marks.
 
@@ -23,8 +24,14 @@ marks.
   matching [[payment-tracking]] and [[attendance]]'s convention of hanging per-student records
   off the enrollment rather than the student.
 - `exam_id` — FK to `exams.id`, `ondelete="CASCADE"`
-- `mark` — non-negative integer — the student's obtained mark. Not validated against the
-  exam's `exam_mark` (total/full mark) — a mark greater than the exam's total isn't blocked.
+- `cq` — non-negative integer — the student's obtained mark on the CQ (Creative Question)
+  section. Originally a single `mark` field; split into `cq`/`mcq` (see `mcq` below) to match
+  [[exam]]'s `cq_mark`/`mcq_mark` split — a migration renamed the existing `mark` column to
+  `cq` (preserving prior values as the CQ figure) and backfilled a new `mcq` column to 0 for
+  pre-existing rows. Not validated against [[exam]]'s `cq_mark` (that section's total) — a
+  value greater than the exam's total isn't blocked.
+- `mcq` — non-negative integer — the student's obtained mark on the MCQ section, same
+  treatment as `cq` above (not validated against `mcq_mark`).
 
 `MarkRead` (the response schema) also includes a `student_id` field that is *not* a column on
 the `Mark` model — populated by joining `Enrollment` (in `MarkRepository.list_for_exam`, or

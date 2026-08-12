@@ -17,7 +17,8 @@ interface FormState {
   course_id: string
   exam_datetime: string
   description: string
-  exam_mark: string
+  cq_mark: string
+  mcq_mark: string
 }
 
 function initialFormState(exam: Exam | null | undefined, courses: Course[]): FormState {
@@ -26,14 +27,16 @@ function initialFormState(exam: Exam | null | undefined, courses: Course[]): For
       course_id: courses[0]?.id ?? '',
       exam_datetime: '',
       description: '',
-      exam_mark: '',
+      cq_mark: '',
+      mcq_mark: '',
     }
   }
   return {
     course_id: exam.course_id,
     exam_datetime: exam.exam_datetime.slice(0, 16),
     description: exam.description ?? '',
-    exam_mark: String(exam.exam_mark),
+    cq_mark: String(exam.cq_mark),
+    mcq_mark: String(exam.mcq_mark),
   }
 }
 
@@ -54,7 +57,8 @@ function ExamFormDialog({ exam, courses, onClose, onError }: ExamFormDialogProps
         const payload: ExamUpdateInput = {
           exam_datetime: form.exam_datetime,
           description: form.description || null,
-          exam_mark: Number(form.exam_mark),
+          cq_mark: Number(form.cq_mark),
+          mcq_mark: Number(form.mcq_mark),
         }
         await updateExam(exam.id, payload)
       } else {
@@ -62,7 +66,8 @@ function ExamFormDialog({ exam, courses, onClose, onError }: ExamFormDialogProps
           course_id: form.course_id,
           exam_datetime: form.exam_datetime,
           description: form.description || null,
-          exam_mark: Number(form.exam_mark),
+          cq_mark: Number(form.cq_mark),
+          mcq_mark: Number(form.mcq_mark),
         }
         await createExam(payload)
       }
@@ -115,13 +120,24 @@ function ExamFormDialog({ exam, courses, onClose, onError }: ExamFormDialogProps
           />
         </label>
         <label>
-          Exam mark
+          CQ mark
           <input
             type="number"
             min="1"
             step="1"
-            value={form.exam_mark}
-            onChange={(e) => setForm({ ...form, exam_mark: e.target.value })}
+            value={form.cq_mark}
+            onChange={(e) => setForm({ ...form, cq_mark: e.target.value })}
+            required
+          />
+        </label>
+        <label>
+          MCQ mark
+          <input
+            type="number"
+            min="1"
+            step="1"
+            value={form.mcq_mark}
+            onChange={(e) => setForm({ ...form, mcq_mark: e.target.value })}
             required
           />
         </label>

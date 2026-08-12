@@ -28,12 +28,14 @@ function buildAverageMarksData(exams: Exam[], marksByExam: Record<string, MarkRe
   for (const exam of exams) {
     const records = marksByExam[exam.id] ?? []
     if (records.length === 0) continue
-    const average = Math.round((records.reduce((sum, r) => sum + r.mark, 0) / records.length) * 10) / 10
+    const totalMark = exam.cq_mark + exam.mcq_mark
+    const average =
+      Math.round((records.reduce((sum, r) => sum + r.cq + r.mcq, 0) / records.length) * 10) / 10
     data.push({
       key: exam.id,
       label: formatShortDate(exam.exam_datetime),
       value: average,
-      tooltip: `${formatDateTime(exam.exam_datetime)}: average ${average} / ${exam.exam_mark}`,
+      tooltip: `${formatDateTime(exam.exam_datetime)}: average ${average} / ${totalMark}`,
     })
   }
   return data
@@ -44,11 +46,13 @@ function buildStudentMarksData(exams: Exam[], marksByExam: Record<string, MarkRe
   for (const exam of exams) {
     const record = (marksByExam[exam.id] ?? []).find((r) => r.student_id === studentId)
     if (!record) continue
+    const totalMark = exam.cq_mark + exam.mcq_mark
+    const obtained = record.cq + record.mcq
     data.push({
       key: exam.id,
       label: formatShortDate(exam.exam_datetime),
-      value: record.mark,
-      tooltip: `${formatDateTime(exam.exam_datetime)}: ${record.mark} / ${exam.exam_mark}`,
+      value: obtained,
+      tooltip: `${formatDateTime(exam.exam_datetime)}: ${obtained} / ${totalMark}`,
     })
   }
   return data

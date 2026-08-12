@@ -26,7 +26,8 @@ class Mark(Base):
     exam_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("exams.id", ondelete="CASCADE"), index=True
     )
-    mark: Mapped[int] = mapped_column(Integer)
+    cq: Mapped[int] = mapped_column(Integer)
+    mcq: Mapped[int] = mapped_column(Integer)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

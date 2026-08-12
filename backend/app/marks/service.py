@@ -49,10 +49,13 @@ class MarkService:
                 enrollment.id, payload.exam_id
             )
             if existing is not None:
-                mark_row = await self.repository.update_mark(existing, entry.mark)
+                mark_row = await self.repository.update_mark(existing, entry.cq, entry.mcq)
             else:
                 mark_row = await self.repository.create(
-                    enrollment_id=enrollment.id, exam_id=payload.exam_id, mark=entry.mark
+                    enrollment_id=enrollment.id,
+                    exam_id=payload.exam_id,
+                    cq=entry.cq,
+                    mcq=entry.mcq,
                 )
 
             results.append(
@@ -61,7 +64,8 @@ class MarkService:
                     enrollment_id=mark_row.enrollment_id,
                     student_id=entry.student_id,
                     exam_id=mark_row.exam_id,
-                    mark=mark_row.mark,
+                    cq=mark_row.cq,
+                    mcq=mark_row.mcq,
                     created_at=mark_row.created_at,
                 )
             )
@@ -78,7 +82,8 @@ class MarkService:
                 enrollment_id=mark_row.enrollment_id,
                 student_id=student_id,
                 exam_id=mark_row.exam_id,
-                mark=mark_row.mark,
+                cq=mark_row.cq,
+                mcq=mark_row.mcq,
                 created_at=mark_row.created_at,
             )
             for mark_row, student_id in rows

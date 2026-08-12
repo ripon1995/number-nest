@@ -11,7 +11,8 @@ a lookup map built from `courseStore`. `ExamFormDialog` handles both creating an
 it takes an optional `exam` prop; when present, the form is pre-filled from it and the
 course `<select>` is rendered `disabled` (see Rules below for why course can't change).
 Fields: a course `<select>`, a `datetime-local` input for `exam_datetime`, an optional
-`description` textarea, and an `exam_mark` number input, rendered in the default-width
+`description` textarea, and `cq_mark`/`mcq_mark` number inputs (split from a single
+`exam_mark` field — see Fields below), rendered in the default-width
 `Modal`. The "Add exam" action is disabled (via a client-side check, not a backend rule)
 until at least one course exists, same pattern as payments/enrollments' guard. There's a
 standalone "Exams" nav link/route (`/exams`), same as every other list feature — this is not
@@ -22,7 +23,7 @@ part of the Dashboard.
 `stopPropagation()` on both action buttons so clicking them doesn't also trigger row
 navigation) — clicking anywhere else on the row navigates to `ExamDetailPage` at route
 `/exams/:id` — a full page showing a read-only exam card (course name, date/time,
-description, exam mark) plus a [[mark]] sheet for recording each of the course's enrolled
+description, CQ mark, MCQ mark) plus a [[mark]] sheet for recording each of the course's enrolled
 students' marks for that exam. `GET /exams/{id}` (`ExamService.get_detail`) backs this
 page's initial fetch. `ExamDetailPage` stays read-only for the exam itself — editing is the
 list table's pencil icon, not something available from the detail page, same
@@ -38,15 +39,22 @@ list table's pencil icon, not something available from the detail page, same
   no timezone conversion, unlike `created_at` (which stays timezone-aware like every other
   `created_at` column in this project).
 - `description` — optional string
-- `exam_mark` — positive integer — the exam's total/full mark (e.g. "out of 100"), not a
-  per-student score. There's no per-student result tracking for exams yet.
+- `cq_mark` — positive integer — the exam's total/full mark for the CQ (Creative Question)
+  section, not a per-student score. Originally a single `exam_mark` field covering the whole
+  exam; split into `cq_mark`/`mcq_mark` (see `mcq_mark` below) so the exam's total reflects
+  the CQ/MCQ structure exams in this domain actually have — a migration renamed the existing
+  `exam_mark` column to `cq_mark` (preserving prior totals as the CQ figure) and backfilled a
+  new `mcq_mark` column to 0 for pre-existing rows. There's no per-student result tracking
+  directly on `Exam` — see [[mark]].
+- `mcq_mark` — positive integer — the exam's total/full mark for the MCQ (Multiple Choice
+  Question) section, same treatment as `cq_mark` above.
 
 ## Rules
 
 - `id` is a UUID primary key, like every other table in this project.
 - Add/edit/delete — `PUT /exams/{id}` (`ExamService.update`, `ExamRepository.update`) lets
-  `exam_datetime`/`description`/`exam_mark` be edited in place via a dedicated `ExamUpdate`
-  schema. `course_id` is **not** part of `ExamUpdate` at all (unlike [[expense-tracking]]'s
+  `exam_datetime`/`description`/`cq_mark`/`mcq_mark` be edited in place via a dedicated
+  `ExamUpdate` schema. `course_id` is **not** part of `ExamUpdate` at all (unlike [[expense-tracking]]'s
   `category`, which stays in the payload purely for a service-side immutability check —
   there's no equivalent conditional-field validation here, so it's simplest to just omit the
   field entirely) and can't be changed after creation: [[mark]] records are recorded against

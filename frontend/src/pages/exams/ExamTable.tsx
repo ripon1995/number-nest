@@ -29,7 +29,8 @@ function ExamTable({ exams, coursesById, isLoading, deletingId, onEdit, onDelete
           <th>Course</th>
           <th>Date &amp; time</th>
           <th>Description</th>
-          <th>Exam mark</th>
+          <th>CQ mark</th>
+          <th>MCQ mark</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -40,7 +41,8 @@ function ExamTable({ exams, coursesById, isLoading, deletingId, onEdit, onDelete
             <td>{coursesById.get(exam.course_id)?.course_name ?? 'Unknown course'}</td>
             <td>{formatDateTime(exam.exam_datetime)}</td>
             <td>{exam.description ?? '—'}</td>
-            <td>{exam.exam_mark}</td>
+            <td>{exam.cq_mark}</td>
+            <td>{exam.mcq_mark}</td>
             <td className="exam-row-actions">
               <button
                 type="button"

@@ -12,28 +12,40 @@ interface MarkSheetProps {
   onSubmit: (entries: MarkEntryInput[]) => void
 }
 
+interface MarkInput {
+  cq: string
+  mcq: string
+}
+
 function MarkSheet({ students, records, isLoading, isSubmitting, onSubmit }: MarkSheetProps) {
-  const [markByStudentId, setMarkByStudentId] = useState<Record<string, string>>({})
+  const [marksByStudentId, setMarksByStudentId] = useState<Record<string, MarkInput>>({})
 
   useEffect(() => {
-    const recordsByStudentId = new Map(records.map((record) => [record.student_id, record.mark]))
-    const initial: Record<string, string> = {}
+    const recordsByStudentId = new Map(records.map((record) => [record.student_id, record]))
+    const initial: Record<string, MarkInput> = {}
     for (const student of students) {
       const existing = recordsByStudentId.get(student.id)
-      initial[student.id] = existing === undefined ? '' : String(existing)
+      initial[student.id] = {
+        cq: existing === undefined ? '' : String(existing.cq),
+        mcq: existing === undefined ? '' : String(existing.mcq),
+      }
     }
-    setMarkByStudentId(initial)
+    setMarksByStudentId(initial)
   }, [students, records])
 
-  function setMark(studentId: string, value: string) {
-    setMarkByStudentId((prev) => ({ ...prev, [studentId]: value }))
+  function setMark(studentId: string, field: keyof MarkInput, value: string) {
+    setMarksByStudentId((prev) => ({
+      ...prev,
+      [studentId]: { ...prev[studentId], [field]: value },
+    }))
   }
 
   function handleSubmit() {
     onSubmit(
       students.map((student) => ({
         student_id: student.id,
-        mark: Number(markByStudentId[student.id] || 0),
+        cq: Number(marksByStudentId[student.id]?.cq || 0),
+        mcq: Number(marksByStudentId[student.id]?.mcq || 0),
       })),
     )
   }
@@ -48,7 +60,8 @@ function MarkSheet({ students, records, isLoading, isSubmitting, onSubmit }: Mar
           <tr>
             <th>SL</th>
             <th>Student</th>
-            <th>Mark</th>
+            <th>CQ</th>
+            <th>MCQ</th>
           </tr>
         </thead>
         <tbody>
@@ -61,9 +74,19 @@ function MarkSheet({ students, records, isLoading, isSubmitting, onSubmit }: Mar
                   type="number"
                   min="0"
                   step="1"
-                  value={markByStudentId[student.id] ?? ''}
-                  onChange={(e) => setMark(student.id, e.target.value)}
-                  aria-label={`${student.name} mark`}
+                  value={marksByStudentId[student.id]?.cq ?? ''}
+                  onChange={(e) => setMark(student.id, 'cq', e.target.value)}
+                  aria-label={`${student.name} CQ mark`}
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  value={marksByStudentId[student.id]?.mcq ?? ''}
+                  onChange={(e) => setMark(student.id, 'mcq', e.target.value)}
+                  aria-label={`${student.name} MCQ mark`}
                 />
               </td>
             </tr>

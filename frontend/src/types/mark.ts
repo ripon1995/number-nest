@@ -3,13 +3,15 @@ export interface MarkRecord {
   enrollment_id: string
   student_id: string
   exam_id: string
-  mark: number
+  cq: number
+  mcq: number
   created_at: string
 }
 
 export interface MarkEntryInput {
   student_id: string
-  mark: number
+  cq: number
+  mcq: number
 }
 
 export interface MarkBulkInput {

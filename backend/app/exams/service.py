@@ -33,7 +33,8 @@ class ExamService:
             course_id=payload.course_id,
             exam_datetime=payload.exam_datetime,
             description=payload.description,
-            exam_mark=payload.exam_mark,
+            cq_mark=payload.cq_mark,
+            mcq_mark=payload.mcq_mark,
         )
 
     async def list_all(self, *, course_id: uuid.UUID | None = None) -> list[Exam]:
@@ -51,7 +52,8 @@ class ExamService:
             exam,
             exam_datetime=payload.exam_datetime,
             description=payload.description,
-            exam_mark=payload.exam_mark,
+            cq_mark=payload.cq_mark,
+            mcq_mark=payload.mcq_mark,
         )
 
     async def delete_exam(self, exam_id: uuid.UUID) -> None:

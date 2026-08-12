@@ -29,13 +29,15 @@ class ExamRepository:
         course_id: uuid.UUID,
         exam_datetime: datetime,
         description: str | None,
-        exam_mark: int,
+        cq_mark: int,
+        mcq_mark: int,
     ) -> Exam:
         exam = Exam(
             course_id=course_id,
             exam_datetime=exam_datetime,
             description=description,
-            exam_mark=exam_mark,
+            cq_mark=cq_mark,
+            mcq_mark=mcq_mark,
         )
         self.db.add(exam)
         await self.db.commit()
@@ -48,11 +50,13 @@ class ExamRepository:
         *,
         exam_datetime: datetime,
         description: str | None,
-        exam_mark: int,
+        cq_mark: int,
+        mcq_mark: int,
     ) -> Exam:
         exam.exam_datetime = exam_datetime
         exam.description = description
-        exam.exam_mark = exam_mark
+        exam.cq_mark = cq_mark
+        exam.mcq_mark = mcq_mark
         await self.db.commit()
         await self.db.refresh(exam)
         return exam

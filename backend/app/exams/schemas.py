@@ -8,7 +8,8 @@ class ExamCreate(BaseModel):
     course_id: uuid.UUID
     exam_datetime: datetime
     description: str | None = None
-    exam_mark: int = Field(gt=0)
+    cq_mark: int = Field(gt=0)
+    mcq_mark: int = Field(gt=0)
 
 
 class ExamUpdate(BaseModel):
@@ -21,7 +22,8 @@ class ExamUpdate(BaseModel):
 
     exam_datetime: datetime
     description: str | None = None
-    exam_mark: int = Field(gt=0)
+    cq_mark: int = Field(gt=0)
+    mcq_mark: int = Field(gt=0)
 
 
 class ExamRead(BaseModel):
@@ -31,5 +33,6 @@ class ExamRead(BaseModel):
     course_id: uuid.UUID
     exam_datetime: datetime
     description: str | None
-    exam_mark: int
+    cq_mark: int
+    mcq_mark: int
     created_at: datetime

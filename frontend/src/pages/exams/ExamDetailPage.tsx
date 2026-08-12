@@ -84,8 +84,12 @@ function ExamDetailPage() {
                 <dd>{exam.description ?? '—'}</dd>
               </div>
               <div>
-                <dt>Exam mark</dt>
-                <dd>{exam.exam_mark}</dd>
+                <dt>CQ mark</dt>
+                <dd>{exam.cq_mark}</dd>
+              </div>
+              <div>
+                <dt>MCQ mark</dt>
+                <dd>{exam.mcq_mark}</dd>
               </div>
             </dl>
           </div>
